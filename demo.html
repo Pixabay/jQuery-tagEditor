@@ -262,10 +262,10 @@ $(<b>'#demo4'</b>).tagEditor({
             <b>'Tags changed to: '</b> + (tags.length ? tags.join(<b>', '</b>) : <b>'----'</b>) + <b>'&lt;hr&gt;'</b>
         );
     },
-    beforeTagSave: function(field, tags, tag, val) {
+    beforeTagSave: function(field, editor, tags, tag, val) {
         $(<b>'#response'</b>).prepend(<b>'Tag '</b> + val + <b>' saved'</b> + (tag ? <b>' over '</b> + tag : <b>''</b>) + <b>'.'</b>);
     },
-    beforeTagDelete: function(field, tags, val) {
+    beforeTagDelete: function(field, editor, tags, val) {
         var q = confirm(<b>'Remove tag "'</b> + val + <b>'"?'</b>);
         if (q) $(<b>'#response'</b>).prepend(<b>'Tag '</b> + val + <b>' deleted.'</b>);
         else $(<b>'#response'</b>).prepend(<b>'Removal of '</b> + val + <b>' discarded.'</b>);
@@ -410,8 +410,8 @@ tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor);</pre>
                 initialTags: ['Hello', 'World'],
                 placeholder: 'Enter tags ...',
                 onChange: function(field, editor, tags) { $('#response').prepend('Tags changed to: <i>'+(tags.length ? tags.join(', ') : '----')+'</i><hr>'); },
-                beforeTagSave: function(field, tags, tag, val) { $('#response').prepend('Tag <i>'+val+'</i> saved'+(tag ? ' over <i>'+tag+'</i>' : '')+'.<hr>'); },
-                beforeTagDelete: function(field, tags, val) {
+                beforeTagSave: function(field, editor, tags, tag, val) { $('#response').prepend('Tag <i>'+val+'</i> saved'+(tag ? ' over <i>'+tag+'</i>' : '')+'.<hr>'); },
+                beforeTagDelete: function(field, editor, tags, val) {
                     var q = confirm('Remove tag "'+val+'"?');
                     if (q) $('#response').prepend('Tag <i>'+val+'</i> deleted.<hr>');
                     else $('#response').prepend('Removal of <i>'+val+'</i> discarded.<hr>');

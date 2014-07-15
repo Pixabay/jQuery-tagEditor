@@ -321,7 +321,7 @@
 
         // callbacks
         onChange: function(){},
-        beforeTagSave: function(tags, tag, val){},
-        beforeTagDelete: function(tags, val){}
+        beforeTagSave: function(){},
+        beforeTagDelete: function(){}
     };
 }(jQuery));
