@@ -3,7 +3,7 @@ jQuery-tagEditor
 
 A powerful and lightweight tag editor plugin for jQuery.
 
-Compatible with jQuery 1.7.0+ in Firefox, Safari, Chrome, Opera, Internet Explorer 9+. No dependencies except the jQuery library.
+Compatible with jQuery 1.7.0+ in Firefox, Safari, Chrome, Opera, Internet Explorer 8+. IE7 technically works, but no care has gone into CSS/layout bugs. No dependencies except the jQuery library.
 Released under the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 This plugin was developed by and for Pixabay.com - an international repository for sharing free public domain images.
@@ -30,6 +30,10 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 * Graceful degradation if JavaScript is disabled
 
 ## Changelog
+
+### Version 1.0.1 - 2014/07/16
+
+* Fixed tagEditor for IE8 and IE7. IE7 still has some obvious layout alignment bugs, that can be fixed by conditional CSS rules.
 
 ### Version 1.0.0-beta - 2014/07/15
 
