@@ -31,6 +31,10 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.2 - 2014/07/16
+
+* Fixed removal of placeholder after calling addTags.
+
 ### Version 1.0.1 - 2014/07/16
 
 * Fixed tagEditor for IE8 and IE7. IE7 still has some obvious layout alignment bugs, that can be fixed by conditional CSS rules.
