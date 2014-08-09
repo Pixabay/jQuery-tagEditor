@@ -35,10 +35,7 @@
             td:first-child { white-space: normal; }
         }
 
-        .inline-code {
-            padding: 1px 5px; background: #eee;
-            border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px;
-        }
+        .inline-code { padding: 1px 5px; background: #eee; border-radius: 2px; }
         pre { padding: 15px 10px; font-size: .9em; color: #555; background: #edf3f8; }
         pre i { color: #aaa; } /* comments */
         pre b { font-weight: normal; color: #cf4b25; } /* strings */
@@ -51,8 +48,7 @@
 
         textarea {
             width: 100%; height: 29px; padding: .3em .5em; border: 1px solid #ddd; font-size: .9em;
-            -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;
-            margin: 0 0 20px;
+            box-sizing: border-box; margin: 0 0 20px;
         }
         textarea[readonly] { color: #aaa; background: #f7f7f7; }
 
@@ -65,10 +61,7 @@
 
         /* overwrite default CSS for tiny, dark tags in demo5 */
         #demo5+.tag-editor { background: #fafafa; font-size: 12px; }
-        #demo5+.tag-editor .tag-editor-tag {
-            color: #fff; background: #555;
-            border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px;
-        }
+        #demo5+.tag-editor .tag-editor-tag { color: #fff; background: #555; border-radius: 2px; }
         #demo5+.tag-editor .tag-editor-spacer { width: 7px; }
         #demo5+.tag-editor .tag-editor-delete { display: none; }
 
@@ -293,7 +286,7 @@ $(<b>'#demo5'</b>).tagEditor({
 <b>#demo5+.tag-editor</b> { background: <em>#fafafa</em>; font-size: <em>12px</em>; }
 <b>#demo5+.tag-editor .tag-editor-tag</b> {
     color: <em>#fff</em>; background: <em>#555</em>;
-    border-radius: <em>2px</em>; -moz-border-radius: <em>2px</em>; -webkit-border-radius: <em>2px</em>;
+    border-radius: <em>2px</em>;
 }
 <b>#demo5+.tag-editor .tag-editor-spacer</b> { width: <em>7px</em>; }
 <b>#demo5+.tag-editor .tag-editor-delete</b> { display: <em>none</em>; }</pre>
