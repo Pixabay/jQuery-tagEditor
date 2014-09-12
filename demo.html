@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <title>jQuery tagEditor Plugin</title>
     <meta name="description" content="A lightweight and sophisticated tag editor for jQuery. Sortable, editable tags with cursor navigation, autocomplete, and callbacks.">
-    <link rel="shortcut icon" href="//pixabay.com/static/img/favicon.ico">
+    <link rel="shortcut icon" href="//pixabay.com/static/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300">
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
@@ -43,8 +43,8 @@
 
         /* Pure CSS */
         .pure-button { margin: 5px 0; text-decoration: none !important; }
-        .button-xlarge { margin: 5px 0; padding: .65em 1.6em; font-size: 105%; }
-        .button-small { font-size: 85%; }
+        .button-lg { margin: 5px 0; padding: .65em 1.6em; font-size: 105%; }
+        .button-sm { font-size: 85%; }
 
         textarea {
             width: 100%; height: 29px; padding: .3em .5em; border: 1px solid #ddd; font-size: .9em;
@@ -77,9 +77,9 @@
     <div style="max-width:900px;padding:0 10px;margin:40px auto;text-align:center">
         <h1>Tag Editor</h1>
         <h2>A powerful and lightweight tag editor plugin for jQuery.</h2>
-        <a href="https://github.com/Pixabay/jQuery-tagEditor/archive/master.zip" class="pure-button pure-button-primary button-xlarge">Download</a>
+        <a href="https://github.com/Pixabay/jQuery-tagEditor/archive/master.zip" class="pure-button pure-button-primary button-lg">Download</a>
         &nbsp;
-        <a href="https://github.com/Pixabay/jQuery-tagEditor" class="pure-button button-xlarge">View on GitHub</a>
+        <a href="https://github.com/Pixabay/jQuery-tagEditor" class="pure-button button-lg">View on GitHub</a>
     </div>
     <div style="border-top: 1px solid #eee;border-bottom:1px solid #eee;background:#fafafa;margin:30px 0;padding:20px 5px">
         <div style="padding :0 7px 0 5px;max-width:900px;margin:auto">
@@ -212,12 +212,12 @@ $(<b>'#demo3'</b>).tagEditor({
 });</pre>
         <div style="margin:0 0 1.2em"><textarea id="demo3"></textarea></div>
         <p>
-            <span onclick="alert($('#demo3').tagEditor('getTags')[0].tags);" class="ed_on pure-button button-small">getTags</span>
-            <span onclick="$('#demo3').tagEditor('addTag', 'example');" class="ed_on pure-button button-small">addTag 'example'</span>
-            <span onclick="$('#demo3').tagEditor('removeTag', 'example', 'blur');" class="ed_on pure-button button-small">removeTag 'example'</span>
-            <span id="remove_all_tags" class="ed_on pure-button button-small">Remove all tags</span>
-            <span onclick="$('#demo3').tagEditor('destroy');$('.ed_on').hide();$('.ed_off').show();" class="ed_on pure-button button-small">destroy</span>
-            <span onclick="$('#demo3').tagEditor({ placeholder: 'Enter tags ...' });$('.ed_off').hide();$('.ed_on').show();" class="ed_off pure-button button-small" style="display:none">Init editor</span>
+            <span onclick="alert($('#demo3').tagEditor('getTags')[0].tags);" class="ed_on pure-button button-sm">getTags</span>
+            <span onclick="$('#demo3').tagEditor('addTag', 'example');" class="ed_on pure-button button-sm">addTag 'example'</span>
+            <span onclick="$('#demo3').tagEditor('removeTag', 'example', 'blur');" class="ed_on pure-button button-sm">removeTag 'example'</span>
+            <span id="remove_all_tags" class="ed_on pure-button button-sm">Remove all tags</span>
+            <span onclick="$('#demo3').tagEditor('destroy');$('.ed_on').hide();$('.ed_off').show();" class="ed_on pure-button button-sm">destroy</span>
+            <span onclick="$('#demo3').tagEditor({ placeholder: 'Enter tags ...' });$('.ed_off').hide();$('.ed_on').show();" class="ed_off pure-button button-sm" style="display:none">Init editor</span>
         </p>
         <pre>
 <i>// actions on button clicks</i>
