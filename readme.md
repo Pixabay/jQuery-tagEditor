@@ -6,7 +6,7 @@ A powerful and lightweight tag editor plugin for jQuery.
 Compatible with jQuery 1.7.0+ in Firefox, Safari, Chrome, Opera, Internet Explorer 8+. IE7 technically works, but no care has gone into CSS/layout bugs. No dependencies except the jQuery library.
 Released under the MIT License: http://www.opensource.org/licenses/mit-license.php
 
-This plugin was developed by and for Pixabay.com - an international repository for sharing free public domain images.
+This plugin was developed by and for [Pixabay.com](http://pixabay.com/) - an international repository for sharing free public domain images.
 We have implemented this plugin in production and we share this piece of software - in the spirit of Pixabay - freely with others.
 
 ## Demo and Documentation
