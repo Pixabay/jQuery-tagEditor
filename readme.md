@@ -31,6 +31,10 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.3 - 2014/09/13
+
+* Removed unnecessary vendor prefixes in CSS stylesheet.
+
 ### Version 1.0.2 - 2014/07/16
 
 * Fixed removal of placeholder after calling addTags.
