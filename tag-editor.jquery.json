@@ -1,0 +1,30 @@
+{
+	"name": "tag-editor",
+	"title": "tagEditor",
+	"description": "A powerful and lightweight tag editor plugin for jQuery.",
+	"version": "1.0.2",
+	"dependencies": {
+		"jquery": ">=1.7"
+	},
+	"keywords": [
+		"tags",
+		"keywords",
+		"editor",
+		"ui",
+		"tagging",
+		"jQuery"
+	],
+	"author": {
+		"name": "Simon Steinberger",
+		"url": "http://pixabay.com/users/Simon/",
+		"email": "simon@pixabay.com"
+	},
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "http://www.opensource.org/licenses/mit-license.php"
+		}
+	],
+	"homepage": "http://goodies.pixabay.com/jquery/tag-editor/demo.html",
+	"demo": "http://goodies.pixabay.com/jquery/tag-editor/demo.html"
+}
