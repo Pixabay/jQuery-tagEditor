@@ -31,6 +31,10 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.4 - 2014/09/24
+
+* Merged pull stop aco.select form calling itself: request https://github.com/Pixabay/jQuery-tagEditor/pull/2/files
+
 ### Version 1.0.3 - 2014/09/13
 
 * Removed unnecessary vendor prefixes in CSS stylesheet.

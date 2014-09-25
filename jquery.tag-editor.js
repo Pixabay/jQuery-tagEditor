@@ -166,7 +166,7 @@
                         input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+tag+'">').addClass('active').find('input');
                         input.data('old_tag', tag).focus().autoGrowInput().trigger('autogrow').caret(caret_pos);
                     if (o.autocomplete) {
-                        var aco = $.extend({},o.autocomplete);
+                        var aco = $.extend({}, o.autocomplete);
                         // extend user provided autocomplete select method
                         var ac_select = 'select'  in aco ? o.autocomplete.select : '';
                         aco.select = function(){ if (ac_select) ac_select(); setTimeout(function(){ $('.active', ed).find('input').trigger('autogrow'); }, 20); };
