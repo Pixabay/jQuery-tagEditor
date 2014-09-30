@@ -31,9 +31,16 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.5 - 2014/09/30
+
+* Merged pull Added logic for selected field to be .tag-editor only:
+  https://github.com/jegarts/jQuery-tagEditor/commit/498435b562d72c3e502863312b0b2ccbb9e80cab
+
+
 ### Version 1.0.4 - 2014/09/24
 
-* Merged pull stop aco.select form calling itself: request https://github.com/Pixabay/jQuery-tagEditor/pull/2/files
+* Merged pull stop aco.select form calling itself:
+  https://github.com/jegarts/jQuery-tagEditor/commit/fd0340ba46272290cedc8991f58769945d0fc2c2
 
 ### Version 1.0.3 - 2014/09/13
 
