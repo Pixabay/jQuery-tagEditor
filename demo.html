@@ -164,8 +164,8 @@ $(<b>'#my_textarea'</b>).tagEditor({ autocomplete: { <b>'source'</b>: <b>'/url/'
                 Returns a list of objects in the following format:
                 <br>[{ field: <i>selected input/textarea</i>, editor: <i>editor instance for field</i>, tags: <i>current tags</i> }]
             </td></tr>
-            <tr><td>addTag(val, next)</td><td colspan="2">Adds <span class="inline-code">val</span> as a new tag. Set <span class="inline-code">next</span> to <span class="inline-code">'blur'</span> if focus should not be set automatically into an empty, new tag after this action.</td></tr>
-            <tr><td>removeTag(val, next)</td><td colspan="2">Removes <span class="inline-code">val</span> as tag. Set <span class="inline-code">next</span> to <span class="inline-code">'blur'</span> if focus should not be set automatically into an empty, new tag after this action.</td></tr>
+            <tr><td>addTag(val, blur)</td><td colspan="2">Adds <span class="inline-code">val</span> as a new tag. Set <span class="inline-code">blur</span> to <span class="inline-code">true</span> if focus should not be set automatically into an empty, new tag after this action.</td></tr>
+            <tr><td>removeTag(val, blur)</td><td colspan="2">Removes <span class="inline-code">val</span> as tag. Set <span class="inline-code">blur</span> to <span class="inline-code">true</span> if focus should not be set automatically into an empty, new tag after this action.</td></tr>
             <tr><td>destroy</td><td colspan="2">Removes the tag editor instance an restores visibility of the original text field or textarea.</td></tr>
         </table>
 
@@ -214,7 +214,7 @@ $(<b>'#demo3'</b>).tagEditor({
         <p>
             <span onclick="alert($('#demo3').tagEditor('getTags')[0].tags);" class="ed_on pure-button button-sm">getTags</span>
             <span onclick="$('#demo3').tagEditor('addTag', 'example');" class="ed_on pure-button button-sm">addTag 'example'</span>
-            <span onclick="$('#demo3').tagEditor('removeTag', 'example', 'blur');" class="ed_on pure-button button-sm">removeTag 'example'</span>
+            <span onclick="$('#demo3').tagEditor('removeTag', 'example', true);" class="ed_on pure-button button-sm">removeTag 'example'</span>
             <span id="remove_all_tags" class="ed_on pure-button button-sm">Remove all tags</span>
             <span onclick="$('#demo3').tagEditor('destroy');$('.ed_on').hide();$('.ed_off').show();" class="ed_on pure-button button-sm">destroy</span>
             <span onclick="$('#demo3').tagEditor({ placeholder: 'Enter tags ...' });$('.ed_off').hide();$('.ed_on').show();" class="ed_off pure-button button-sm" style="display:none">Init editor</span>
