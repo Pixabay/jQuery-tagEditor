@@ -31,9 +31,13 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.6 - 2014/10/22
+
+* Fixed: Detection for selected field (.tag-editor) on backspace/delete keypress failed in some cases.
+
 ### Version 1.0.5 - 2014/09/30
 
-* Merged pull Added logic for selected field to be .tag-editor only:
+* Merged pull - Added logic for selected field to be .tag-editor only:
   https://github.com/jegarts/jQuery-tagEditor/commit/498435b562d72c3e502863312b0b2ccbb9e80cab
 
 

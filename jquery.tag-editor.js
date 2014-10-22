@@ -1,5 +1,5 @@
 /*
-	jQuery tagEditor v1.0.5
+	jQuery tagEditor v1.0.6
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
@@ -53,17 +53,16 @@
         // delete selected tags on backspace, delete, ctrl+x
         function delete_selected_tags(e){
             if (e.which == 8 || e.which == 46 || e.ctrlKey && e.which == 88) {
-                var sel = getSelection();
-                if (sel.anchorNode && sel.anchorNode.className == 'tag-editor') {
-                    var el = $(sel.getRangeAt(0).commonAncestorContainer);
-                    if (el.hasClass('tag-editor')) {
-                        var tags = [], splits = sel.toString().split(el.prev().data('options').dregex);
-                        for (i=0; i<splits.length; i++){ var tag = $.trim(splits[i]); if (tag) tags.push(tag); }
-                        $('.tag-editor-tag', el).each(function(){
-                            if (~$.inArray($(this).html(), tags)) $(this).closest('li').find('.tag-editor-delete').click();
-                        });
-                        return false;
-                    }
+                try {
+                    var sel = getSelection(), el = $(sel.getRangeAt(0).commonAncestorContainer);
+                } catch(e){ el = 0; }
+                if (el && el.hasClass('tag-editor')) {
+                    var tags = [], splits = sel.toString().split(el.prev().data('options').dregex);
+                    for (i=0; i<splits.length; i++){ var tag = $.trim(splits[i]); if (tag) tags.push(tag); }
+                    $('.tag-editor-tag', el).each(function(){
+                        if (~$.inArray($(this).html(), tags)) $(this).closest('li').find('.tag-editor-delete').click();
+                    });
+                    return false;
                 }
             }
         }
