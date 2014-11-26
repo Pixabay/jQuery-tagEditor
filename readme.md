@@ -15,7 +15,7 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Features
 
-* Lightweight: 9.3 kB of JavaScript - less than 3.4 kB gzipped
+* Lightweight: 8.5 kB of JavaScript - less than 3.2 kB gzipped
 * Edit in place tags
 * Intuitive navigation between tags with cursor keys, Tab, Shift+Tab, Enter, Pos1, End, Backspace, Del, and ESC
 * Optional jQuery UI sortable
