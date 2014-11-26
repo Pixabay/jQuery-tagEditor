@@ -1,5 +1,5 @@
 /*
-	jQuery tagEditor v1.0.6
+	jQuery tagEditor v1.0.7
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
@@ -8,11 +8,7 @@
 (function($){
     // modified autoGrowInput - stackoverflow.com/questions/931207
     // lets input fields grow dynamically on change
-    $.fn.autoGrowInput=function(o){o=$.extend({maxWidth:250,minWidth:20,comfortZone:0},o);this.filter('input:text').each(function(){var minWidth=o.minWidth||$(this).width(),val=' ',input=$(this),comfortZone=o.comfortZone?o.comfortZone:parseInt(parseInt($(this).css('fontSize'))*0.9),dummy=$('<dummy/>').css({position:'absolute',top:-9999,left:-9999,width:'auto',fontSize:input.css('fontSize'),fontFamily:input.css('fontFamily'),fontWeight:input.css('fontWeight'),letterSpacing:input.css('letterSpacing'),whiteSpace:'nowrap'}),check=function(){if(val===(val=input.val()))return;dummy.html(val.replace(/&/g,'&amp;').replace(/\s/g,'&nbsp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));var newWidth=dummy.width()+comfortZone;if(newWidth>o.maxWidth)newWidth=o.maxWidth;if(newWidth<o.minWidth)newWidth=o.minWidth;if(newWidth!=input.width())input.width(newWidth);};dummy.insertAfter(input);$(this).bind('keyup keydown blur focus autogrow',check);});return this;};
-
-    // code.accursoft.com/caret/overview
-    // used to set cursor position in input fields
-    !function(e){e.fn.caret=function(e){var t=this[0],n="true"===t.contentEditable;if(0==arguments.length){if(window.getSelection){if(n){t.focus();var o=window.getSelection().getRangeAt(0),r=o.cloneRange();return r.selectNodeContents(t),r.setEnd(o.endContainer,o.endOffset),r.toString().length}return t.selectionStart}if(document.selection){if(t.focus(),n){var o=document.selection.createRange(),r=document.body.createTextRange();return r.moveToElementText(t),r.setEndPoint("EndToEnd",o),r.text.length}var e=0,c=t.createTextRange(),r=document.selection.createRange().duplicate(),a=r.getBookmark();for(c.moveToBookmark(a);0!==c.moveStart("character",-1);)e++;return e}return 0}if(-1==e&&(e=this[n?"text":"val"]().length),window.getSelection)n?(t.focus(),window.getSelection().collapse(t.firstChild,e)):t.setSelectionRange(e,e);else if(document.body.createTextRange)if(n){var c=document.body.createTextRange();c.moveToElementText(t),c.moveStart("character",e),c.collapse(!0),c.select()}else{var c=t.createTextRange();c.move("character",e),c.select()}return n||t.focus(),e}}(jQuery);
+    $.fn.autoGrowInput=function(o){o=$.extend({maxWidth:500,minWidth:20,comfortZone:0},o);this.filter('input:text').each(function(){var minWidth=o.minWidth||$(this).width(),val=' ',input=$(this),comfortZone=o.comfortZone?o.comfortZone:parseInt(parseInt($(this).css('fontSize'))*0.9),span=$('<span/>').css({position:'absolute',top:-9999,left:-9999,width:'auto',fontSize:input.css('fontSize'),fontFamily:input.css('fontFamily'),fontWeight:input.css('fontWeight'),letterSpacing:input.css('letterSpacing'),whiteSpace:'nowrap'}),check=function(){if(val===(val=input.val()))return;span.html(val.replace(/&/g,'&amp;').replace(/\s/g,'&nbsp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));var newWidth=span.width()+comfortZone;if(newWidth>o.maxWidth)newWidth=o.maxWidth;if(newWidth<o.minWidth)newWidth=o.minWidth;if(newWidth!=input.width())input.width(newWidth);};span.insertAfter(input);$(this).bind('keyup keydown blur focus autogrow',check);});return this;};
 
     // plugin with val as parameter for public methods
     $.fn.tagEditor = function(options, val, blur){

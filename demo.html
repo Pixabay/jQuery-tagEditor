@@ -91,10 +91,11 @@
         <p>
             Released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a>.
             Source on <a href="https://github.com/Pixabay/jQuery-tagEditor">Github</a> (<a href="https://github.com/Pixabay/jQuery-tagEditor#changelog">changelog</a>).
-            Compatible with jQuery 1.7.0+ in Firefox, Safari, Chrome, Opera, Internet Explorer 8+. IE7 technically works, but no care has gone into CSS/layout bugs. No dependencies except the jQuery library.
+            Compatible with jQuery 1.7.0+ in Firefox, Safari, Chrome, Opera, Internet Explorer 8+. IE7 technically works, but no care has gone into CSS/layout bugs.
+            tagEditor depends on accursoft's <a href="http://code.accursoft.com/caret">caret plugin</a> (1.1 kB minified).
         </p>
         <ul>
-            <li>Lightweight: 9.3 kB of JavaScript - less than 3.4 kB gzipped</li>
+            <li>Lightweight: 8.5 kB of JavaScript - less than 3.2 kB gzipped</li>
             <li>Edit in place tags</li>
             <li>Intuitive navigation between tags with cursor keys, Tab, Shift+Tab, Enter, Pos1, End, Backspace, Del, and ESC</li>
             <li>Optional jQuery UI sortable</li>
@@ -116,7 +117,8 @@
         <h3>Usage</h3>
         <p>
             Include the stylesheet <span class="inline-code">jquery.tag-editor.css</span> in the <span class="inline-code">&lt;head&gt;</span> section of your HTML document - and the JavsScript file <span class="inline-code">jquery.tag-editor.min.js</span> after loading jQuery and optional jQuery UI sortable/autocomplete.
-            Tag Editor accepts settings from an object of key/value pairs, and can be assigned to any text input field or textarea.
+            Make sure to also load accursoft's <a href="http://code.accursoft.com/caret">caret plugin</a> (1.1 kB minified).
+            tagEditor accepts settings from an object of key/value pairs, and can be assigned to any text input field or textarea.
         </p>
         <pre>
 $(selector).tagEditor({key1: value1, key2: value2});
@@ -292,7 +294,7 @@ $(<b>'#demo5'</b>).tagEditor({
 <b>#demo5+.tag-editor .tag-editor-delete</b> { display: <em>none</em>; }</pre>
         <p>
             This jQuery plugin was designed with custom styling in mind. In this example we've enabled the <span class="inline-code">clickDelete</span> feature while hiding all delete icons. Both options may be used at the same time, as well.
-            By fiddling around with the default stylesheet, you can achieve almost any desired look for your Tag Editor.
+            By fiddling around with the default stylesheet, you can achieve almost any desired look for your tag Editor.
             Comments inside the CSS file will help you understand what rule controls which object inside the editor.
         </p>
 
@@ -337,8 +339,7 @@ tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor);</pre>
         </p>
 
         <div style="margin:40px 0;overflow:hidden">
-            <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=jQuery-tagEditor&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-            <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=jQuery-tagEditor&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+            <span id="github_social"></span>
             <div style="float:left;margin-right:5px">
                 <a href="#" data-width="70" class="twitter-share-button" data-text="jQuery tagEditor Plugin"></a>
             </div>
@@ -364,6 +365,7 @@ tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor);</pre>
 
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
+    <script src="jquery.caret.min.js"></script>
     <script src="jquery.tag-editor.js"></script>
     <script>
         // jQuery UI autocomplete extension - suggest labels may contain HTML tags
@@ -440,9 +442,15 @@ tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor);</pre>
             tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor); // or editor == $('#demo6').next()
         });
 
-        (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://connect.facebook.net/en_US/all.js#xfbml=1";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
-        (function() {var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;po.src = 'https://apis.google.com/js/plusone.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);})();
-        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+        if (~window.location.href.indexOf('http')) {
+            (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "https://connect.facebook.net/en_US/all.js#xfbml=1";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
+            (function() {var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;po.src = 'https://apis.google.com/js/plusone.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);})();
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+            $('#github_social').html('\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=jQuery-tagEditor&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=jQuery-tagEditor&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+            ');
+        }
     </script>
 </body>
 </html>
