@@ -14,6 +14,8 @@
     font-family: inherit; font-weight: inherit; font-size: inherit; font-style: inherit;
     box-shadow: none; background: none;
 }
+/* hide IE10 "clear field" X */
+.tag-editor ::-ms-clear { display: none; }
 
 /* tag style */
 .tag-editor .tag-editor-tag {
