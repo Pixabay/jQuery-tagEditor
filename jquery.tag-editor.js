@@ -43,7 +43,7 @@
                     el.css('display', o.elDisplay).removeData('options').next('.tag-editor').remove();
                 }
             });
-            return response;
+            return options == 'getTags' ? response : this;
         }
 
         // delete selected tags on backspace, delete, ctrl+x
