@@ -31,6 +31,10 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.8 - 2014/12/14
+
+* Added bower.json file.
+
 ### Version 1.0.7 - 2014/11/26
 
 * Removing accursoft's caret plugin (http://code.accursoft.com/caret) from tagEditor source (and adding caret as a dependency).
