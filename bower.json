@@ -24,8 +24,6 @@
         "url": "http://www.opensource.org/licenses/mit-license.php"
     }],
     "ignore": [
-        ".gitattributes",
-        ".gitignore",
         "bower.json",
         "demo.html"
         "readme.md",
