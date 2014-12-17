@@ -1,14 +1,13 @@
 /*
-	jQuery tagEditor v1.0.7
+	jQuery tagEditor v1.0.8
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
 */
 
 (function($){
-    // modified autoGrowInput - stackoverflow.com/questions/931207
-    // lets input fields grow dynamically on change
-    $.fn.autoGrowInput=function(o){o=$.extend({maxWidth:500,minWidth:20,comfortZone:0},o);this.filter('input:text').each(function(){var minWidth=o.minWidth||$(this).width(),val=' ',input=$(this),comfortZone=o.comfortZone?o.comfortZone:parseInt(parseInt($(this).css('fontSize'))*0.9),span=$('<span/>').css({position:'absolute',top:-9999,left:-9999,width:'auto',fontSize:input.css('fontSize'),fontFamily:input.css('fontFamily'),fontWeight:input.css('fontWeight'),letterSpacing:input.css('letterSpacing'),whiteSpace:'nowrap'}),check=function(){if(val===(val=input.val()))return;span.html(val.replace(/&/g,'&amp;').replace(/\s/g,'&nbsp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));var newWidth=span.width()+comfortZone;if(newWidth>o.maxWidth)newWidth=o.maxWidth;if(newWidth<o.minWidth)newWidth=o.minWidth;if(newWidth!=input.width())input.width(newWidth);};span.insertAfter(input);$(this).bind('keyup keydown blur focus autogrow',check);});return this;};
+    // auto grow input (stackoverflow.com/questions/931207)
+    $.fn.tagEditorInput=function(){var t=" ",e=$(this),i=parseInt(e.css("fontSize")),n=$("<span/>").css({position:"absolute",top:-9999,left:-9999,width:"auto",fontSize:e.css("fontSize"),fontFamily:e.css("fontFamily"),fontWeight:e.css("fontWeight"),letterSpacing:e.css("letterSpacing"),whiteSpace:"nowrap"}),s=function(){if(t!==(t=e.val())){n.html(t.replace(/&/g,"&amp;").replace(/\s/g,"&nbsp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"));var s=n.width()+i;20>s&&(s=20),s!=e.width()&&e.width(s)}};return n.insertAfter(e),e.bind("keydown focus",s),this};
 
     // plugin with val as parameter for public methods
     $.fn.tagEditor = function(options, val, blur){
@@ -162,12 +161,12 @@
                     // guess cursor position in text input
                     var left_percent = Math.abs(($(this).offset().left - e.pageX)/$(this).width()), caret_pos = parseInt(tag.length*left_percent),
                         input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+tag+'">').addClass('active').find('input');
-                        input.data('old_tag', tag).focus().autoGrowInput().trigger('autogrow').caret(caret_pos);
+                        input.data('old_tag', tag).tagEditorInput().focus().caret(caret_pos);
                     if (o.autocomplete) {
                         var aco = $.extend({}, o.autocomplete);
                         // extend user provided autocomplete select method
                         var ac_select = 'select'  in aco ? o.autocomplete.select : '';
-                        aco.select = function(){ if (ac_select) ac_select(); setTimeout(function(){ $('.active', ed).find('input').trigger('autogrow'); }, 20); };
+                        aco.select = function(){ if (ac_select) ac_select(); setTimeout(function(){ $('.active', ed).find('input').focus(); }, 20); };
                         input.autocomplete(aco);
                     }
                 }
@@ -198,7 +197,7 @@
                 var input = $(this), old_tag = input.data('old_tag'), tag = $.trim(input.val().replace(/ +/, ' ').replace(o.dregex, o.delimiter[0]));
                 if (!tag) {
                     if (old_tag && o.beforeTagDelete(el, ed, tag_list, old_tag) === false) {
-                        input.val(old_tag).trigger('autogrow').focus();
+                        input.val(old_tag).focus();
                         blur_result = false;
                         update_globals();
                         return;
