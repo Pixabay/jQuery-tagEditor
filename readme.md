@@ -31,6 +31,10 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.9 - 2014/12/14
+
+* Optimized internal input autogrow function.
+
 ### Version 1.0.8 - 2014/12/14
 
 * Added bower.json file.
