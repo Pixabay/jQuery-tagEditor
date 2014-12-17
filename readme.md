@@ -31,7 +31,7 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
-### Version 1.0.9 - 2014/12/14
+### Version 1.0.9 - 2014/12/17
 
 * Optimized internal input autogrow function.
 
