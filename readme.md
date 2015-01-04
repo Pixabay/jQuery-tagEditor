@@ -31,7 +31,7 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
-### Version 1.0.10 - 2014/01/04
+### Version 1.0.10 - 2015/01/04
 
 * Fix for IE8
 
