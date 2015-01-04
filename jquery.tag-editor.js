@@ -177,7 +177,7 @@
             function split_cleanup(input){
                 var li = input.closest('li'), sub_tags = input.val().replace(/ +/, ' ').split(o.dregex), old_tag = input.data('old_tag');
                 var old_tags = tag_list.slice(0); // copy tag_list
-                for (i in sub_tags) {
+                for (i=0; i<sub_tags.length; i++) {
                     tag = $.trim(sub_tags[i]).slice(0, o.maxLength);
                     if (tag) {
                         if (o.forceLowercase) tag = tag.toLowerCase();
@@ -289,7 +289,7 @@
 
             // create initial tags
             var tags = o.initialTags.length ? o.initialTags : el.val().split(o.dregex);
-            for (i in tags) {
+            for (i=0; i<tags.length; i++) {
                 var tag = $.trim(tags[i].replace(/ +/, ' '));
                 if (tag) {
                     if (o.forceLowercase) tag = tag.toLowerCase();
