@@ -57,7 +57,6 @@
                     $('.tag-editor-tag', el).each(function(){
                         if (~$.inArray($(this).html(), tags)) $(this).closest('li').find('.tag-editor-delete').click();
                     });
-                    return false;
                 }
             }
         }
