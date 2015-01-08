@@ -31,6 +31,10 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.11 - 2015/01/08
+
+* Use beforeTagSave return value for overwriting new tags.
+
 ### Version 1.0.10 - 2015/01/04
 
 * Fix for IE8

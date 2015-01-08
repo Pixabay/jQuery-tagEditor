@@ -1,5 +1,5 @@
 /*
-	jQuery tagEditor v1.0.10
+	jQuery tagEditor v1.0.11
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
@@ -180,7 +180,7 @@
                     tag = $.trim(sub_tags[i]).slice(0, o.maxLength);
                     if (tag) {
                         if (o.forceLowercase) tag = tag.toLowerCase();
-                        o.beforeTagSave(el, ed, old_tags, old_tag, tag);
+                        tag = o.beforeTagSave(el, ed, old_tags, old_tag, tag) || tag;
                         // remove duplicates
                         if (~$.inArray(tag, old_tags))
                             $('.tag-editor-tag', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
@@ -207,7 +207,7 @@
                 else if (tag.indexOf(o.delimiter[0])>=0) { split_cleanup(input); return; }
                 else if (tag != old_tag) {
                     if (o.forceLowercase) tag = tag.toLowerCase();
-                    o.beforeTagSave(el, ed, tag_list, old_tag, tag);
+                    tag = o.beforeTagSave(el, ed, tag_list, old_tag, tag) || tag;
                     // remove duplicates
                     $('.tag-editor-tag:not(.active)', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
                 }
