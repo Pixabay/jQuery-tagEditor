@@ -97,7 +97,9 @@
                 set_placeholder();
             }
 
-            ed.click(function(e){
+            ed.click(function(e, closest_tag){
+                var d, dist = 99999, loc;
+
                 // do not create tag when user selects tags by text selection
                 if (window.getSelection && getSelection() != '') return;
 
@@ -108,20 +110,23 @@
 
                 // always remove placeholder on click
                 $('.placeholder', ed).remove();
+                if (closest_tag && closest_tag.length)
+                    loc = 'before';
+                else {
+                    // calculate tag closest to click position
+                    $('.tag-editor-tag', ed).each(function(){
+                        var tag = $(this), to = tag.offset(), tag_x = to.left, tag_y = to.top;
+                        if (e.pageY >= tag_y && e.pageY <= tag_y+tag.height()) {
+                            if (e.pageX < tag_x) loc = 'before', d = tag_x - e.pageX;
+                            else loc = 'after', d = e.pageX - tag_x - tag.width();
+                            if (d < dist) dist = d, closest_tag = tag;
+                        }
+                    });
+                }
 
-                // calculate tag closest to click position
-                var d, dist = 99999, closest_tag, loc;
-                $('.tag-editor-tag', ed).each(function(){
-                    var tag = $(this), to = tag.offset(), tag_x = to.left, tag_y = to.top;
-                    if (e.pageY >= tag_y && e.pageY <= tag_y+tag.height()) {
-                        if (e.pageX < tag_x) loc = 'before', d = tag_x - e.pageX;
-                        else loc = 'after', d = e.pageX - tag_x - tag.width();
-                        if (d < dist) dist = d, closest_tag = tag;
-                    }
-                });
-                if (loc == 'before')
+                if (loc == 'before') {
                     $(new_tag).insertBefore(closest_tag.closest('li')).find('.tag-editor-tag').click();
-                else if (loc == 'after')
+                } else if (loc == 'after')
                     $(new_tag).insertAfter(closest_tag.closest('li')).find('.tag-editor-tag').click();
                 else // empty editor
                     $(new_tag).appendTo(ed).find('.tag-editor-tag').click();
@@ -269,12 +274,7 @@
                     return false;
                 }
                 // enter key
-                else if (e.which == 13) {
-                    var next_tag = $t.closest('li').next('li').find('.tag-editor-tag');
-                    if (next_tag.length) next_tag.click().find('input').caret(0);
-                    else if ($t.val()) ed.click();
-                    return false;
-                }
+                else if (e.which == 13) ed.trigger('click', [$t.closest('li').next('li').find('.tag-editor-tag')]);
                 // pos1
                 else if (e.which == 36 && !$t.caret()) ed.find('.tag-editor-tag').first().click();
                 // end
