@@ -274,7 +274,10 @@
                     return false;
                 }
                 // enter key
-                else if (e.which == 13) ed.trigger('click', [$t.closest('li').next('li').find('.tag-editor-tag')]);
+                else if (e.which == 13) {
+                    ed.trigger('click', [$t.closest('li').next('li').find('.tag-editor-tag')]);
+                    return false;
+                }
                 // pos1
                 else if (e.which == 36 && !$t.caret()) ed.find('.tag-editor-tag').first().click();
                 // end
