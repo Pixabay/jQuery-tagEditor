@@ -1,5 +1,5 @@
 /*
-	jQuery tagEditor v1.0.11
+	jQuery tagEditor v1.0.12
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
@@ -63,7 +63,7 @@
         if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', delete_selected_tags);
 
         return selector.each(function(){
-            var el = $(this), tag_list = [];
+            var el = $(this), tag_list = [], tabindex = parseInt(el.attr('tabindex'));
 
             // create editor (ed) instance
             o.elDisplay = el.css('display'); // store for destroy method
@@ -73,6 +73,9 @@
 
             // add dummy item for min-height on empty editor
             ed.append('<li style="width:.1px">&nbsp;</li>');
+
+            // assign original tabindex
+            if (tabindex > 0) ed.attr('tabindex', tabindex).focus(function(){ $(this).click(); });
 
             // markup for new tag
             var new_tag = '<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag"></div><div class="tag-editor-delete"><i></i></div></li>';
@@ -259,12 +262,15 @@
                         var prev_tag = $t.closest('li').prev('li').find('.tag-editor-tag');
                         if (prev_tag.length) prev_tag.click().find('input').caret(0);
                         else if ($t.val()) $(new_tag).insertBefore($t.closest('li')).find('.tag-editor-tag').click();
+                        else if (tabindex > 0) $('[tabindex='+(tabindex-1)+']').focus();
+                        return false;
                     } else { // jump right
                         var next_tag = $t.closest('li').next('li').find('.tag-editor-tag');
                         if (next_tag.length) next_tag.click().find('input').caret(0);
                         else if ($t.val()) ed.click();
+                        else if (tabindex > 0) return;
+                        return false;
                     }
-                    return false;
                 }
                 // del key
                 else if (e.which == 46 && (!$.trim($t.val()) || ($t.caret() == $t.val().length))) {
