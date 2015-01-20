@@ -39,7 +39,7 @@
                     $('.tag-editor-tag', ed).filter(function(){return $(this).html()==val;}).closest('li').find('.tag-editor-delete').click();
                     if (!blur) ed.click();
                 } else if (options == 'destroy') {
-                    el.css('display', o.elDisplay).removeData('options').next('.tag-editor').remove();
+                    el.removeClass('tag-editor-hidden-src').removeData('options').off('focus.tag-editor').next('.tag-editor').remove();
                 }
             });
             return options == 'getTags' ? response : this;
@@ -63,19 +63,16 @@
         if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', delete_selected_tags);
 
         return selector.each(function(){
-            var el = $(this), tag_list = [], tabindex = parseInt(el.attr('tabindex'));
+            var el = $(this), tag_list = []; // cache current tags
 
             // create editor (ed) instance
-            o.elDisplay = el.css('display'); // store for destroy method
-            el.css('display', 'none');
             var ed = $('<ul '+(o.clickDelete ? 'oncontextmenu="return false;" ' : '')+'class="tag-editor"></ul>').insertAfter(el);
-            el.data('options', o); // set data on hidden field
+            el.addClass('tag-editor-hidden-src') // hide original field
+                .data('options', o) // set data on hidden field
+                .on('focus.tag-editor', function(){ ed.click(); }); // simulate tabindex
 
             // add dummy item for min-height on empty editor
-            ed.append('<li style="width:.1px">&nbsp;</li>');
-
-            // assign original tabindex
-            if (tabindex > 0) ed.attr('tabindex', tabindex).focus(function(){ $(this).click(); });
+            ed.append('<li style="width:1px">&nbsp;</li>');
 
             // markup for new tag
             var new_tag = '<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag"></div><div class="tag-editor-delete"><i></i></div></li>';
@@ -242,6 +239,7 @@
 
             ed.on('keydown', 'input', function(e){
                 var $t = $(this);
+
                 // left/up key + backspace key on empty field
                 if ((e.which == 37 || !o.autocomplete && e.which == 38) && !$t.caret() || e.which == 8 && !$t.val()) {
                     var prev_tag = $t.closest('li').prev('li').find('.tag-editor-tag');
@@ -258,17 +256,24 @@
                 }
                 // tab key
                 else if (e.which == 9) {
-                    if (e.shiftKey) { // jump left
+                    // shift+tab
+                    if (e.shiftKey) {
                         var prev_tag = $t.closest('li').prev('li').find('.tag-editor-tag');
                         if (prev_tag.length) prev_tag.click().find('input').caret(0);
                         else if ($t.val()) $(new_tag).insertBefore($t.closest('li')).find('.tag-editor-tag').click();
-                        else if (tabindex > 0) $('[tabindex='+(tabindex-1)+']').focus();
+                        // allow tabbing to previous element
+                        else {
+                            el.attr('disabled', 'disabled');
+                            setTimeout(function(){ el.removeAttr('disabled'); }, 30);
+                            return;
+                        }
                         return false;
-                    } else { // jump right
+                    // tab
+                    } else {
                         var next_tag = $t.closest('li').next('li').find('.tag-editor-tag');
                         if (next_tag.length) next_tag.click().find('input').caret(0);
                         else if ($t.val()) ed.click();
-                        else if (tabindex > 0) return;
+                        else return; // allow tabbing to next element
                         return false;
                     }
                 }

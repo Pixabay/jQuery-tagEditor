@@ -27,6 +27,7 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 * Custom style for faulty tags
 * Public methods for reading, adding and removing tags + destroy function
 * Callbacks
+* Allows tabindex for form navigation
 * Graceful degradation if JavaScript is disabled
 
 ## Changelog
