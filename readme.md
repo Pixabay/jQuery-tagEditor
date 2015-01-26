@@ -32,6 +32,10 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.13 - 2015/01/26
+
+* Fix #9: Added bower support.
+
 ### Version 1.0.12 - 2015/01/16
 
 * Fix #17: Make use of tabindex for form navigation.
