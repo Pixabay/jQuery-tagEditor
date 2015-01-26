@@ -4,7 +4,7 @@
     "version": "1.0.12",
     "dependencies": {
         "jquery": ">=1.7",
-        "caret": null,
+        "caret": null
     },
     "homepage": "https://github.com/Pixabay/jQuery-tagEditor",
     "authors": [{
