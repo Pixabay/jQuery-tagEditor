@@ -1,8 +1,8 @@
 /*
-	jQuery tagEditor v1.0.13
+    jQuery tagEditor v1.0.13
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
-	License: http://www.opensource.org/licenses/mit-license.php
+    License: http://www.opensource.org/licenses/mit-license.php
 */
 
 (function($){
@@ -75,7 +75,11 @@
             ed.append('<li style="width:1px">&nbsp;</li>');
 
             // markup for new tag
-            var new_tag = '<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag"></div><div class="tag-editor-delete"><i></i></div></li>';
+            if (o.creatable) {
+                var new_tag = '<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag"></div><div class="tag-editor-delete"><i></i></div></li>';
+            } else {
+                $('.tag-editor').css('cursor', 'default');
+            }
 
             // helper: update global data
             function set_placeholder(){
@@ -160,7 +164,7 @@
                 // delete on right click or ctrl+click -> exit
                 if (o.clickDelete && (e.ctrlKey || e.which > 1)) return false;
 
-                if (!$(this).hasClass('active')) {
+                if (!$(this).hasClass('active') && o.editable) {
                     var tag = $(this).html();
                     // guess cursor position in text input
                     var left_percent = Math.abs(($(this).offset().left - e.pageX)/$(this).width()), caret_pos = parseInt(tag.length*left_percent),
@@ -329,6 +333,8 @@
         clickDelete: false,
         sortable: true, // jQuery UI sortable
         autocomplete: null, // options dict for jQuery UI autocomplete
+        editable: true, // possible to prevent edit tags
+        creatable: true, // possible to prevent add new tag
 
         // callbacks
         onChange: function(){},
