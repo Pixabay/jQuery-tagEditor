@@ -15,7 +15,7 @@
     box-shadow: none; background: none;
 }
 /* hide original input field or textarea visually to allow tab navigation */
-.tag-editor-hidden-src { position: absolute; left: -99999px; }
+.tag-editor-hidden-src { position: absolute !important; left: -99999px; }
 /* hide IE10 "clear field" X */
 .tag-editor ::-ms-clear { display: none; }
 
