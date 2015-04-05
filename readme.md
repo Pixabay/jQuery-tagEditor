@@ -32,6 +32,10 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.14 - 2015/04/05
+
+* Fix #24: Auto-close tag after selecting autocomplete suggestion by mouse click.
+
 ### Version 1.0.13 - 2015/01/26
 
 * Fix #9: Added bower support.

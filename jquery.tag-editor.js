@@ -1,5 +1,5 @@
 /*
-	jQuery tagEditor v1.0.13
+	jQuery tagEditor v1.0.14
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
@@ -170,7 +170,9 @@
                         var aco = $.extend({}, o.autocomplete);
                         // extend user provided autocomplete select method
                         var ac_select = 'select'  in aco ? o.autocomplete.select : '';
-                        aco.select = function(){ if (ac_select) ac_select(); setTimeout(function(){ $('.active', ed).find('input').focus(); }, 20); };
+                        aco.select = function(){ if (ac_select) ac_select(); setTimeout(function(){
+                            ed.trigger('click', [$('.active', ed).find('input').closest('li').next('li').find('.tag-editor-tag')]);
+                        }, 20); };
                         input.autocomplete(aco);
                     }
                 }
