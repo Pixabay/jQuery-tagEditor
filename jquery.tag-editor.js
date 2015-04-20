@@ -170,7 +170,7 @@
                         var aco = $.extend({}, o.autocomplete);
                         // extend user provided autocomplete select method
                         var ac_select = 'select'  in aco ? o.autocomplete.select : '';
-                        aco.select = function(){ if (ac_select) ac_select(); setTimeout(function(){
+                        aco.select = function(event, ui){ if (ac_select) ac_select(event, ui); setTimeout(function(){
                             ed.trigger('click', [$('.active', ed).find('input').closest('li').next('li').find('.tag-editor-tag')]);
                         }, 20); };
                         input.autocomplete(aco);
