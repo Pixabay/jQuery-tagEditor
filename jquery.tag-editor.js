@@ -319,6 +319,11 @@
                 distance: 5, cancel: '.tag-editor-spacer, input', helper: 'clone',
                 update: function(){ update_globals(); }
             });
+
+            // Give focus to autocomplete if specified
+            if (o.focusOnInit) {
+                ed.trigger('click');
+            }
         });
     };
 
@@ -329,6 +334,7 @@
         placeholder: '',
         forceLowercase: true,
         clickDelete: false,
+        focusOnInit: false,
         sortable: true, // jQuery UI sortable
         autocomplete: null, // options dict for jQuery UI autocomplete
 
