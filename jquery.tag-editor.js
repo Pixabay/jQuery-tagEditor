@@ -139,7 +139,7 @@
 
                 var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
                 if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
-                tag.addClass('deleted').animate({width: 0}, 175, function(){ li.remove(); set_placeholder(); });
+                tag.addClass('deleted').animate({width: 0}, 175, function(){ li.remove(); set_placeholder(); o.afterTagDelete(el, ed, tag_list, tag.html()); });
                 update_globals();
                 return false;
             });
@@ -150,7 +150,7 @@
                     if (e.ctrlKey || e.which > 1) {
                         var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
                         if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
-                        tag.addClass('deleted').animate({width: 0}, 175, function(){ li.remove(); set_placeholder(); });
+                        tag.addClass('deleted').animate({width: 0}, 175, function(){ li.remove(); set_placeholder(); o.afterTagDelete(el, ed, tag_list, tag.html());});
                         update_globals();
                         return false;
                     }
@@ -193,6 +193,7 @@
                             $('.tag-editor-tag', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
                         old_tags.push(tag);
                         li.before('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+tag+'</div><div class="tag-editor-delete"><i></i></div></li>');
+                        o.afterTagSave(el, ed, old_tags, old_tag, tag);
                     }
                 }
                 input.attr('maxlength', o.maxLength).removeData('old_tag').val('').focus();
@@ -217,6 +218,7 @@
                     tag = o.beforeTagSave(el, ed, tag_list, old_tag, tag) || tag;
                     // remove duplicates
                     $('.tag-editor-tag:not(.active)', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
+                    o.afterTagSave(el, ed, tag_list, old_tag, tag);
                 }
                 input.parent().html(tag).removeClass('active');
                 if (tag != old_tag) update_globals();
@@ -335,6 +337,8 @@
         // callbacks
         onChange: function(){},
         beforeTagSave: function(){},
-        beforeTagDelete: function(){}
+        beforeTagDelete: function(){},
+        afterTagSave: function () {},
+        afterTagDelete: function () {}
     };
 }(jQuery));
