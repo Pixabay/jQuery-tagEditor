@@ -32,6 +32,10 @@ http://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.15 - 2015/05/24
+
+* Fix #31, #33, #34: Added maxTags, removeDuplicates, and animateDelete options.
+
 ### Version 1.0.14 - 2015/04/05
 
 * Fix #24: Auto-close tag after selecting autocomplete suggestion by mouse click.

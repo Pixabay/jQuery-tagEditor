@@ -1,5 +1,5 @@
 /*
-	jQuery tagEditor v1.0.14
+	jQuery tagEditor v1.0.15
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
@@ -29,6 +29,7 @@
                 if (options == 'getTags')
                     response.push({field: el[0], editor: ed, tags: ed.data('tags')});
                 else if (options == 'addTag') {
+                    if (o.maxTags && ed.data('tags').length >= o.maxTags) return false;
                     // insert new tag
                     $('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag"></div><div class="tag-editor-delete"><i></i></div></li>').appendTo(ed).find('.tag-editor-tag')
                         .html('<input type="text" maxlength="'+o.maxLength+'">').addClass('active').find('input').val(val).blur();
@@ -103,6 +104,8 @@
                 // do not create tag when user selects tags by text selection
                 if (window.getSelection && getSelection() != '') return;
 
+                if (o.maxTags && ed.data('tags').length >= o.maxTags) { ed.find('input').blur(); return false; }
+
                 blur_result = true
                 $('input:focus', ed).blur();
                 if (!blur_result) return false;
@@ -139,7 +142,7 @@
 
                 var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
                 if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
-                tag.addClass('deleted').animate({width: 0}, 175, function(){ li.remove(); set_placeholder(); });
+                tag.addClass('deleted').animate({width: 0}, o.animateDelete, function(){ li.remove(); set_placeholder(); });
                 update_globals();
                 return false;
             });
@@ -150,7 +153,7 @@
                     if (e.ctrlKey || e.which > 1) {
                         var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
                         if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
-                        tag.addClass('deleted').animate({width: 0}, 175, function(){ li.remove(); set_placeholder(); });
+                        tag.addClass('deleted').animate({width: 0}, o.animateDelete, function(){ li.remove(); set_placeholder(); });
                         update_globals();
                         return false;
                     }
@@ -182,20 +185,22 @@
             // helper: split into multiple tags, e.g. after paste
             function split_cleanup(input){
                 var li = input.closest('li'), sub_tags = input.val().replace(/ +/, ' ').split(o.dregex), old_tag = input.data('old_tag');
-                var old_tags = tag_list.slice(0); // copy tag_list
-                for (i=0; i<sub_tags.length; i++) {
+                var old_tags = tag_list.slice(0), exceeded = false; // copy tag_list
+                for (var i=0; i<sub_tags.length; i++) {
                     tag = $.trim(sub_tags[i]).slice(0, o.maxLength);
                     if (tag) {
                         if (o.forceLowercase) tag = tag.toLowerCase();
                         tag = o.beforeTagSave(el, ed, old_tags, old_tag, tag) || tag;
                         // remove duplicates
-                        if (~$.inArray(tag, old_tags))
+                        if (o.removeDuplicates && ~$.inArray(tag, old_tags))
                             $('.tag-editor-tag', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
                         old_tags.push(tag);
                         li.before('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+tag+'</div><div class="tag-editor-delete"><i></i></div></li>');
                     }
+                    if (o.maxTags && old_tags.length >= o.maxTags) { exceeded = true; break; }
                 }
-                input.attr('maxlength', o.maxLength).removeData('old_tag').val('').focus();
+                input.attr('maxlength', o.maxLength).removeData('old_tag').val('')
+                if (exceeded) input.blur(); else input.focus();
                 update_globals();
             }
 
@@ -216,7 +221,8 @@
                     if (o.forceLowercase) tag = tag.toLowerCase();
                     tag = o.beforeTagSave(el, ed, tag_list, old_tag, tag) || tag;
                     // remove duplicates
-                    $('.tag-editor-tag:not(.active)', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
+                    if (o.removeDuplicates)
+                        $('.tag-editor-tag:not(.active)', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
                 }
                 input.parent().html(tag).removeClass('active');
                 if (tag != old_tag) update_globals();
@@ -246,7 +252,7 @@
                 if ((e.which == 37 || !o.autocomplete && e.which == 38) && !$t.caret() || e.which == 8 && !$t.val()) {
                     var prev_tag = $t.closest('li').prev('li').find('.tag-editor-tag');
                     if (prev_tag.length) prev_tag.click().find('input').caret(-1);
-                    else if ($t.val()) $(new_tag).insertBefore($t.closest('li')).find('.tag-editor-tag').click();
+                    else if ($t.val() && !(o.maxTags && ed.data('tags').length >= o.maxTags)) $(new_tag).insertBefore($t.closest('li')).find('.tag-editor-tag').click();
                     return false;
                 }
                 // right/down key
@@ -262,7 +268,7 @@
                     if (e.shiftKey) {
                         var prev_tag = $t.closest('li').prev('li').find('.tag-editor-tag');
                         if (prev_tag.length) prev_tag.click().find('input').caret(0);
-                        else if ($t.val()) $(new_tag).insertBefore($t.closest('li')).find('.tag-editor-tag').click();
+                        else if ($t.val() && !(o.maxTags && ed.data('tags').length >= o.maxTags)) $(new_tag).insertBefore($t.closest('li')).find('.tag-editor-tag').click();
                         // allow tabbing to previous element
                         else {
                             el.attr('disabled', 'disabled');
@@ -288,6 +294,7 @@
                 }
                 // enter key
                 else if (e.which == 13) {
+                    $t.blur();
                     ed.trigger('click', [$t.closest('li').next('li').find('.tag-editor-tag')]);
                     return false;
                 }
@@ -304,7 +311,8 @@
 
             // create initial tags
             var tags = o.initialTags.length ? o.initialTags : el.val().split(o.dregex);
-            for (i=0; i<tags.length; i++) {
+            for (var i=0; i<tags.length; i++) {
+                if (o.maxTags && i >= o.maxTags) break;
                 var tag = $.trim(tags[i].replace(/ +/, ' '));
                 if (tag) {
                     if (o.forceLowercase) tag = tag.toLowerCase();
@@ -324,11 +332,14 @@
 
     $.fn.tagEditor.defaults = {
         initialTags: [],
+        maxTags: 0,
         maxLength: 50,
         delimiter: ',;',
         placeholder: '',
         forceLowercase: true,
+        removeDuplicates: true,
         clickDelete: false,
+        animateDelete: 175,
         sortable: true, // jQuery UI sortable
         autocomplete: null, // options dict for jQuery UI autocomplete
 

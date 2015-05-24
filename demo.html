@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <title>jQuery tagEditor Plugin</title>
     <meta name="description" content="A lightweight and sophisticated tag editor for jQuery. Sortable, editable tags with cursor navigation, autocomplete, and callbacks.">
-    <link rel="shortcut icon" href="//pixabay.com/favicon.ico">
+    <link rel="shortcut icon" href="http://pixabay.com/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300">
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
@@ -139,6 +139,7 @@ $(<b>'#my_textarea'</b>).tagEditor({ autocomplete: { <b>'source'</b>: <b>'/url/'
         <table>
             <tr><th>Property</th><th>Default</th><th>Description</th></tr>
             <tr><td>initialTags</td><td>[]</td><td>Initial tags as an array of strings.</td></tr>
+            <tr><td>maxTags</td><td><i>null</i></td><td>Maximum number of allowed tags.</td></tr>
             <tr><td>maxLength</td><td>50</td><td><span class="inline-code">maxlength</span> attribute of the tag input field.</td></tr>
             <tr>
                 <td>delimiter</td><td style="white-space:nowrap">',;'</td>
@@ -151,7 +152,9 @@ $(<b>'#my_textarea'</b>).tagEditor({ autocomplete: { <b>'source'</b>: <b>'/url/'
             </tr>
             <tr><td>placeholder</td><td>''</td><td>Placeholder text for empty tag editor.</td></tr>
             <tr><td>forceLowercase</td><td><i>true</i></td><td>Lowercase all tags.</td></tr>
+            <tr><td>removeDuplicates</td><td><i>true</i></td><td>Automatically remove duplicate tags.</td></tr>
             <tr><td>clickDelete</td><td><i>false</i></td><td>Delete tags on right click and on Ctrl+click.</td></tr>
+            <tr><td>animateDelete</td><td><i>175</i></td><td>Animate duration for deletion of tags in milliseconds. Set to 0 for non-animated removal.</td></tr>
             <tr><td>sortable</td><td><i>true</i></td><td>If <a href="http://jqueryui.com/sortable/">jQuery UI sortable</a> is available and this option is set to <span class="inline-code">true</span>, tags are sortable by drag and drop.</td></tr>
             <tr><td>autocomplete</td><td><i>null</i></td><td><a href="http://jqueryui.com/autocomplete/">jQuery UI autocomplete</a> options as key/value pairs object. If provided, jQuery UI autocomplete must be loaded additionally.</td></tr>
 
