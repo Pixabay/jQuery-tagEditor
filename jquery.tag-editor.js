@@ -1,5 +1,5 @@
 /*
-	jQuery tagEditor v1.0.15
+	jQuery tagEditor v1.0.16
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
@@ -206,6 +206,7 @@
             }
 
             ed.on('blur', 'input', function(e){
+                e.stopPropagation();
                 var input = $(this), old_tag = input.data('old_tag'), tag = $.trim(input.val().replace(/ +/, ' ').replace(o.dregex, o.delimiter[0]));
                 if (!tag) {
                     if (old_tag && o.beforeTagDelete(el, ed, tag_list, old_tag) === false) {

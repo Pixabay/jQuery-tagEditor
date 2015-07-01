@@ -32,6 +32,10 @@ https://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.16 - 2015/07/01
+
+* Fix #5, #35, #37, #87: 'TypeError: owner is null' backspace browser history issue.
+
 ### Version 1.0.15 - 2015/05/24
 
 * Fix #31, #33, #34: Added maxTags, removeDuplicates, and animateDelete options.
@@ -76,7 +80,6 @@ https://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 * Merged pull - Added logic for selected field to be .tag-editor only:
   https://github.com/jegarts/jQuery-tagEditor/commit/498435b562d72c3e502863312b0b2ccbb9e80cab
-
 
 ### Version 1.0.4 - 2014/09/24
 
