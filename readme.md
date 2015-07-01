@@ -34,7 +34,7 @@ https://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ### Version 1.0.16 - 2015/07/01
 
-* Fix #5, #35, #37, #38: 'TypeError: owner is null' backspace browser history issue.
+* Fix #5, #35, #37, #38: "TypeError: owner is null" backspace browser history issue.
 
 ### Version 1.0.15 - 2015/05/24
 
