@@ -296,7 +296,6 @@
                 }
                 // enter key
                 else if (e.which == 13) {
-                    $t.blur();
                     ed.trigger('click', [$t.closest('li').next('li').find('.tag-editor-tag')]);
                     return false;
                 }
