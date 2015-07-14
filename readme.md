@@ -32,6 +32,10 @@ https://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.17 - 2015/07/14
+
+* Allow beforeTagSave() to return `false` for discarding certain tag values.
+
 ### Version 1.0.16 - 2015/07/01
 
 * Fix #5, #35, #37, #38: "TypeError: owner is null" backspace browser history issue.

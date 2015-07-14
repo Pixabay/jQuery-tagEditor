@@ -1,5 +1,5 @@
 /*
-	jQuery tagEditor v1.0.16
+	jQuery tagEditor v1.0.17
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
@@ -186,18 +186,18 @@
             // helper: split into multiple tags, e.g. after paste
             function split_cleanup(input){
                 var li = input.closest('li'), sub_tags = input.val().replace(/ +/, ' ').split(o.dregex), old_tag = input.data('old_tag');
-                var old_tags = tag_list.slice(0), exceeded = false; // copy tag_list
+                var old_tags = tag_list.slice(0), exceeded = false, cb_val; // copy tag_list
                 for (var i=0; i<sub_tags.length; i++) {
                     tag = $.trim(sub_tags[i]).slice(0, o.maxLength);
-                    if (tag) {
-                        if (o.forceLowercase) tag = tag.toLowerCase();
-                        tag = o.beforeTagSave(el, ed, old_tags, old_tag, tag) || tag;
-                        // remove duplicates
-                        if (o.removeDuplicates && ~$.inArray(tag, old_tags))
-                            $('.tag-editor-tag', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
-                        old_tags.push(tag);
-                        li.before('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+tag+'</div><div class="tag-editor-delete"><i></i></div></li>');
-                    }
+                    if (o.forceLowercase) tag = tag.toLowerCase();
+                    cb_val = o.beforeTagSave(el, ed, old_tags, old_tag, tag);
+                    tag = cb_val || tag;
+                    if (cb_val === false || !tag) continue;
+                    // remove duplicates
+                    if (o.removeDuplicates && ~$.inArray(tag, old_tags))
+                        $('.tag-editor-tag', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
+                    old_tags.push(tag);
+                    li.before('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+tag+'</div><div class="tag-editor-delete"><i></i></div></li>');
                     if (o.maxTags && old_tags.length >= o.maxTags) { exceeded = true; break; }
                 }
                 input.attr('maxlength', o.maxLength).removeData('old_tag').val('')
@@ -221,9 +221,20 @@
                 else if (tag.indexOf(o.delimiter[0])>=0) { split_cleanup(input); return; }
                 else if (tag != old_tag) {
                     if (o.forceLowercase) tag = tag.toLowerCase();
-                    tag = o.beforeTagSave(el, ed, tag_list, old_tag, tag) || tag;
+                    cb_val = o.beforeTagSave(el, ed, tag_list, old_tag, tag);
+                    tag = cb_val || tag;
+                    if (cb_val === false) {
+                        if (old_tag) {
+                            input.val(old_tag).focus();
+                            blur_result = false;
+                            update_globals();
+                            return;
+                        }
+                        try { input.closest('li').remove(); } catch(e){}
+                        if (old_tag) update_globals();
+                    }
                     // remove duplicates
-                    if (o.removeDuplicates)
+                    else if (o.removeDuplicates)
                         $('.tag-editor-tag:not(.active)', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
                 }
                 input.parent().html(tag).removeClass('active');
