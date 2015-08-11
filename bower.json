@@ -1,7 +1,7 @@
 {
     "name": "jquery-tag-editor",
 	"description": "A powerful and lightweight tag editor plugin for jQuery.",
-    "version": "1.0.17",
+    "version": "1.0.18",
     "dependencies": {
         "jquery": ">=1.7",
         "caret": null

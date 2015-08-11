@@ -32,6 +32,10 @@ https://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.18 - 2015/08/12
+
+* Pull #43: Escape HTML special characters on input.
+
 ### Version 1.0.17 - 2015/07/14
 
 * Allow beforeTagSave() to return `false` for discarding certain tag values.
