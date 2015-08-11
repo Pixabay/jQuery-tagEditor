@@ -62,6 +62,11 @@
                 }
             }
         }
+
+        function escape_html(tag) {
+            return tag.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+        }
+
         if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', delete_selected_tags);
 
         return selector.each(function(){
@@ -197,7 +202,7 @@
                     if (o.removeDuplicates && ~$.inArray(tag, old_tags))
                         $('.tag-editor-tag', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
                     old_tags.push(tag);
-                    li.before('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+tag+'</div><div class="tag-editor-delete"><i></i></div></li>');
+                    li.before('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+escape_html(tag)+'</div><div class="tag-editor-delete"><i></i></div></li>');
                     if (o.maxTags && old_tags.length >= o.maxTags) { exceeded = true; break; }
                 }
                 input.attr('maxlength', o.maxLength).removeData('old_tag').val('')
@@ -237,7 +242,7 @@
                     else if (o.removeDuplicates)
                         $('.tag-editor-tag:not(.active)', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
                 }
-                input.parent().html(tag).removeClass('active');
+                input.parent().html(escape_html(tag)).removeClass('active');
                 if (tag != old_tag) update_globals();
                 set_placeholder();
             });
@@ -329,7 +334,7 @@
                 if (tag) {
                     if (o.forceLowercase) tag = tag.toLowerCase();
                     tag_list.push(tag);
-                    ed.append('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+tag+'</div><div class="tag-editor-delete"><i></i></div></li>');
+                    ed.append('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+escape_html(tag)+'</div><div class="tag-editor-delete"><i></i></div></li>');
                 }
             }
             update_globals(true); // true -> no onChange callback
