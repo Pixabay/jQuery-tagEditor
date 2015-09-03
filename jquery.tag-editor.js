@@ -43,9 +43,9 @@
                 	
                     if (o.maxTags && ed.data('tags').length >= o.maxTags) return false;
 
-                    var html = '', i = val.length;
+                    var html = '';
 
-                    while(i--) {
+                    for(var i=0;i<val.length;i++) {
 
                         html += '<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag"><input type="text" maxlength="'+o.maxLength+'" value="' + val[i] + '"></div><div class="tag-editor-delete"><i></i></div></li>';
 
