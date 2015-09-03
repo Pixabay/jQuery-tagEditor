@@ -39,6 +39,25 @@
                         .html('<input type="text" maxlength="'+o.maxLength+'">').addClass('active').find('input').val(val).blur();
                     if (!blur) ed.click();
                     else $('.placeholder', ed).remove();
+                } else if (options == 'addTags') {
+                	
+                    if (o.maxTags && ed.data('tags').length >= o.maxTags) return false;
+
+                    var html = '', i = val.length;
+
+                    while(i--) {
+
+                        html += '<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag"><input type="text" maxlength="'+o.maxLength+'" value="' + val[i] + '"></div><div class="tag-editor-delete"><i></i></div></li>';
+
+                    }
+                    // insert new tags
+                    $(html).appendTo(ed).find('input').blur();
+
+                    if (!blur) ed.click();
+                    else $('.placeholder', ed).remove();
+
+                    $('.tag-editor-tag.active').parent().empty();
+
                 } else if (options == 'removeTag') {
                     // trigger delete on matching tag, then click editor to create a new tag
                     $('.tag-editor-tag', ed).filter(function(){return $(this).html()==val;}).closest('li').find('.tag-editor-delete').click();
