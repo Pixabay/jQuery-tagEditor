@@ -104,89 +104,91 @@
                 set_placeholder();
             }
 
-            ed.click(function(e, closest_tag){
-                var d, dist = 99999, loc;
-
-                // do not create tag when user selects tags by text selection
-                if (window.getSelection && getSelection() != '') return;
-
-                if (o.maxTags && ed.data('tags').length >= o.maxTags) { ed.find('input').blur(); return false; }
-
-                blur_result = true
-                $('input:focus', ed).blur();
-                if (!blur_result) return false;
-                blur_result = true
-
-                // always remove placeholder on click
-                $('.placeholder', ed).remove();
-                if (closest_tag && closest_tag.length)
-                    loc = 'before';
-                else {
-                    // calculate tag closest to click position
-                    $('.tag-editor-tag', ed).each(function(){
-                        var tag = $(this), to = tag.offset(), tag_x = to.left, tag_y = to.top;
-                        if (e.pageY >= tag_y && e.pageY <= tag_y+tag.height()) {
-                            if (e.pageX < tag_x) loc = 'before', d = tag_x - e.pageX;
-                            else loc = 'after', d = e.pageX - tag_x - tag.width();
-                            if (d < dist) dist = d, closest_tag = tag;
-                        }
-                    });
-                }
-
-                if (loc == 'before') {
-                    $(new_tag).insertBefore(closest_tag.closest('li')).find('.tag-editor-tag').click();
-                } else if (loc == 'after')
-                    $(new_tag).insertAfter(closest_tag.closest('li')).find('.tag-editor-tag').click();
-                else // empty editor
-                    $(new_tag).appendTo(ed).find('.tag-editor-tag').click();
-                return false;
-            });
-
-            ed.on('click', '.tag-editor-delete', function(e){
-                // delete icon is hidden when input is visible; place cursor near invisible delete icon on click
-                if ($(this).prev().hasClass('active')) { $(this).closest('li').find('input').caret(-1); return false; }
-
-                var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
-                if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
-                tag.addClass('deleted').animate({width: 0}, o.animateDelete, function(){ li.remove(); set_placeholder(); });
-                update_globals();
-                return false;
-            });
-
-            // delete on right mouse click or ctrl+click
-            if (o.clickDelete)
-                ed.on('mousedown', '.tag-editor-tag', function(e){
-                    if (e.ctrlKey || e.which > 1) {
-                        var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
-                        if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
-                        tag.addClass('deleted').animate({width: 0}, o.animateDelete, function(){ li.remove(); set_placeholder(); });
-                        update_globals();
-                        return false;
-                    }
-                });
-
-            ed.on('click', '.tag-editor-tag', function(e){
-                // delete on right click or ctrl+click -> exit
-                if (o.clickDelete && (e.ctrlKey || e.which > 1)) return false;
-
-                if (!$(this).hasClass('active')) {
-                    var tag = $(this).html();
-                    // guess cursor position in text input
-                    var left_percent = Math.abs(($(this).offset().left - e.pageX)/$(this).width()), caret_pos = parseInt(tag.length*left_percent),
-                        input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+tag+'">').addClass('active').find('input');
-                        input.data('old_tag', tag).tagEditorInput().focus().caret(caret_pos);
-                    if (o.autocomplete) {
-                        var aco = $.extend({}, o.autocomplete);
-                        // extend user provided autocomplete select method
-                        var ac_select = 'select'  in aco ? o.autocomplete.select : '';
-                        aco.select = function(e, ui){ if (ac_select) ac_select(e, ui); setTimeout(function(){
-                            ed.trigger('click', [$('.active', ed).find('input').closest('li').next('li').find('.tag-editor-tag')]);
-                        }, 20); };
-                        input.autocomplete(aco);
-                    }
-                }
-                return false;
-            });
+            if (!o.readOnly) {
+            	ed.click(function(e, closest_tag){
+            		var d, dist = 99999, loc;
+            		
+            		// do not create tag when user selects tags by text selection
+            		if (window.getSelection && getSelection() != '') return;
+            		
+            		if (o.maxTags && ed.data('tags').length >= o.maxTags) { ed.find('input').blur(); return false; }
+            		
+            		blur_result = true
+            		$('input:focus', ed).blur();
+            		if (!blur_result) return false;
+            		blur_result = true
+            		
+            		// always remove placeholder on click
+            		$('.placeholder', ed).remove();
+            		if (closest_tag && closest_tag.length)
+            			loc = 'before';
+            		else {
+            			// calculate tag closest to click position
+            			$('.tag-editor-tag', ed).each(function(){
+            				var tag = $(this), to = tag.offset(), tag_x = to.left, tag_y = to.top;
+            				if (e.pageY >= tag_y && e.pageY <= tag_y+tag.height()) {
+            					if (e.pageX < tag_x) loc = 'before', d = tag_x - e.pageX;
+            					else loc = 'after', d = e.pageX - tag_x - tag.width();
+            					if (d < dist) dist = d, closest_tag = tag;
+            				}
+            			});
+            		}
+            		
+            		if (loc == 'before') {
+            			$(new_tag).insertBefore(closest_tag.closest('li')).find('.tag-editor-tag').click();
+            		} else if (loc == 'after')
+            			$(new_tag).insertAfter(closest_tag.closest('li')).find('.tag-editor-tag').click();
+            		else // empty editor
+            			$(new_tag).appendTo(ed).find('.tag-editor-tag').click();
+            		return false;
+            	});
+            	
+            	ed.on('click', '.tag-editor-delete', function(e){
+            		// delete icon is hidden when input is visible; place cursor near invisible delete icon on click
+            		if ($(this).prev().hasClass('active')) { $(this).closest('li').find('input').caret(-1); return false; }
+            		
+            		var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
+            		if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
+            		tag.addClass('deleted').animate({width: 0}, o.animateDelete, function(){ li.remove(); set_placeholder(); });
+            		update_globals();
+            		return false;
+            	});
+            	
+            	// delete on right mouse click or ctrl+click
+            	if (o.clickDelete)
+            		ed.on('mousedown', '.tag-editor-tag', function(e){
+            			if (e.ctrlKey || e.which > 1) {
+            				var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
+            				if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
+            				tag.addClass('deleted').animate({width: 0}, o.animateDelete, function(){ li.remove(); set_placeholder(); });
+            				update_globals();
+            				return false;
+            			}
+            		});
+            	
+            	ed.on('click', '.tag-editor-tag', function(e){
+            		// delete on right click or ctrl+click -> exit
+            		if (o.clickDelete && (e.ctrlKey || e.which > 1)) return false;
+            		
+            		if (!$(this).hasClass('active')) {
+            			var tag = $(this).html();
+            			// guess cursor position in text input
+            			var left_percent = Math.abs(($(this).offset().left - e.pageX)/$(this).width()), caret_pos = parseInt(tag.length*left_percent),
+            			input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+tag+'">').addClass('active').find('input');
+            			input.data('old_tag', tag).tagEditorInput().focus().caret(caret_pos);
+            			if (o.autocomplete) {
+            				var aco = $.extend({}, o.autocomplete);
+            				// extend user provided autocomplete select method
+            				var ac_select = 'select'  in aco ? o.autocomplete.select : '';
+            				aco.select = function(e, ui){ if (ac_select) ac_select(e, ui); setTimeout(function(){
+            					ed.trigger('click', [$('.active', ed).find('input').closest('li').next('li').find('.tag-editor-tag')]);
+            				}, 20); };
+            				input.autocomplete(aco);
+            			}
+            		}
+            		return false;
+            	});
+            }
 
             // helper: split into multiple tags, e.g. after paste
             function split_cleanup(input){
@@ -334,7 +336,7 @@
                 if (tag) {
                     if (o.forceLowercase) tag = tag.toLowerCase();
                     tag_list.push(tag);
-                    ed.append('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+escape(tag)+'</div><div class="tag-editor-delete"><i></i></div></li>');
+                    ed.append('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag'+(o.readOnly?' readonly':'')+'">'+escape(tag)+'</div>'+(!o.readOnly?'<div class="tag-editor-delete"><i></i></div>':'')+'</li>');
                 }
             }
             update_globals(true); // true -> no onChange callback
@@ -359,6 +361,7 @@
         animateDelete: 175,
         sortable: true, // jQuery UI sortable
         autocomplete: null, // options dict for jQuery UI autocomplete
+        readOnly : false, // true to disable tag editing
 
         // callbacks
         onChange: function(){},
