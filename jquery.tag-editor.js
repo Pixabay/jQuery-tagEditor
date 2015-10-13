@@ -173,7 +173,7 @@
                     var tag = $(this).html();
                     // guess cursor position in text input
                     var left_percent = Math.abs(($(this).offset().left - e.pageX)/$(this).width()), caret_pos = parseInt(tag.length*left_percent),
-                        input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+tag+'">').addClass('active').find('input');
+                        input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+escape(tag)+'">').addClass('active').find('input');
                         input.data('old_tag', tag).tagEditorInput().focus().caret(caret_pos);
                     if (o.autocomplete) {
                         var aco = $.extend({}, o.autocomplete);
