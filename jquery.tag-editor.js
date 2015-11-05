@@ -148,7 +148,7 @@
 
                 var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
                 if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
-                tag.addClass('deleted').animate({width: 0}, o.animateDelete, function(){ li.remove(); set_placeholder(); });
+                tag.addClass('deleted').animate({width: 0}, o.animateDelete, function(){ li.remove(); set_placeholder(); o.afterTagDelete(el, ed, tag_list, tag.html());});
                 update_globals();
                 return false;
             });
@@ -173,7 +173,7 @@
                     var tag = $(this).html();
                     // guess cursor position in text input
                     var left_percent = Math.abs(($(this).offset().left - e.pageX)/$(this).width()), caret_pos = parseInt(tag.length*left_percent),
-                        input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+escape(tag)+'">').addClass('active').find('input');
+                        input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+tag+'">').addClass('active').find('input');
                         input.data('old_tag', tag).tagEditorInput().focus().caret(caret_pos);
                     if (o.autocomplete) {
                         var aco = $.extend({}, o.autocomplete);
@@ -190,8 +190,8 @@
 
             // helper: split into multiple tags, e.g. after paste
             function split_cleanup(input){
-                var li = input.closest('li'), sub_tags = input.val().replace(/ +/, ' ').split(o.dregex),
-                    old_tag = input.data('old_tag'), old_tags = tag_list.slice(0), exceeded = false, cb_val; // copy tag_list
+                var li = input.closest('li'), sub_tags = input.val().replace(/ +/, ' ').split(o.dregex), old_tag = input.data('old_tag');
+                var old_tags = tag_list.slice(0), exceeded = false, cb_val; // copy tag_list
                 for (var i=0; i<sub_tags.length; i++) {
                     tag = $.trim(sub_tags[i]).slice(0, o.maxLength);
                     if (o.forceLowercase) tag = tag.toLowerCase();
@@ -363,6 +363,7 @@
         // callbacks
         onChange: function(){},
         beforeTagSave: function(){},
-        beforeTagDelete: function(){}
+        beforeTagDelete: function(){},
+        afterTagDelete: function(){}
     };
 }(jQuery));
