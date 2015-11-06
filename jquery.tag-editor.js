@@ -192,8 +192,8 @@
 
             // helper: split into multiple tags, e.g. after paste
             function split_cleanup(input){
-                var li = input.closest('li'), sub_tags = input.val().replace(/ +/, ' ').split(o.dregex), old_tag = input.data('old_tag');
-                var old_tags = tag_list.slice(0), exceeded = false, cb_val; // copy tag_list
+                var li = input.closest('li'), sub_tags = input.val().replace(/ +/, ' ').split(o.dregex),
+                    old_tag = input.data('old_tag'), old_tags = tag_list.slice(0), exceeded = false, cb_val; // copy tag_list
                 for (var i=0; i<sub_tags.length; i++) {
                     tag = $.trim(sub_tags[i]).slice(0, o.maxLength);
                     if (o.forceLowercase) tag = tag.toLowerCase();
