@@ -157,6 +157,7 @@ $(<b>'#my_textarea'</b>).tagEditor({ autocomplete: { <b>'source'</b>: <b>'/url/'
             <tr><td>animateDelete</td><td><i>175</i></td><td>Animate duration for deletion of tags in milliseconds. Set to 0 for non-animated removal.</td></tr>
             <tr><td>sortable</td><td><i>true</i></td><td>If <a href="https://jqueryui.com/sortable/">jQuery UI sortable</a> is available and this option is set to <span class="inline-code">true</span>, tags are sortable by drag and drop.</td></tr>
             <tr><td>autocomplete</td><td><i>null</i></td><td><a href="https://jqueryui.com/autocomplete/">jQuery UI autocomplete</a> options as key/value pairs object. If provided, jQuery UI autocomplete must be loaded additionally.</td></tr>
+            <tr><td>readOnly</td><td><i>false</i></td><td>Readonly mode: only displays tags.</td></tr>
 
             <tr><td colspan="3">&nbsp;</td></tr>
             <tr><th>Callbacks</th><th colspan="2"></th></tr>
@@ -342,6 +343,20 @@ tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor);</pre>
             This is just an exampe of what the onChange callback may be used for. Inside of it, <span class="inline-code">addTag</span> and <span class="inline-code">removeTag</span> may be called to dynamically change the current list of tags.
         </p>
 
+        <h4>Readonly</h4>
+        <pre>
+$(<b>'#demo7'</b>).tagEditor({
+    initialTags: [<b>'Hello'</b>, <b>'World'</b>, <b>'Example'</b>, <b>'Tags'</b>],
+    delimiter: <b>', '</b>, <i>/* space and comma */</i>
+    placeholder: <b>'Enter tags ...'</b>,
+    readOnly: <b>true</b>
+});</pre>
+
+        <div style="margin:0 0 1.2em">
+            <p>The tagEditor is in read only mode.</p>
+            <textarea id="demo7"></textarea>
+        </div>
+        
         <div style="margin:40px 0;overflow:hidden">
             <span id="github_social"></span>
             <div style="float:left;margin-right:35px">
@@ -445,6 +460,8 @@ tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor);</pre>
             }
             $('#demo6').tagEditor({ initialTags: ['custom', 'class', 'red', 'green', 'demo'], onChange: tag_classes });
             tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor); // or editor == $('#demo6').next()
+            
+            $('#demo7').tagEditor({ initialTags: ['Hello', 'World', 'Example', 'Tags'], delimiter: ', ', placeholder: 'Enter tags ...', readOnly: true }).css('display', 'block').attr('readonly', true);
         });
 
         if (~window.location.href.indexOf('http')) {

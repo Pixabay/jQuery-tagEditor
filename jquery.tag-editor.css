@@ -24,6 +24,7 @@
     padding-left: 5px; color: #46799b; background: #e0eaf1; white-space: nowrap;
     overflow: hidden; cursor: pointer; border-radius: 2px 0 0 2px;
 }
+.tag-editor .tag-editor-tag.readonly { border-radius: 2px; cursor: auto; }
 
 /* delete icon */
 .tag-editor .tag-editor-delete { background: #e0eaf1; cursor: pointer; padding-right: 5px; border-radius: 0 2px 2px 0; }
