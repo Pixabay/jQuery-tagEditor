@@ -1,5 +1,5 @@
 /*
-	jQuery tagEditor v1.0.18
+	jQuery tagEditor v1.0.18 modified by Marek Jasinski
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
@@ -313,6 +313,7 @@
                 // enter key
                 else if (e.which == 13) {
                     ed.trigger('click', [$t.closest('li').next('li').find('.tag-editor-tag')]);
+                    o.afterClickEnter();
                     return false;
                 }
                 // pos1
@@ -364,6 +365,7 @@
         onChange: function(){},
         beforeTagSave: function(){},
         beforeTagDelete: function(){},
-        afterTagDelete: function(){}
+        afterTagDelete: function(){},
+        afterClickEnter: function(){}
     };
 }(jQuery));
