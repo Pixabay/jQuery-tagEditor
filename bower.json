@@ -1,12 +1,12 @@
 {
-    "name": "jquery-tag-editor",
+    "name": "jquery-tag-editor-mj",
 	"description": "A powerful and lightweight tag editor plugin for jQuery.",
     "version": "1.0.18",
     "dependencies": {
         "jquery": ">=1.7",
         "caret": null
     },
-    "homepage": "https://github.com/Pixabay/jQuery-tagEditor",
+    "homepage": "https://github.com/marekjasinski/jQuery-tagEditor",
     "authors": [{
         "name": "Simon Steinberger",
         "url": "https://pixabay.com/users/Simon/",
