@@ -7,7 +7,7 @@
 
 (function($){
     // auto grow input (stackoverflow.com/questions/931207)
-    $.fn.tagEditorInput=function(){var t=" ",e=$(this),n=parseInt(e.css("fontSize")),i=$("<span/>").css({position:"absolute",top:-9999,left:-9999,width:"auto",fontSize:e.css("fontSize"),fontFamily:e.css("fontFamily"),fontWeight:e.css("fontWeight"),letterSpacing:e.css("letterSpacing"),whiteSpace:"nowrap"}),s=function(){if(t!==(t=e.val())){i.html(t.replace(/&/g,"&amp;").replace(/\s/g,"&nbsp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"));var s=i.width()+n;20>s&&(s=20),s!=e.width()&&e.width(s)}};return i.insertAfter(e),e.bind("keyup keydown focus",s)};
+    $.fn.tagEditorInput=function(){var t=" ",e=$(this),n=parseInt(e.css("fontSize")),i=$("<span/>").css({position:"absolute",top:-9999,left:-9999,width:"auto",fontSize:e.css("fontSize"),fontFamily:e.css("fontFamily"),fontWeight:e.css("fontWeight"),letterSpacing:e.css("letterSpacing"),whiteSpace:"nowrap"}),s=function(){if(t!==(t=e.val())){i.text(t);var s=i.width()+n;20>s&&(s=20),s!=e.width()&&e.width(s)}};return i.insertAfter(e),e.bind("keyup keydown focus",s)};
 
     // plugin with val as parameter for public methods
     $.fn.tagEditor = function(options, val, blur){
@@ -41,7 +41,7 @@
                     else $('.placeholder', ed).remove();
                 } else if (options == 'removeTag') {
                     // trigger delete on matching tag, then click editor to create a new tag
-                    $('.tag-editor-tag', ed).filter(function(){return $(this).html()==val;}).closest('li').find('.tag-editor-delete').click();
+                    $('.tag-editor-tag', ed).filter(function(){return $(this).text()==val;}).closest('li').find('.tag-editor-delete').click();
                     if (!blur) ed.click();
                 } else if (options == 'destroy') {
                     el.removeClass('tag-editor-hidden-src').removeData('options').off('focus.tag-editor').next('.tag-editor').remove();
@@ -60,7 +60,7 @@
                     var tags = [], splits = sel.toString().split(el.prev().data('options').dregex);
                     for (i=0; i<splits.length; i++){ var tag = $.trim(splits[i]); if (tag) tags.push(tag); }
                     $('.tag-editor-tag', el).each(function(){
-                        if (~$.inArray($(this).html(), tags)) $(this).closest('li').find('.tag-editor-delete').click();
+                        if (~$.inArray($(this).text(), tags)) $(this).closest('li').find('.tag-editor-delete').click();
                     });
                     return false;
                 }
@@ -147,7 +147,7 @@
                 if ($(this).prev().hasClass('active')) { $(this).closest('li').find('input').caret(-1); return false; }
 
                 var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
-                if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
+                if (o.beforeTagDelete(el, ed, tag_list, tag.text()) === false) return false;
                 tag.addClass('deleted').animate({width: 0}, o.animateDelete, function(){ li.remove(); set_placeholder(); });
                 update_globals();
                 return false;
@@ -158,7 +158,7 @@
                 ed.on('mousedown', '.tag-editor-tag', function(e){
                     if (e.ctrlKey || e.which > 1) {
                         var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
-                        if (o.beforeTagDelete(el, ed, tag_list, tag.html()) === false) return false;
+                        if (o.beforeTagDelete(el, ed, tag_list, tag.text()) === false) return false;
                         tag.addClass('deleted').animate({width: 0}, o.animateDelete, function(){ li.remove(); set_placeholder(); });
                         update_globals();
                         return false;
@@ -170,7 +170,7 @@
                 if (o.clickDelete && (e.ctrlKey || e.which > 1)) return false;
 
                 if (!$(this).hasClass('active')) {
-                    var tag = $(this).html();
+                    var tag = $(this).text();
                     // guess cursor position in text input
                     var left_percent = Math.abs(($(this).offset().left - e.pageX)/$(this).width()), caret_pos = parseInt(tag.length*left_percent),
                         input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+escape(tag)+'">').addClass('active').find('input');
@@ -200,7 +200,7 @@
                     if (cb_val === false || !tag) continue;
                     // remove duplicates
                     if (o.removeDuplicates && ~$.inArray(tag, old_tags))
-                        $('.tag-editor-tag', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
+                        $('.tag-editor-tag', ed).each(function(){ if ($(this).text() == tag) $(this).closest('li').remove(); });
                     old_tags.push(tag);
                     li.before('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+escape(tag)+'</div><div class="tag-editor-delete"><i></i></div></li>');
                     if (o.maxTags && old_tags.length >= o.maxTags) { exceeded = true; break; }
@@ -240,7 +240,7 @@
                     }
                     // remove duplicates
                     else if (o.removeDuplicates)
-                        $('.tag-editor-tag:not(.active)', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
+                        $('.tag-editor-tag:not(.active)', ed).each(function(){ if ($(this).text() == tag) $(this).closest('li').remove(); });
                 }
                 input.parent().html(escape(tag)).removeClass('active');
                 if (tag != old_tag) update_globals();
