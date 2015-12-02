@@ -32,6 +32,10 @@ https://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.19 - 2015/12/02
+
+* Fixed #60: Tag editor fails to handle HTML operator chars.
+
 ### Version 1.0.18 - 2015/08/12
 
 * Pull #43: Escape HTML special characters on input.
