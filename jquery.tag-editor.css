@@ -34,9 +34,8 @@
 }
 .tag-editor .tag-editor-delete:hover i:before {  color: #d65454; }
 
-.tag-editor .tag-editor-delete:hover i { background-position: 0 -14px; }
 .tag-editor .tag-editor-tag.active+.tag-editor-delete,
-.tag-editor .tag-editor-tag.active+.tag-editor-delete i { background: none; cursor: text; }
+.tag-editor .tag-editor-tag.active+.tag-editor-delete i { visibility:  hidden; cursor: text; }
 
 .tag-editor .tag-editor-tag.active { background: none !important; }
 
