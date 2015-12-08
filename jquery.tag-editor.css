@@ -27,12 +27,8 @@
 
 /* delete icon */
 .tag-editor .tag-editor-delete { background: #e0eaf1; cursor: pointer; border-radius: 0 2px 2px 0; padding-left: 3px; padding-right: 4px; }
-.tag-editor .tag-editor-delete i:before {
-    display: inline-block; line-height: 20px;
-    font-size: 16px; color: #8ba7ba; content: "×";
-}
+.tag-editor .tag-editor-delete i:before { display: inline-block; line-height: 20px; font-size: 16px; color: #8ba7ba; content: "×"; }
 .tag-editor .tag-editor-delete:hover i:before { color: #d65454; }
-
 .tag-editor .tag-editor-tag.active+.tag-editor-delete, .tag-editor .tag-editor-tag.active+.tag-editor-delete i { visibility: hidden; cursor: text; }
 
 .tag-editor .tag-editor-tag.active { background: none !important; }
