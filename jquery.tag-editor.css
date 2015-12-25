@@ -1,18 +1,18 @@
 /* surrounding tag container */
 .tag-editor {
     list-style-type: none; padding: 0 5px 0 0; margin: 0; overflow: hidden; border: 1px solid #eee; cursor: text;
-    font: normal 14px sans-serif; color: #555; background: #fff;
+    font: normal 14px sans-serif; color: #555; background: #fff; line-height: 20px;
 }
 
 /* core styles usually need no change */
-.tag-editor li { display: block; float: left; overflow: hidden; margin: 3px 0; line-height: 1.5; }
+.tag-editor li { display: block; float: left; overflow: hidden; margin: 3px 0; }
 .tag-editor div { float: left; padding: 0 4px; }
 .tag-editor .placeholder { padding: 0 8px; color: #bbb; }
 .tag-editor .tag-editor-spacer { padding: 0; width: 8px; overflow: hidden; color: transparent; background: none; }
 .tag-editor input {
     vertical-align: inherit; border: 0; outline: none; padding: 0; margin: 0; cursor: text;
     font-family: inherit; font-weight: inherit; font-size: inherit; font-style: inherit;
-    box-shadow: none; background: none;
+    box-shadow: none; background: none; color: #444;
 }
 /* hide original input field or textarea visually to allow tab navigation */
 .tag-editor-hidden-src { position: absolute !important; left: -99999px; }
@@ -27,7 +27,8 @@
 
 /* delete icon */
 .tag-editor .tag-editor-delete { background: #e0eaf1; cursor: pointer; border-radius: 0 2px 2px 0; padding-left: 3px; padding-right: 4px; }
-.tag-editor .tag-editor-delete i:before { display: inline-block; line-height: 20px; font-size: 16px; color: #8ba7ba; content: "×"; }
+.tag-editor .tag-editor-delete i { line-height: 18px; display: inline-block; }
+.tag-editor .tag-editor-delete i:before { font-size: 16px; color: #8ba7ba; content: "×"; font-style: normal; }
 .tag-editor .tag-editor-delete:hover i:before { color: #d65454; }
 .tag-editor .tag-editor-tag.active+.tag-editor-delete, .tag-editor .tag-editor-tag.active+.tag-editor-delete i { visibility: hidden; cursor: text; }
 
