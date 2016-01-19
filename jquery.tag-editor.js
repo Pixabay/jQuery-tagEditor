@@ -313,6 +313,10 @@
                 // enter key
                 else if (e.which == 13) {
                     ed.trigger('click', [$t.closest('li').next('li').find('.tag-editor-tag')]);
+
+                    // If the maxTags limit is reached, trigger blur
+                    if (o.maxTags && ed.data('tags').length >= o.maxTags) { ed.find('input').blur(); }
+
                     return false;
                 }
                 // pos1
