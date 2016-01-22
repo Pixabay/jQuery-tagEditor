@@ -45,6 +45,12 @@
                     if (!blur) ed.click();
                 } else if (options == 'destroy') {
                     el.removeClass('tag-editor-hidden-src').removeData('options').off('focus.tag-editor').next('.tag-editor').remove();
+                } else if (options == 'onChange') {
+                    o.onChange = val;
+                } else if (options == 'beforeTagSave') {
+                    o.beforeTagSave = val;
+                } else if (options == 'beforeTagDelete') {
+                    o.beforeTagDelete = val;
                 }
             });
             return options == 'getTags' ? response : this;
