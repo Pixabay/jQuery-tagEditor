@@ -32,6 +32,10 @@ https://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.20 - 2016/01/30
+
+* Fixed #62: tagEditor is blocking key events on other input and textarea elements on page.
+
 ### Version 1.0.19 - 2015/12/02
 
 * Fixed #60: Tag editor fails to handle HTML operator chars.
