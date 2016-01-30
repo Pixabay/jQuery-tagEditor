@@ -51,7 +51,7 @@
         }
 
         // delete selected tags on backspace, delete, ctrl+x
-        function delete_selected_tags(e){
+        if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', function(e){
             if (e.which == 8 || e.which == 46 || e.ctrlKey && e.which == 88) {
                 try {
                     var sel = getSelection(), el = $(sel.getRangeAt(0).commonAncestorContainer);
@@ -65,9 +65,7 @@
                     return false;
                 }
             }
-        }
-
-        if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', delete_selected_tags);
+        });
 
         return selector.each(function(){
             var el = $(this), tag_list = []; // cache current tags
