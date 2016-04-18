@@ -163,6 +163,7 @@ $(<b>'#my_textarea'</b>).tagEditor({ autocomplete: { <b>'source'</b>: <b>'/url/'
             <tr><td>onChange(field, editor, tags)</td><td colspan="2">Callback that fires after tags are changed. <span class="inline-code">field</span> is the (hidden) original field, <span class="inline-code">editor</span> is the editor's DOM element (an &lt;ul&gt; list of tag elements), and <span class="inline-code">tags</span> contains the list of current tags.</td></tr>
             <tr><td>beforeTagSave(field, editor, tags, tag, val)</td><td colspan="2">Callback that fires before a tag is saved. <span class="inline-code">field</span> is the (hidden) original field, <span class="inline-code">editor</span> is the editor's DOM element. <span class="inline-code">tags</span> contains the list of current tags, <span class="inline-code">tag</span> is the value that is about to get overwritten (empty string, unless an existing tag gets changed), and <span class="inline-code">val</span> is the new value to be saved. <span class="inline-code">beforeTagSave()</span> may return a string for overwriting the saved tag. Return <span class="inline-code">false</span> for reverting to the tag's previous value (or to skip this tag value in the case of copy-paste insertion).</td></tr>
             <tr><td>beforeTagDelete(field, editor, tags, val)</td><td colspan="2">Callback that fires before a tag is deleted. <span class="inline-code">field</span> is the (hidden) original field, <span class="inline-code">editor</span> is the editor's DOM element. <span class="inline-code">tags</span> contains the list of current tags, <span class="inline-code">val</span> is the tag that is about to get deleted. Return <span class="inline-code">false</span> to prevent this action.</td></tr>
+            <tr><td>afterTagSave(field, editor, old_tags, old_tag, tag, element)</td><td colspan="2">Callback that fires after a tag is saved. <span class="inline-code">field</span> is the (hidden) original field, <span class="inline-code">editor</span> is the editor's DOM element. <span class="inline-code">old_tags</span> contains the list of tags before the save, <span class="inline-code">old_tag</span> is the value that was overwritten (empty string, unless an existing tag was changed), <span class="inline-code">tag</span> is the new value, and <span class="inline-code">element</span> is the jQuery DOM element that contains the tag. Note that this method is called for each added DOM element, even when that didn't result in a tag change. Therefore, this method is useful for adding classes to DOM element, since <span class="inline-code">onChange()</span> will not fire when the DOM is modified, but the tags are unchanged.</td></tr>
 
             <tr><td colspan="3">&nbsp;</td></tr>
             <tr><th>Public Methods</th><th colspan="2"></th></tr>
@@ -304,28 +305,23 @@ $(<b>'#demo5'</b>).tagEditor({
 
         <h4>Custom CSS classes for tags</h4>
         <p>
-            Using the onChange callback for adding custom CSS classes to specific tags.
+            Using the afterTagSave callback for adding custom CSS classes to specific tags.
         </p>
         <pre>
 $(<b>'#demo6'</b>).tagEditor({
     initialTags: [<b>'custom'</b>, <b>'class'</b>, <b>'red'</b>, <b>'green'</b>, <b>'demo'</b>],
-    onChange: tag_classes
+    removeDuplicates: false,
+    afterTagSave: tag_classes
 });
 
-function tag_classes(field, editor, tags) {
-    $(<b>'li'</b>, editor).each(function(){
-        var li = $(this);
-        if (li.find(<b>'.tag-editor-tag'</b>).html() == <b>'red'</b>) li.addClass(<b>'red-tag'</b>);
-        else if (li.find(<b>'.tag-editor-tag'</b>).html() == <b>'green'</b>) li.addClass(<b>'green-tag'</b>)
-        else li.removeClass(<b>'red-tag green-tag'</b>);
-    });
-}
-
-<i>// first assign tag classes after initializing tagEditor; onChange is not called on init</i>
-tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor);</pre>
+function tag_classes(field, editor, old_tags, old_tag, tag, tag_element) {
+    if (tag == <b>'red'</b>) tag_element.addClass(<b>'red-tag'</b>);
+    else if (tag == <b>'green'</b>) tag_element.addClass(<b>'green-tag'</b>)
+    else tag_element.removeClass(<b>'red-tag green-tag'</b>);
+}</pre>
         <div style="margin:0 0 1.2em"><textarea id="demo6"></textarea></div>
         <p>
-            In the onChange callback we iterate over all tags and assign custom CSS classes where appropriate.
+            In the afterTagSave callback we assign custom CSS classes where appropriate.
             The DOM structure of the editor looks like this:
         </p>
         <pre>&lt;ul&gt;
@@ -339,7 +335,7 @@ tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor);</pre>
 
         <p>
             In the example, we simply add CSS classes to the <span class="inline-code">&lt;li&gt;</span> elements.
-            This is just an exampe of what the onChange callback may be used for. Inside of it, <span class="inline-code">addTag</span> and <span class="inline-code">removeTag</span> may be called to dynamically change the current list of tags.
+            This is just an exampe of what the afterTagSave callback may be used for. Inside of it, <span class="inline-code">addTag</span> and <span class="inline-code">removeTag</span> may be called to dynamically change the current list of tags.
         </p>
 
         <div style="margin:40px 0;overflow:hidden">
@@ -435,16 +431,12 @@ tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor);</pre>
 
             $('#demo5').tagEditor({ clickDelete: true, initialTags: ['custom style', 'dark tags', 'delete on click', 'no delete icon', 'hello', 'world'], placeholder: 'Enter tags ...' });
 
-            function tag_classes(field, editor, tags) {
-                $('li', editor).each(function(){
-                    var li = $(this);
-                    if (li.find('.tag-editor-tag').html() == 'red') li.addClass('red-tag');
-                    else if (li.find('.tag-editor-tag').html() == 'green') li.addClass('green-tag')
-                    else li.removeClass('red-tag green-tag');
-                });
+            function tag_classes(field, editor, old_tags, old_tag, tag, tag_element) {
+                if (tag == 'red') tag_element.addClass('red-tag');
+                else if (tag == 'green') tag_element.addClass('green-tag')
+                else tag_element.removeClass('red-tag green-tag');
             }
-            $('#demo6').tagEditor({ initialTags: ['custom', 'class', 'red', 'green', 'demo'], onChange: tag_classes });
-            tag_classes(null, $('#demo6').tagEditor('getTags')[0].editor); // or editor == $('#demo6').next()
+            $('#demo6').tagEditor({ initialTags: ['custom', 'class', 'red', 'green', 'demo'], removeDuplicates: false, afterTagSave: tag_classes });
         });
 
         if (~window.location.href.indexOf('http')) {
