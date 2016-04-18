@@ -27,7 +27,7 @@
         if (typeof options == 'string') {
             // depending on selector, response may contain tag lists of multiple editor instances
             var response = [];
-            selector.each(function(){
+            selector.each(function() {
                 // the editor is the next sibling to the hidden, original field
                 var el = $(this), o = el.data('options'), ed = el.next('.tag-editor');
                 if (options == 'getTags')
@@ -50,9 +50,9 @@
             return options == 'getTags' ? response : this;
         }
 
-        // delete selected tags on backspace, delete, ctrl+x
-        if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', function(e){
-            if (e.which == 8 || e.which == 46 || e.ctrlKey && e.which == 88) {
+        // delete selected tags on backspace, delete
+        if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', function(e) {
+            if (e.which == 8 || e.which == 46) {
                 try {
                     var sel = getSelection(), el = document.activeElement.tagName == 'BODY' ? $(sel.getRangeAt(0).startContainer.parentNode).closest('.tag-editor') : 0;
                 } catch(e){ el = 0; }
@@ -67,7 +67,7 @@
             }
         });
 
-        return selector.each(function(){
+        return selector.each(function() {
             var el = $(this), tag_list = []; // cache current tags
 
             // create editor (ed) instance
@@ -153,7 +153,7 @@
 
             // delete on right mouse click or ctrl+click
             if (o.clickDelete)
-                ed.on('mousedown', '.tag-editor-tag', function(e){
+                ed.on('mousedown', '.tag-editor-tag', function(e) {
                     if (e.ctrlKey || e.which > 1) {
                         var li = $(this).closest('li'), tag = li.find('.tag-editor-tag');
                         if (o.beforeTagDelete(el, ed, tag_list, tag.text()) === false) return false;
@@ -163,7 +163,7 @@
                     }
                 });
 
-            ed.on('click', '.tag-editor-tag', function(e){
+            ed.on('click', '.tag-editor-tag', function(e) {
                 // delete on right click or ctrl+click -> exit
                 if (o.clickDelete && (e.ctrlKey || e.which > 1)) return false;
 
@@ -190,7 +190,7 @@
             });
 
             // helper: split into multiple tags, e.g. after paste
-            function split_cleanup(input, text){
+            function split_cleanup(input, text) {
                 var li = input.closest('li'), sub_tags = text.replace(/ +/, ' ').split(o.dregex),
                     old_tag = input.data('old_tag'), old_tags = tag_list.slice(0), exceeded = false, cb_val; // copy tag_list
                 for (var i=0; i<sub_tags.length; i++) {
@@ -211,7 +211,7 @@
                 update_globals();
             }
 
-            ed.on('blur', 'input', function(e){
+            ed.on('blur', 'input', function(e) {
                 e.stopPropagation();
                 var input = $(this), old_tag = input.data('old_tag'), tag = $.trim(input.val().replace(/ +/, ' ').replace(o.dregex, o.delimiter[0]));
                 if (!tag) {
@@ -249,7 +249,7 @@
             });
 
             var pasted_content, input_content;
-            ed.on('paste', 'input', function(e){
+            ed.on('paste', 'input', function(e) {
                 var text = (e.originalEvent || e).clipboardData.getData('text/plain');
                 $(this).removeAttr('maxlength');
                 pasted_content = text;
@@ -266,7 +266,7 @@
                 }
             });
 
-            ed.on('keydown', 'input', function(e){
+            ed.on('keydown', 'input', function(e) {
                 var $t = $(this);
 
                 // left/up key + backspace key on empty field
