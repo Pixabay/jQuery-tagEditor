@@ -296,7 +296,12 @@
                     } else {
                         var next_tag = $t.closest('li').next('li').find('.tag-editor-tag');
                         if (next_tag.length) next_tag.click().find('input').caret(0);
-                        else if ($t.val()) ed.click();
+                        else if ($t.val()) {
+                            ed.click();
+                            
+                            // trigger blur if maxTags limit is reached
+		            if (o.maxTags && ed.data('tags').length >= o.maxTags) ed.find('input').blur();
+                        }
                         else return; // allow tabbing to next element
                         return false;
                     }
