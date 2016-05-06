@@ -163,7 +163,7 @@
                 var d, dist = 99999, loc;
 
                 // Do not create tag when user selects tags by text selection
-                if (window.getSelection && getSelection() !== '') {
+                if (window.getSelection && getSelection() != '') {
                     return;
                 }
 
