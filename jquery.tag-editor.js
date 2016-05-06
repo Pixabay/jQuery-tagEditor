@@ -200,8 +200,8 @@
                     tag = cb_val || tag;
                     if (cb_val === false || !tag) continue;
                     // remove duplicates
-                    if (o.removeDuplicates && ~$.inArray(tag, old_tags))
-                        $('.tag-editor-tag', ed).each(function(){ if ($(this).text() == tag) $(this).closest('li').remove(); });
+                    // if (o.removeDuplicates && ~$.inArray(tag, old_tags))
+                    //     $('.tag-editor-tag', ed).each(function(){ if ($(this).text() == tag) $(this).closest('li').remove(); });
                     old_tags.push(tag);
                     li.before('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+escape(tag)+'</div><div class="tag-editor-delete"><i></i></div></li>');
                     if (o.maxTags && old_tags.length >= o.maxTags) { exceeded = true; break; }
@@ -359,7 +359,7 @@
         delimiter: ',;',
         placeholder: '',
         forceLowercase: true,
-        removeDuplicates: true,
+        // removeDuplicates: true,
         clickDelete: false,
         animateDelete: 175,
         sortable: true, // jQuery UI sortable
