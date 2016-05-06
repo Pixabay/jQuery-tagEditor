@@ -22,7 +22,7 @@
         o.dregex = new RegExp('[' + o.delimiter.replace('-', '\-') + ']', 'g');
 
         // public methods
-        if (typeof options == 'string') {
+        if (typeof options === 'string') {
             // depending on selector, response may contain tag lists of multiple editor instances
             var response = [];
             selector.each(function() {
@@ -31,10 +31,10 @@
                     o = el.data('options'),
                     ed = el.next('.tag-editor');
 
-                if (options == 'getTags') {
+                if (options === 'getTags') {
                     response.push({field: el[0], editor: ed, tags: ed.data('tags')});
                 }
-                else if (options == 'addTag') {
+                else if (options === 'addTag') {
                     if (o.maxTags && ed.data('tags').length >= o.maxTags) {
                         return false;
                     }
@@ -55,30 +55,30 @@
                         $('.placeholder', ed).remove();
                     }
                 }
-                else if (options == 'removeTag') {
+                else if (options === 'removeTag') {
                     // trigger delete on matching tag, then click editor to create a new tag
                     $('.tag-editor-tag', ed).filter(function() {
-                        return $(this).text()==val;
+                        return $(this).text() === val;
                     }).closest('li').find('.tag-editor-delete').click();
 
                     if (!blur){
                         ed.click();
                     }
                 }
-                else if (options == 'destroy') {
+                else if (options === 'destroy') {
                     el.removeClass('tag-editor-hidden-src').removeData('options').off('focus.tag-editor').next('.tag-editor').remove();
                 }
             });
 
-            return options == 'getTags' ? response : this;
+            return options === 'getTags' ? response : this;
         }
 
         // delete selected tags on backspace, delete
         if (window.getSelection) {
             $(document).off('keydown.tag-editor').on('keydown.tag-editor', function(e) {
-                if (e.which == 8 || e.which == 46) {
+                if (e.which === 8 || e.which === 46) {
                     try {
-                        var sel = getSelection(), el = document.activeElement.tagName == 'BODY' ? $(sel.getRangeAt(0).startContainer.parentNode).closest('.tag-editor') : 0;
+                        var sel = getSelection(), el = document.activeElement.tagName === 'BODY' ? $(sel.getRangeAt(0).startContainer.parentNode).closest('.tag-editor') : 0;
                     }
                     catch(e) {
                         el = 0;
@@ -163,7 +163,7 @@
                 var d, dist = 99999, loc;
 
                 // Do not create tag when user selects tags by text selection
-                if (window.getSelection && getSelection() != '') {
+                if (window.getSelection && getSelection() !== '') {
                     return;
                 }
 
@@ -203,10 +203,10 @@
                     });
                 }
 
-                if (loc == 'before') {
+                if (loc === 'before') {
                     $(new_tag).insertBefore(closest_tag.closest('li')).find('.tag-editor-tag').click();
                 }
-                else if (loc == 'after') {
+                else if (loc === 'after') {
                     $(new_tag).insertAfter(closest_tag.closest('li')).find('.tag-editor-tag').click();
                 }
                 else { // empty editor
@@ -314,10 +314,6 @@
                         continue;
                     }
 
-                    // remove duplicates
-                    // if (o.removeDuplicates && ~$.inArray(tag, old_tags))
-                    //     $('.tag-editor-tag', ed).each(function(){ if ($(this).text() == tag) $(this).closest('li').remove(); });
-
                     old_tags.push(tag);
                     li.before(
                         '<li>' +
@@ -384,9 +380,6 @@
                             update_globals();
                         }
                     }
-                    // remove duplicates
-                    // else if (o.removeDuplicates)
-                    //    $('.tag-editor-tag:not(.active)', ed).each(function(){ if ($(this).text() == tag) $(this).closest('li').remove(); });
                 }
                 input.parent().html(escape(tag)).removeClass('active');
                 if (tag != old_tag) {
@@ -420,7 +413,7 @@
                 var $t = $(this);
 
                 // left/up key + backspace key on empty field
-                if ((e.which == 37 || !o.autocomplete && e.which == 38) && !$t.caret() || e.which == 8 && !$t.val()) {
+                if ((e.which === 37 || !o.autocomplete && e.which === 38) && !$t.caret() || e.which === 8 && !$t.val()) {
                     var prev_tag = $t.closest('li').prev('li').find('.tag-editor-tag');
 
                     if (prev_tag.length) {
@@ -433,7 +426,7 @@
                     return false;
                 }
                 // right/down key
-                else if ((e.which == 39 || !o.autocomplete && e.which == 40) && ($t.caret() == $t.val().length)) {
+                else if ((e.which === 39 || !o.autocomplete && e.which === 40) && ($t.caret() === $t.val().length)) {
                     var next_tag = $t.closest('li').next('li').find('.tag-editor-tag');
 
                     if (next_tag.length) {
@@ -446,7 +439,7 @@
                     return false;
                 }
                 // tab key
-                else if (e.which == 9) {
+                else if (e.which === 9) {
                     // shift+tab
                     if (e.shiftKey) {
                         var prev_tag = $t.closest('li').prev('li').find('.tag-editor-tag');
@@ -483,7 +476,7 @@
                     }
                 }
                 // del key
-                else if (e.which == 46 && (!$.trim($t.val()) || ($t.caret() == $t.val().length))) {
+                else if (e.which === 46 && (!$.trim($t.val()) || ($t.caret() === $t.val().length))) {
                     var next_tag = $t.closest('li').next('li').find('.tag-editor-tag');
 
                     if (next_tag.length) {
@@ -496,7 +489,7 @@
                     return false;
                 }
                 // enter key
-                else if (e.which == 13) {
+                else if (e.which === 13) {
                     ed.trigger('click', [$t.closest('li').next('li').find('.tag-editor-tag')]);
 
                     // trigger blur if maxTags limit is reached
@@ -507,15 +500,15 @@
                     return false;
                 }
                 // pos1
-                else if (e.which == 36 && !$t.caret()) {
+                else if (e.which === 36 && !$t.caret()) {
                     ed.find('.tag-editor-tag').first().click();
                 }
                 // end
-                else if (e.which == 35 && $t.caret() == $t.val().length) {
+                else if (e.which === 35 && $t.caret() === $t.val().length) {
                     ed.find('.tag-editor-tag').last().click();
                 }
                 // esc
-                else if (e.which == 27) {
+                else if (e.which === 27) {
                     $t.val($t.data('old_tag') ? $t.data('old_tag') : '').blur();
                     return false;
                 }
