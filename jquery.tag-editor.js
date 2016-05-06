@@ -50,9 +50,9 @@
             return options == 'getTags' ? response : this;
         }
 
-        // delete selected tags on backspace, delete, ctrl+x
-        if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', function(e){
-            if (e.which == 8 || e.which == 46 || e.ctrlKey && e.which == 88) {
+        // delete selected tags on backspace, delete
+        if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', function(e) {
+            if (e.which == 8 || e.which == 46) {
                 try {
                     var sel = getSelection(), el = document.activeElement.tagName == 'BODY' ? $(sel.getRangeAt(0).startContainer.parentNode).closest('.tag-editor') : 0;
                 } catch(e){ el = 0; }
