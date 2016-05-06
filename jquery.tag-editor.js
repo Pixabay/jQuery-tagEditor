@@ -1,24 +1,6 @@
 "use strict";
 
 (function($){
-    // auto grow input (stackoverflow.com/questions/931207)
-    $.fn.tagEditorInput = function() {
-        var t = " ",
-            e = $(this),
-            n = parseInt(e.css("fontSize")),
-            i = $("<span/>").css({position: "absolute", top: -9999, left: -9999, width: "auto", fontSize: e.css("fontSize"), fontFamily: e.css("fontFamily"), fontWeight: e.css("fontWeight"), letterSpacing: e.css("letterSpacing"), whiteSpace: "nowrap"}),
-            s = function() {
-                if (t !== (t = e.val())) {
-                    i.text(t);
-                    var s = i.width()+n;
-                    20 > s && (s=20),
-                    s != e.width() && e.width(s)
-                }
-            };
-        return i.insertAfter(e),
-               e.bind("keyup keydown focus",s)
-    };
-
     // plugin with val as parameter for public methods
     $.fn.tagEditor = function(options, val, blur) {
 
@@ -286,7 +268,7 @@
                         caret_pos = parseInt(tag.length*left_percent),
                         input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+escape(tag)+'">').addClass('active').find('input');
 
-                        input.data('old_tag', tag).tagEditorInput().focus().caret(caret_pos);
+                        input.data('old_tag', tag).focus().caret(caret_pos);
 
                     if (o.autocomplete) {
                         var aco = $.extend({}, o.autocomplete);
