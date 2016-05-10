@@ -81,9 +81,9 @@
                     }
                 }
                 else if (options === 'removeTag') {
-                    // trigger delete on matching tag, then click editor to create a new tag
+                    // Trigger delete on matching tag, then click editor to create a new tag
                     $('.tag-editor-tag', ed).filter(function() {
-                        return $(this).text() === val;
+                        return $(this).get(0).dataset.tagValue === val;
                     }).closest('li').find('.tag-editor-delete').click();
 
                     if (!blur){
@@ -592,7 +592,6 @@
         delimiter: ',;',
         placeholder: '',
         forceLowercase: true,
-        // removeDuplicates: true,
         clickDelete: false,
         animateDelete: 175,
         sortable: true, // jQuery UI sortable
