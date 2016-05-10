@@ -359,15 +359,7 @@
                     }
                 }
 
-                input.dataset = {};
-                input.attr('maxlength', o.maxLength).removeData('old_tag').val('');
-
-                if (exceeded) {
-                    input.blur();
-                }
-                else {
-                    input.focus();
-                }
+                input.closest('li').remove();
 
                 update_globals();
             }
