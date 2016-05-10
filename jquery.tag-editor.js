@@ -6,11 +6,23 @@
 
         // helper
         function escape(tag) {
-            return tag.replace(/&/g, "&amp;")
-                      .replace(/</g, "&lt;")
-                      .replace(/>/g, "&gt;")
-                      .replace(/"/g, "&quot;")
-                      .replace(/'/g, "&#39;");
+            return tag.replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/"/g, '&quot;')
+                      .replace(/'/g, '&#39;');
+        }
+
+        function validate(tag) {
+            try {
+                var parsedTag = typeof tag === 'string' ? JSON.parse(tag) : tag;
+
+                if (parsedTag.hasOwnProperty('tagValue') && typeof parsedTag.tagValue === 'string' && parsedTag.tagValue.trim().length > 0) {
+                    return parsedTag;
+                }
+            } catch (e) {}
+
+            return String(tag).trim().length > 0 ? {tagValue: String(tag).trim()} : false;
         }
 
         // build options dictionary with default values
@@ -39,20 +51,33 @@
                         return false;
                     }
 
-                    // insert new tag
-                    $('<li>' +
-                          '<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>' +
-                          '<div class="tag-editor-tag"></div>' +
-                          '<div class="tag-editor-delete"><i></i></div>' +
-                      '</li>')
-                        .appendTo(ed).find('.tag-editor-tag')
-                        .html('<input type="text" maxlength="' + o.maxLength + '">').addClass('active').find('input').val(val).blur();
+                    var validTag = validate(val);
+                    if (validTag) {
+                        var $input = $('<input type="text" maxlength="' + o.maxLength + '">'),
+                            tagKeys = Object.keys(validTag);
 
-                    if (!blur) {
-                        ed.click();
-                    }
-                    else {
-                        $('.placeholder', ed).remove();
+                        // Populate <input> with the tag data
+                        for (var i = 0 ; i < tagKeys.length ; i++) {
+                            if (tagKeys[i] !== 'tagValue') {
+                                $input[0].dataset[tagKeys[i]] = validTag[tagKeys[i]];
+                            }
+                        }
+
+                        // The <input> will be replaced with its value in L412 if it has no delimiters or in L341 if it does
+                        $('<li></li>')
+                            .append('<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>')
+                            .append('<div class="tag-editor-tag"></div>')
+                            .append('<div class="tag-editor-delete"><i></i></div>')
+                        .appendTo(ed).find('.tag-editor-tag')
+                        .append($input).addClass('active').find('input').val(validTag.tagValue).blur();
+
+
+                        if (!blur) {
+                            ed.click();
+                        }
+                        else {
+                            $('.placeholder', ed).remove();
+                        }
                     }
                 }
                 else if (options === 'removeTag') {
@@ -299,7 +324,8 @@
                     sub_tags = input.val().replace(/ +/, ' ').split(o.dregex),
                     old_tag = input.data('old_tag'),
                     old_tags = tag_list.slice(0),
-                    exceeded = false, cb_val; // copy tag_list
+                    exceeded = false,
+                    cb_val; // copy tag_list
 
                 for (var i = 0 ; i < sub_tags.length ; i++) {
                     tag = $.trim(sub_tags[i]).slice(0, o.maxLength);
@@ -314,19 +340,26 @@
                         continue;
                     }
 
+                    var escapedTag = escape(tag);
+                    var $tagEditorTag = $('<div class="tag-editor-tag">' + escapedTag + '</div>');
+                    Object.assign($tagEditorTag.get(0).dataset, input.get(0).dataset);
+                    $tagEditorTag.get(0).dataset.tagValue = escapedTag;
+
                     old_tags.push(tag);
                     li.before(
-                        '<li>' +
-                            '<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>' +
-                            '<div class="tag-editor-tag">' + escape(tag) + '</div>' +
-                            '<div class="tag-editor-delete"><i></i></div>' +
-                        '</li>');
+                        $('<li></li>')
+                            .append('<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>')
+                            .append($tagEditorTag)
+                            .append('<div class="tag-editor-delete"><i></i></div>')
+                    );
 
                     if (o.maxTags && old_tags.length >= o.maxTags) {
-                        exceeded = true; break;
+                        exceeded = true;
+                        break;
                     }
                 }
 
+                input.dataset = {};
                 input.attr('maxlength', o.maxLength).removeData('old_tag').val('');
 
                 if (exceeded) {
@@ -381,7 +414,16 @@
                         }
                     }
                 }
-                input.parent().html(escape(tag)).removeClass('active');
+
+                // Replace <input> with its escaped value. E.g.:
+                // <div class="tag-editor-tag"><input value="tag < text"></div>  -->  <div class="tag-editor-tag">tag &lt; text</div>
+                var escapedTag = escape(tag),
+                    $tagEditorTag = input.parent();
+
+                Object.assign($tagEditorTag.get(0).dataset, input.get(0).dataset);
+                $tagEditorTag.get(0).dataset.tagValue = escapedTag;
+                $tagEditorTag.html(escape(tag)).removeClass('active');
+
                 if (tag != old_tag) {
                     update_globals();
                 }
