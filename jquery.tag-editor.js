@@ -25,6 +25,10 @@
             return String(tag).trim().length > 0 ? {tagValue: String(tag).trim()} : false;
         }
 
+        function deepEquals(arr1, arr2) {
+            return $(arr1).not(arr2).length === 0 && $(arr2).not(arr1).length === 0;
+        }
+
         // build options dictionary with default values
         var blur_result,
             o = $.extend({}, $.fn.tagEditor.defaults, options),
@@ -103,7 +107,8 @@
             $(document).off('keydown.tag-editor').on('keydown.tag-editor', function(e) {
                 if (e.which === 8 || e.which === 46) {
                     try {
-                        var sel = getSelection(), el = document.activeElement.tagName === 'BODY' ? $(sel.getRangeAt(0).startContainer.parentNode).closest('.tag-editor') : 0;
+                        var sel = getSelection(),
+                            el = document.activeElement.tagName === 'BODY' ? $(sel.getRangeAt(0).startContainer.parentNode).closest('.tag-editor') : 0;
                     }
                     catch(e) {
                         el = 0;
@@ -134,7 +139,7 @@
         // Create a tagEditor for each of the matched elements (usually an <input type='text'> or a <textarea>)
         return selector.each(function() {
             var el = $(this),
-                tag_list = []; // Cache current tags
+                tagList = []; // Cache current tags
 
             // Create editor (ed) instance: el -> $<textarea>, ed -> $<ul>
             var ed = $('<ul ' + (o.clickDelete ? 'oncontextmenu="return false;" ' : '') + 'class="tag-editor"></ul>').insertAfter(el);
@@ -156,31 +161,41 @@
 
             // Helper: update global data
             function set_placeholder() {
-                if (o.placeholder && !tag_list.length && !$('.deleted, .placeholder, input', ed).length) {
+                if (o.placeholder && !tagList.length && !$('.deleted, .placeholder, input', ed).length) {
                     ed.append('<li class="placeholder"><div>' + o.placeholder + '</div></li>');
                 }
             }
 
             // Helper: update global data
             function update_globals(init) {
-                var old_tags = tag_list.toString();
+                var oldTags = tagList;
 
-                tag_list = $('.tag-editor-tag:not(.deleted)', ed).map(function(i, e) {
-                    var val = $.trim($(this).hasClass('active') ? $(this).find('input').val() : $(e).text());
-                    if (val) {
-                        return val;
+                tagList = $('.tag-editor-tag:not(.deleted)', ed).map(function(i, e) {
+                    var tag = {};
+                    if ($(this).hasClass('active')) {
+                        Object.assign(tag, $(this).find('input').get(0).dataset);
+                        tag.tagValue = $(this).find('input').val();
+                    } else {
+                        Object.assign(tag,$(e).get(0).dataset)
+                    }
+
+                    if (tag.tagValue) {
+                        return tag;
                     }
                 }).get();
 
-                ed.data('tags', tag_list);
-                el.val(tag_list.join(o.delimiter[0]));
+                ed.data('tags', tagList);
+                el.val(tagList.reduce(function(previous, current) {return previous + o.delimiter[0] + current.tagValue}, ''));
 
                 // Change callback except for plugin init
                 if (!init) {
-                    if (old_tags != tag_list.toString()) {
-                        o.onChange(el, ed, tag_list);
+                    if (!deepEquals(oldTags, tagList)) {
+                        o.onChange(el, ed, tagList);
                     }
                 }
+
+                console.log(tagList);
+
                 set_placeholder();
             }
 
@@ -249,7 +264,7 @@
                 var li = $(this).closest('li'),
                     tag = li.find('.tag-editor-tag');
 
-                if (o.beforeTagDelete(el, ed, tag_list, tag.text()) === false) {
+                if (o.beforeTagDelete(el, ed, tagList, tag.text()) === false) {
                     return false;
                 }
 
@@ -265,7 +280,7 @@
                         var li = $(this).closest('li'),
                             tag = li.find('.tag-editor-tag');
 
-                        if (o.beforeTagDelete(el, ed, tag_list, tag.text()) === false) {
+                        if (o.beforeTagDelete(el, ed, tagList, tag.text()) === false) {
                             return false;
                         }
 
@@ -323,9 +338,9 @@
                 var li = input.closest('li'),
                     sub_tags = input.val().replace(/ +/, ' ').split(o.dregex),
                     old_tag = input.data('old_tag'),
-                    old_tags = tag_list.slice(0),
+                    old_tags = tagList.slice(0),
                     exceeded = false,
-                    cb_val; // copy tag_list
+                    cb_val; // copy tagList
 
                 for (var i = 0 ; i < sub_tags.length ; i++) {
                     tag = $.trim(sub_tags[i]).slice(0, o.maxLength);
@@ -372,7 +387,7 @@
                     tag = $.trim(input.val().replace(/ +/, ' ').replace(o.dregex, o.delimiter[0]));
 
                 if (!tag) {
-                    if (old_tag && o.beforeTagDelete(el, ed, tag_list, old_tag) === false) {
+                    if (old_tag && o.beforeTagDelete(el, ed, tagList, old_tag) === false) {
                         input.val(old_tag).focus();
                         blur_result = false;
                         update_globals();
@@ -390,7 +405,7 @@
                         tag = tag.toLowerCase();
                     }
 
-                    var cb_val = o.beforeTagSave(el, ed, tag_list, old_tag, tag);
+                    var cb_val = o.beforeTagSave(el, ed, tagList, old_tag, tag);
                     tag = cb_val || tag;
                     if (cb_val === false) {
                         if (old_tag) {
@@ -563,7 +578,7 @@
                         tag = tag.toLowerCase();
                     }
 
-                    tag_list.push(tag);
+                    tagList.push(tag);
                     ed.append(
                         '<li>' +
                             '<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>' +
