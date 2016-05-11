@@ -1,7 +1,31 @@
+jQuery JSON Tag Editor
+======================
+
+jQuery JSON Tag Editor is a fork of [jQuery-tagEditor](https://goodies.pixabay.com/jquery/tag-editor/demo.html), originally developed by Simon Steinberger for
+[Pixabay.com](https://pixabay.com) and licensed under the [MIT license](https://opensource.org/licenses/MIT). This fork maintains the same license.
+
+*jQuery JSON Tag Editor* adds a separation between the visual representation of a tag and the tag itself. Tags are plain JavaScript objects with a `tagValue` 
+that is its visual representation in the tag editor. The `tagValue` property plus any others that the tag object may have are all stored as 
+[data attributes](https://developer.mozilla.org/en/docs/Web/Guide/HTML/Using_data_attributes) in each `&lt;div class="tag-editor-tag"&gt;` element.
+
+So, using the `addTag` public method, the following:
+```
+$('#id').jsonTagEditor('addTag', {tagValue: 'Car', tagType: 'string', category: 'vehicle'}
+```
+
+Is turned into the following markup:
+```
+<div class="tag-editor-tag" data-tag-value="Car" data-tag-type="string" data-category="vehicle">Car</div>
+```
+
+If only a string is provided as an argument then an object with only the `tagValue` property is created. This is the case with entering tags manually into the editor. 
+ 
+What follows is the original contents of jQuery-tagEditor’s README.md file:
+
 jQuery-tagEditor
 ================
 
-A powerful and lightweight tag editor plugin for jQuery.
+A powerful and lightweight tag editor plugin for jQuery based on jQuery-tagEditor by Pixabay
 
 Compatible with jQuery 1.7.0+ in Firefox, Safari, Chrome, Opera, Internet Explorer 8+. IE7 technically works, but no care has gone into CSS/layout bugs.
 Released under the MIT License: http://www.opensource.org/licenses/mit-license.php
