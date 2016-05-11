@@ -2,7 +2,7 @@
 
 (function($){
     // plugin with val as parameter for public methods
-    $.fn.tagEditor = function(options, val, blur) {
+    $.fn.jsonTagEditor = function(options, val, blur) {
 
         // helper
         function escape(tag) {
@@ -25,13 +25,17 @@
             return String(tag).trim().length > 0 ? {tagValue: String(tag).trim()} : false;
         }
 
+        function ellipsify(str, maxLength) {
+            return str.length > maxLength ? str.substring(0, maxLength - 1) + "…" : str;
+        }
+
         function deepEquals(arr1, arr2) {
             return $(arr1).not(arr2).length === 0 && $(arr2).not(arr1).length === 0;
         }
 
         // build options dictionary with default values
         var blur_result,
-            o = $.extend({}, $.fn.tagEditor.defaults, options),
+            o = $.extend({}, $.fn.jsonTagEditor.defaults, options),
             selector = this;
 
         // store regex and default delimiter in options for later use
@@ -67,7 +71,7 @@
                             }
                         }
 
-                        // The <input> will be replaced with its value in L412 if it has no delimiters or in L341 if it does
+                        // The <input> will be removed and its label value placed inside the tag-editor-tag <div> after calling blur()
                         $('<li></li>')
                             .append('<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>')
                             .append('<div class="tag-editor-tag"></div>')
@@ -361,10 +365,12 @@
                         continue;
                     }
 
-                    var escapedTag = escape(tag);
-                    var $tagEditorTag = $('<div class="tag-editor-tag">' + escapedTag + '</div>');
+                    var $tagEditorTag =
+                        $('<div class="tag-editor-tag"' +
+                                (tag.length > o.maxTagLength ? ' title="' + escape(tag) + '"' : '') + '>' + escape(ellipsify(tag, o.maxTagLength)) +
+                          '</div>');
                     Object.assign($tagEditorTag.get(0).dataset, input.get(0).dataset);
-                    $tagEditorTag.get(0).dataset.tagValue = escapedTag;
+                    $tagEditorTag.get(0).dataset.tagValue = escape(tag);
 
                     old_tags.push(tag);
                     li.before(
@@ -430,12 +436,14 @@
 
                 // Replace <input> with its escaped value. E.g.:
                 // <div class="tag-editor-tag"><input value="tag < text"></div>  -->  <div class="tag-editor-tag">tag &lt; text</div>
-                var escapedTag = escape(tag),
-                    $tagEditorTag = input.parent();
+                var $tagEditorTag = input.parent();
 
                 Object.assign($tagEditorTag.get(0).dataset, input.get(0).dataset);
-                $tagEditorTag.get(0).dataset.tagValue = escapedTag;
-                $tagEditorTag.html(escape(tag)).removeClass('active');
+                $tagEditorTag.get(0).dataset.tagValue = escape(tag);
+                if (tag.length > o.maxTagLength) {
+                    $tagEditorTag.attr('title', escape(tag));
+                }
+                $tagEditorTag.html(escape(ellipsify(tag, o.maxTagLength))).removeClass('active');
 
                 if (tag != old_tag) {
                     update_globals();
@@ -588,7 +596,8 @@
                     ed.append(
                         '<li>' +
                             '<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>' +
-                            '<div class="tag-editor-tag" data-tag-value="' + escape(tag) + '">' + escape(tag) + '</div>' +
+                            '<div class="tag-editor-tag" data-tag-value="' + escape(tag) + '"' +
+                                  (tag.length > o.maxTagLength ? ' title="' + escape(tag) + '"' : '') + '>' + escape(ellipsify(tag, o.maxTagLength)) + '</div>' +
                             '<div class="tag-editor-delete"><i></i></div>' +
                         '</li>');
                 }
@@ -606,10 +615,11 @@
         });
     };
 
-    $.fn.tagEditor.defaults = {
+    $.fn.jsonTagEditor.defaults = {
         initialTags: [],
         maxTags: 0,
         maxLength: 50,
+        maxTagLength: 100,
         delimiter: ',;',
         placeholder: '',
         forceLowercase: true,
