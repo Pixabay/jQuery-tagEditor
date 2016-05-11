@@ -197,8 +197,12 @@
                 set_placeholder();
             }
 
+            // ed -> $<ul>
+            // closest_tag is only used when autocomplete is wired to the tag editor, L330: ed.trigger('click', ...
             ed.click(function(e, closest_tag) {
-                var d, dist = 99999, loc;
+                var d,
+                    dist = 99999,
+                    loc;
 
                 // Do not create tag when user selects tags by text selection
                 if (window.getSelection && getSelection().toString() !== '') {
@@ -206,7 +210,8 @@
                 }
 
                 if (o.maxTags && ed.data('tags').length >= o.maxTags) {
-                    ed.find('input').blur(); return false;
+                    ed.find('input').blur();
+                    return false;
                 }
 
                 blur_result = true;
@@ -231,12 +236,15 @@
 
                         if (e.pageY >= tag_y && e.pageY <= tag_y+tag.height()) {
                             if (e.pageX < tag_x) {
-                                loc = 'before', d = tag_x - e.pageX;
+                                loc = 'before';
+                                d = tag_x - e.pageX;
                             }
                             else {
-                                loc = 'after', d = e.pageX - tag_x - tag.width();
+                                loc = 'after';
+                                d = e.pageX - tag_x - tag.width();
                             }
-                            if (d < dist) dist = d, closest_tag = tag;
+                            if (d < dist) dist = d;
+                            closest_tag = tag;
                         }
                     });
                 }
@@ -300,13 +308,13 @@
                 }
 
                 if (!$(this).hasClass('active')) {
-                    var tag = $(this).text();
-                    // guess cursor position in text input
-                    var left_percent = Math.abs(($(this).offset().left - e.pageX)/$(this).width()),
-                        caret_pos = parseInt(tag.length*left_percent),
-                        input = $(this).html('<input type="text" maxlength="'+o.maxLength+'" value="'+escape(tag)+'">').addClass('active').find('input');
+                    var tagValue = $(this).text();
+                    // Guess cursor position in text input
+                    var left_percent = Math.abs(($(this).offset().left - e.pageX) / $(this).width()),
+                        caret_pos = parseInt(tagValue.length * left_percent),
+                        input = $(this).html('<input type="text" maxlength="' + o.maxLength + '" value="' + escape(tagValue) + '">').addClass('active').find('input');
 
-                        input.data('old_tag', tag).focus().caret(caret_pos);
+                        input.data('old_tag', tagValue).focus().caret(caret_pos);
 
                     if (o.autocomplete) {
                         var aco = $.extend({}, o.autocomplete);
@@ -580,7 +588,7 @@
                     ed.append(
                         '<li>' +
                             '<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>' +
-                            '<div class="tag-editor-tag">' + escape(tag) + '</div>' +
+                            '<div class="tag-editor-tag" data-tag-value="' + escape(tag) + '">' + escape(tag) + '</div>' +
                             '<div class="tag-editor-delete"><i></i></div>' +
                         '</li>');
                 }
