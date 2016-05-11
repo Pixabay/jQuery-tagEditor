@@ -1,6 +1,6 @@
 {
-	"name": "tag-editor",
-	"title": "tagEditor",
+	"name": "json-tag-editor",
+	"title": "JSON tag editor",
 	"description": "A powerful and lightweight tag editor plugin for jQuery.",
 	"version": "1.0.20",
 	"dependencies": {
@@ -16,16 +16,13 @@
 		"jQuery"
 	],
 	"author": {
-		"name": "Simon Steinberger",
-		"url": "https://pixabay.com/users/Simon/",
-		"email": "simon@pixabay.com"
+		"name": "Alfonso Muñoz-Pomer Fuentes",
+		"email": "amunoz@ebi.ac.uk"
 	},
 	"licenses": [
 		{
 			"type": "MIT",
 			"url": "http://www.opensource.org/licenses/mit-license.php"
 		}
-	],
-	"homepage": "https://goodies.pixabay.com/jquery/tag-editor/demo.html",
-	"demo": "https://goodies.pixabay.com/jquery/tag-editor/demo.html"
+	]
 }
