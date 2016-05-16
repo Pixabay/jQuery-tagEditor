@@ -4,6 +4,8 @@
     // plugin with val as parameter for public methods
     $.fn.jsonTagEditor = function(options, val, blur) {
 
+        var delimiter = '\t\n';
+
         // helper
         function escape(tag) {
             return tag.replace(/&/g, '&amp;')
@@ -15,7 +17,7 @@
 
         function validate(tag) {
             try {
-                var parsedTag = typeof tag === 'string' ? JSON.parse(tag) : tag;
+                var parsedTag = JSON.parse(tag);
 
                 if (parsedTag.hasOwnProperty('tagValue') && typeof parsedTag.tagValue === 'string' && parsedTag.tagValue.trim().length > 0) {
                     return parsedTag;
@@ -39,7 +41,7 @@
             selector = this;
 
         // store regex and default delimiter in options for later use
-        o.dregex = new RegExp('[' + o.delimiter.replace('-', '\-') + ']', 'g');
+        o.dregex = new RegExp('[' + delimiter.replace('-', '\-') + ']', 'g');
 
         // public methods
         if (typeof options === 'string') {
@@ -59,34 +61,23 @@
                         return false;
                     }
 
-                    var validTag = validate(val);
-                    if (validTag) {
-                        var $input = $('<input type="text" maxlength="' + o.maxLength + '">'),
-                            tagKeys = Object.keys(validTag);
-
-                        // Populate <input> with the tag data
-                        for (var i = 0 ; i < tagKeys.length ; i++) {
-                            if (tagKeys[i] !== 'tagValue') {
-                                $input[0].dataset[tagKeys[i]] = validTag[tagKeys[i]];
-                            }
-                        }
-
-                        // The <input> will be removed and its label value placed inside the tag-editor-tag <div> after calling blur()
-                        $('<li></li>')
-                            .append('<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>')
-                            .append('<div class="tag-editor-tag"></div>')
-                            .append('<div class="tag-editor-delete"><i></i></div>')
-                        .appendTo(ed).find('.tag-editor-tag')
-                        .append($input).addClass('active').find('input').val(validTag.tagValue).blur();
+                    // The <input> will be removed and its label value placed inside the tag-editor-tag <div> after calling blur()
+                    $('<li></li>')
+                        .append('<div class="tag-editor-spacer">&nbsp;' + delimiter[0] + '</div>')
+                        .append('<div class="tag-editor-tag"></div>')
+                        .append('<div class="tag-editor-delete"><i></i></div>')
+                    .appendTo(ed).find('.tag-editor-tag')
+                        .append('<input type="text" maxlength="' + o.maxLength + '">')
+                        .addClass('active').find('input').val(val).blur();
 
 
-                        if (!blur) {
-                            ed.click();
-                        }
-                        else {
-                            $('.placeholder', ed).remove();
-                        }
+                    if (!blur) {
+                        ed.click();
                     }
+                    else {
+                        $('.placeholder', ed).remove();
+                    }
+                    
                 }
                 else if (options === 'removeTag') {
                     // Trigger delete on matching tag, then click editor to create a new tag
@@ -158,7 +149,7 @@
             // Markup for new tag
             var new_tag =
                 '<li>' +
-                    '<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>' +
+                    '<div class="tag-editor-spacer">&nbsp;' + delimiter[0] + '</div>' +
                     '<div class="tag-editor-tag"></div>' +
                     '<div class="tag-editor-delete"><i></i></div>' +
                 '</li>';
@@ -189,7 +180,7 @@
                 }).get();
 
                 ed.data('tags', tagList);
-                el.val(tagList.reduce(function(previous, current) {return previous + o.delimiter[0] + current.tagValue}, ''));
+                el.val(tagList.reduce(function(previous, current) {return previous + delimiter[0] + current.tagValue}, ''));
 
                 // Change callback except for plugin init
                 if (!init) {
@@ -344,9 +335,9 @@
             });
 
             // helper: split into multiple tags, e.g. after paste
-            function split_cleanup(input) {
+            function split_cleanup(input, text) {
                 var li = input.closest('li'),
-                    sub_tags = input.val().replace(/ +/, ' ').split(o.dregex),
+                    sub_tags = text ? text.replace(/ +/, ' ').split(o.dregex) : input.val().replace(/ +/, ' ').split(o.dregex),
                     old_tag = input.data('old_tag'),
                     old_tags = tagList.slice(0),
                     exceeded = false,
@@ -365,24 +356,35 @@
                         continue;
                     }
 
-                    var $tagEditorTag =
-                        $('<div class="tag-editor-tag"' +
-                                (tag.length > o.maxTagLength ? ' title="' + escape(tag) + '"' : '') + '>' + escape(ellipsify(tag, o.maxTagLength)) +
-                          '</div>');
-                    Object.assign($tagEditorTag.get(0).dataset, input.get(0).dataset);
-                    $tagEditorTag.get(0).dataset.tagValue = escape(tag);
+                    var tagObject = validate(tag);
+                    
+                    if (tagObject) {
+                        var $tagEditorTag =
+                            $('<div class="tag-editor-tag"' +
+                                (tag.length > o.maxTagLength ? ' title="' + escape(tagObject.tagValue) + '"' : '') + '>' + escape(ellipsify(tagObject.tagValue, o.maxTagLength)) +
+                                '</div>');
 
-                    old_tags.push(tag);
-                    li.before(
-                        $('<li></li>')
-                            .append('<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>')
-                            .append($tagEditorTag)
-                            .append('<div class="tag-editor-delete"><i></i></div>')
-                    );
+                        var tagProperties = Object.keys(tagObject);
+                        for (var j = 0 ; j < tagProperties.length ; j++) {
+                            $tagEditorTag.get(0).dataset[tagProperties[j]] = tagObject[tagProperties[j]];
+                        }
 
-                    if (o.maxTags && old_tags.length >= o.maxTags) {
-                        exceeded = true;
-                        break;
+
+                        // Object.assign($tagEditorTag.get(0).dataset, input.get(0).dataset);
+                        // $tagEditorTag.get(0).dataset.tagValue = escape(tag);
+
+                        old_tags.push(tagObject);
+                        li.before(
+                            $('<li></li>')
+                                .append('<div class="tag-editor-spacer">&nbsp;' + delimiter[0] + '</div>')
+                                .append($tagEditorTag)
+                                .append('<div class="tag-editor-delete"><i></i></div>')
+                        );
+
+                        if (o.maxTags && old_tags.length >= o.maxTags) {
+                            exceeded = true;
+                            break;
+                        }
                     }
                 }
 
@@ -396,7 +398,7 @@
 
                 var input = $(this),
                     old_tag = input.data('old_tag'),
-                    tag = $.trim(input.val().replace(/ +/, ' ').replace(o.dregex, o.delimiter[0]));
+                    tag = $.trim(input.val().replace(/ +/, ' ').replace(o.dregex, delimiter[0]));
 
                 if (!tag) {
                     if (old_tag && o.beforeTagDelete(el, ed, tagList, old_tag) === false) {
@@ -408,7 +410,7 @@
                     try { input.closest('li').remove(); } catch(e){}
                     if (old_tag) update_globals();
                 }
-                else if (tag.indexOf(o.delimiter[0]) >= 0) {
+                else if (tag.indexOf(delimiter[0]) >= 0) {
                     split_cleanup(input);
                     return;
                 }
@@ -436,14 +438,22 @@
 
                 // Replace <input> with its escaped value. E.g.:
                 // <div class="tag-editor-tag"><input value="tag < text"></div>  -->  <div class="tag-editor-tag">tag &lt; text</div>
-                var $tagEditorTag = input.parent();
+                var $tagEditorTag = input.parent(),
+                    tagObject = validate(tag);
 
-                Object.assign($tagEditorTag.get(0).dataset, input.get(0).dataset);
-                $tagEditorTag.get(0).dataset.tagValue = escape(tag);
-                if (tag.length > o.maxTagLength) {
-                    $tagEditorTag.attr('title', escape(tag));
+                if (tagObject) {
+                    var tagProperties = Object.keys(tagObject);
+                    for (var i = 0 ; i < tagProperties.length ; i++) {
+                        $tagEditorTag.get(0).dataset[tagProperties[i]] = tagObject[tagProperties[i]];
+                    }
+
+                    if (tagObject.tagValue.length > o.maxTagLength) {
+                        $tagEditorTag.attr('title', escape(tagObject.tagValue));
+                    } else {
+                        $tagEditorTag.removeAttr('title');
+                    }
+                    $tagEditorTag.html(escape(ellipsify(tagObject.tagValue, o.maxTagLength))).removeClass('active');
                 }
-                $tagEditorTag.html(escape(ellipsify(tag, o.maxTagLength))).removeClass('active');
 
                 if (tag != old_tag) {
                     update_globals();
@@ -452,20 +462,20 @@
                 set_placeholder();
             });
 
-            var pasted_content;
             ed.on('paste', 'input', function(e) {
+                var pastedContent, inputContent;
                 $(this).removeAttr('maxlength');
-                pasted_content = $(this);
+                pastedContent = (e.originalEvent || e).clipboardData.getData('text/plain');
+                inputContent = $(this);
                 setTimeout(function() {
-                    split_cleanup(pasted_content);
+                    split_cleanup(inputContent, pastedContent);
                 }, 30);
             });
 
             // keypress delimiter
-            var inp;
             ed.on('keypress', 'input', function(e) {
-                if (o.delimiter.indexOf(String.fromCharCode(e.which)) >= 0) {
-                    inp = $(this);
+                if (delimiter.indexOf(String.fromCharCode(e.which)) >= 0) {
+                    var inp = $(this);
                     setTimeout(function() {
                         split_cleanup(inp);
                     }, 20);
@@ -595,7 +605,7 @@
                     tagList.push(tag);
                     ed.append(
                         '<li>' +
-                            '<div class="tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>' +
+                            '<div class="tag-editor-spacer">&nbsp;' + delimiter[0] + '</div>' +
                             '<div class="tag-editor-tag" data-tag-value="' + escape(tag) + '"' +
                                   (tag.length > o.maxTagLength ? ' title="' + escape(tag) + '"' : '') + '>' + escape(ellipsify(tag, o.maxTagLength)) + '</div>' +
                             '<div class="tag-editor-delete"><i></i></div>' +
@@ -619,10 +629,9 @@
         initialTags: [],
         maxTags: 0,
         maxLength: 50,
-        maxTagLength: 100,
-        delimiter: ',;',
+        maxTagLength: 20,
         placeholder: '',
-        forceLowercase: true,
+        forceLowercase: false,
         clickDelete: false,
         animateDelete: 175,
         sortable: true, // jQuery UI sortable
