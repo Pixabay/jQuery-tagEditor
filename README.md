@@ -1,26 +1,41 @@
 jQuery JSON Tag Editor
 ======================
 
-jQuery JSON Tag Editor is a fork of [jQuery-tagEditor](https://goodies.pixabay.com/jquery/tag-editor/demo.html), originally developed by Simon Steinberger for
+*jQuery JSON Tag Editor* is a fork of [jQuery-tagEditor](https://goodies.pixabay.com/jquery/tag-editor/demo.html), originally developed by Simon Steinberger for
 [Pixabay.com](https://pixabay.com) and licensed under the [MIT license](https://opensource.org/licenses/MIT). This fork maintains the same license.
 
 *jQuery JSON Tag Editor* adds a separation between the visual representation of a tag and the tag itself. Tags are plain JavaScript objects with a `tagValue` 
-that is its visual representation in the tag editor. The `tagValue` property plus any others that the tag object may have are all stored as 
-[data attributes](https://developer.mozilla.org/en/docs/Web/Guide/HTML/Using_data_attributes) in each `&lt;div class="tag-editor-tag"&gt;` element.
+that is its visual representation in the tag editor. `tagValue` plus any other properties that the tag object may have are all stored as 
+[data attributes](https://developer.mozilla.org/en/docs/Web/Guide/HTML/Using_data_attributes) in each `<div class="tag-editor-tag">` element.
 
-So, using the `addTag` public method, the following:
+So, using the `addTag` public method, this:
 ```
-$('#id').jsonTagEditor('addTag', {tagValue: 'Car', tagType: 'string', category: 'vehicle'}
+$('#id').jsonTagEditor('addTag', '{"tagValue": "Car", "tagType": "string", "category": "vehicle"}')
 ```
 
-Is turned into the following markup:
+Produces the markup below:
 ```
 <div class="tag-editor-tag" data-tag-value="Car" data-tag-type="string" data-category="vehicle">Car</div>
 ```
 
-If only a string is provided as an argument then an object with only the `tagValue` property is created. This is the case with entering tags manually into the editor. 
- 
-What follows is the original contents of jQuery-tagEditor’s README.md file:
+If a string is provided as an argument then an object with only the `tagValue` property is created. This is the case when tags are manually typed into the editor. 
+
+Features added:
+---------------
+* Tags are complex objects: what you see in the editor is the property `tagValue`, but you can add arbitrary data to your tags
+* Tag object properties are stored as data attributes of their corresponding `<div>` element
+* A new option `maxTagLength` can trim and ellipsify tags while keeping the original value in `data-tag-value`
+
+Features removed:
+-----------------
+* Auto-grow width of `<input>` editors
+* Support for cut: the original feature was Window-specific but buggy as tags weren’t put in the clipboard 
+* `removeDuplicates`: as tags aren’t strings it was the simplest way to deal with this issue
+* The `delimiter` is hard-coded to `\t` and `\n` 
+
+---
+
+What follows are the original contents of jQuery-tagEditor’s README.md file:
 
 jQuery-tagEditor
 ================
