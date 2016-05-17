@@ -59,16 +59,16 @@
         #response hr { margin: 2px 0; border: 0; border-top: 1px solid #eee; border-bottom: 1px solid #fdfdfd; }
 
         /* overwrite default CSS for tiny, dark tags in demo5 */
-        #demo5+.tag-editor { background: #fafafa; font-size: 12px; }
-        #demo5+.tag-editor .tag-editor-tag { color: #fff; background: #555; border-radius: 2px; }
-        #demo5+.tag-editor .tag-editor-spacer { width: 7px; }
-        #demo5+.tag-editor .tag-editor-delete { display: none; }
+        #demo5+.json-tag-editor { background: #fafafa; font-size: 12px; }
+        #demo5+.json-tag-editor .json-tag-editor-tag { color: #fff; background: #555; border-radius: 2px; }
+        #demo5+.json-tag-editor .json-tag-editor-spacer { width: 7px; }
+        #demo5+.json-tag-editor .json-tag-editor-delete { display: none; }
 
         /* color tags */
-        .tag-editor .red-tag .tag-editor-tag { color: #c65353; background: #ffd7d7; }
-        .tag-editor .red-tag .tag-editor-delete { background-color: #ffd7d7; }
-        .tag-editor .green-tag .tag-editor-tag { color: #45872c; background: #e1f3da; }
-        .tag-editor .green-tag .tag-editor-delete { background-color: #e1f3da; }
+        .json-tag-editor .red-tag .json-tag-editor-tag { color: #c65353; background: #ffd7d7; }
+        .json-tag-editor .red-tag .json-tag-editor-delete { background-color: #ffd7d7; }
+        .json-tag-editor .green-tag .json-tag-editor-tag { color: #45872c; background: #e1f3da; }
+        .json-tag-editor .green-tag .json-tag-editor-delete { background-color: #e1f3da; }
     </style>
     <link rel="stylesheet" href="jquery.json-tag-editor.css">
 </head>
@@ -117,7 +117,7 @@
 
         <h3>Usage</h3>
         <p>
-            Include the stylesheet <span class="inline-code">jquery.tag-editor.css</span> in the <span class="inline-code">&lt;head&gt;</span> section of your HTML document - and the JavaScript file <span class="inline-code">jquery.tag-editor.min.js</span> after loading jQuery and optional jQuery UI sortable/autocomplete.
+            Include the stylesheet <span class="inline-code">jquery.json-tag-editor.css</span> in the <span class="inline-code">&lt;head&gt;</span> section of your HTML document - and the JavaScript file <span class="inline-code">jquery.json-tag-editor.min.js</span> after loading jQuery and optional jQuery UI sortable/autocomplete.
             Make sure to also load accursoft's <a href="http://code.accursoft.com/caret">caret plugin</a> (1.1 kB minified).
             tagEditor accepts settings from an object of key/value pairs, and can be assigned to any text input field or textarea.
         </p>
@@ -243,7 +243,7 @@ function() {
     for (i = 0; i &lt; tags.length; i++) { $(<b>'#demo3'</b>).jsonTagEditor(<b>'removeTag'</b>, tags[i]); }
 }
 <i>// working shortcut for removing all tags
-// $('#demo3').next('.tag-editor').find('.tag-editor-delete').click();</i>
+// $('#demo3').next('.json-tag-editor').find('.json-tag-editor-delete').click();</i>
 
 <i>// destroy</i>
 $(<b>'#demo3'</b>).jsonTagEditor(<b>'destroy'</b>);
@@ -289,13 +289,13 @@ $(<b>'#demo5'</b>).jsonTagEditor({
         <pre>
 <i>/* overwrite default CSS for tiny, dark tags */</i>
 
-<b>#demo5+.tag-editor</b> { background: <em>#fafafa</em>; font-size: <em>12px</em>; }
-<b>#demo5+.tag-editor .tag-editor-tag</b> {
+<b>#demo5+.json-tag-editor</b> { background: <em>#fafafa</em>; font-size: <em>12px</em>; }
+<b>#demo5+.json-tag-editor .json-tag-editor-tag</b> {
     color: <em>#fff</em>; background: <em>#555</em>;
     border-radius: <em>2px</em>;
 }
-<b>#demo5+.tag-editor .tag-editor-spacer</b> { width: <em>7px</em>; }
-<b>#demo5+.tag-editor .tag-editor-delete</b> { display: <em>none</em>; }</pre>
+<b>#demo5+.json-tag-editor .json-tag-editor-spacer</b> { width: <em>7px</em>; }
+<b>#demo5+.json-tag-editor .json-tag-editor-delete</b> { display: <em>none</em>; }</pre>
         <p>
             This jQuery plugin was designed with custom styling in mind. In this example we've enabled the <span class="inline-code">clickDelete</span> feature while hiding all delete icons. Both options may be used at the same time, as well.
             By fiddling around with the default stylesheet, you can achieve almost any desired look for your tag Editor.
@@ -315,8 +315,8 @@ $(<b>'#demo6'</b>).jsonTagEditor({
 function tag_classes(field, editor, tags) {
     $(<b>'li'</b>, editor).each(function(){
         var li = $(this);
-        if (li.find(<b>'.tag-editor-tag'</b>).html() == <b>'red'</b>) li.addClass(<b>'red-tag'</b>);
-        else if (li.find(<b>'.tag-editor-tag'</b>).html() == <b>'green'</b>) li.addClass(<b>'green-tag'</b>)
+        if (li.find(<b>'.json-tag-editor-tag'</b>).html() == <b>'red'</b>) li.addClass(<b>'red-tag'</b>);
+        else if (li.find(<b>'.json-tag-editor-tag'</b>).html() == <b>'green'</b>) li.addClass(<b>'green-tag'</b>)
         else li.removeClass(<b>'red-tag green-tag'</b>);
     });
 }
@@ -330,9 +330,9 @@ tag_classes(null, $('#demo6').jsonTagEditor('getTags')[0].editor);</pre>
         </p>
         <pre>&lt;ul&gt;
     &lt;li&gt;
-        &lt;div class=<b>&quot;tag-editor-spacer&quot;</b>&gt;&lt;/div&gt;
-        &lt;div class=<b>&quot;tag-editor-tag&quot;</b>&gt;Tag content&lt;/div&gt;
-        &lt;div class=<b>&quot;tag-editor-delete&quot;</b>&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;div class=<b>&quot;json-tag-editor-spacer&quot;</b>&gt;&lt;/div&gt;
+        &lt;div class=<b>&quot;json-tag-editor-tag&quot;</b>&gt;Tag content&lt;/div&gt;
+        &lt;div class=<b>&quot;json-tag-editor-delete&quot;</b>&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
     &lt;/li&gt;
     [...]
 &lt;/ul&gt;</pre>
@@ -442,8 +442,8 @@ tag_classes(null, $('#demo6').jsonTagEditor('getTags')[0].editor);</pre>
             function tag_classes(field, editor, tags) {
                 $('li', editor).each(function(){
                     var li = $(this);
-                    if (li.find('.tag-editor-tag').html() == 'red') li.addClass('red-tag');
-                    else if (li.find('.tag-editor-tag').html() == 'green') li.addClass('green-tag')
+                    if (li.find('.json-tag-editor-tag').html() == 'red') li.addClass('red-tag');
+                    else if (li.find('.json-tag-editor-tag').html() == 'green') li.addClass('green-tag')
                     else li.removeClass('red-tag green-tag');
                 });
             }
