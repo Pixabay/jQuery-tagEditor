@@ -157,7 +157,7 @@
             ed.append('<li style="width:1px">&nbsp;</li>');
 
             // Markup for new tag
-            var new_tag =
+            var newTag =
                 '<li>' +
                     '<div class="json-tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>' +
                     '<div class="json-tag-editor-tag"></div>' +
@@ -204,7 +204,7 @@
 
             // ed -> $<ul>
             // closest_tag is only used when autocomplete is wired to the tag editor, L325: ed.trigger('click', ...
-            ed.click(function(e, closest_tag) {
+            ed.click(function(e, closestTag) {
                 var d,
                     dist = 99999,
                     loc;
@@ -228,7 +228,7 @@
 
                 // always remove placeholder on click
                 $('.placeholder', ed).remove();
-                if (closest_tag && closest_tag.length) {
+                if (closestTag && closestTag.length) {
                     loc = 'before';
                 }
                 else {
@@ -236,32 +236,32 @@
                     $('.json-tag-editor-tag', ed).each(function() {
                         var tag = $(this),
                             to = tag.offset(),
-                            tag_x = to.left,
-                            tag_y = to.top;
+                            tagX = to.left,
+                            tagY = to.top;
 
-                        if (e.pageY >= tag_y && e.pageY <= tag_y+tag.height()) {
-                            if (e.pageX < tag_x) {
+                        if (e.pageY >= tagY && e.pageY <= tagY+tag.height()) {
+                            if (e.pageX < tagX) {
                                 loc = 'before';
-                                d = tag_x - e.pageX;
+                                d = tagX - e.pageX;
                             }
                             else {
                                 loc = 'after';
-                                d = e.pageX - tag_x - tag.width();
+                                d = e.pageX - tagX - tag.width();
                             }
                             if (d < dist) dist = d;
-                            closest_tag = tag;
+                            closestTag = tag;
                         }
                     });
                 }
 
                 if (loc === 'before') {
-                    $(new_tag).insertBefore(closest_tag.closest('li')).find('.json-tag-editor-tag').click();
+                    $(newTag).insertBefore(closestTag.closest('li')).find('.json-tag-editor-tag').click();
                 }
                 else if (loc === 'after') {
-                    $(new_tag).insertAfter(closest_tag.closest('li')).find('.json-tag-editor-tag').click();
+                    $(newTag).insertAfter(closestTag.closest('li')).find('.json-tag-editor-tag').click();
                 }
                 else { // empty editor
-                    $(new_tag).appendTo(ed).find('.json-tag-editor-tag').click();
+                    $(newTag).appendTo(ed).find('.json-tag-editor-tag').click();
                 }
                 return false;
             });
@@ -316,20 +316,20 @@
                 if (!$(this).hasClass('active')) {
                     var tagValue = $(this).text();
                     // Guess cursor position in text input
-                    var left_percent = Math.abs(($(this).offset().left - e.pageX) / $(this).width()),
-                        caret_pos = parseInt(tagValue.length * left_percent),
+                    var leftPercent = Math.abs(($(this).offset().left - e.pageX) / $(this).width()),
+                        caretPos = parseInt(tagValue.length * leftPercent),
                         input = $(this).html('<input type="text" maxlength="' + o.maxLength + '" value="' + escape(tagValue) + '">').addClass('active').find('input');
 
-                        input.data('old_tag', tagValue).focus().caret(caret_pos);
+                        input.data('old_tag', tagValue).focus().caret(caretPos);
 
                     if (o.autocomplete) {
                         var aco = $.extend({}, o.autocomplete);
                         // Extend user provided autocomplete select method
-                        var ac_select = 'select' in aco ? o.autocomplete.select : '';
+                        var acSelect = 'select' in aco ? o.autocomplete.select : '';
 
                         aco.select = function(e, ui) {
-                            if (ac_select) {
-                                ac_select(e, ui);
+                            if (acSelect) {
+                                acSelect(e, ui);
                             }
 
                             setTimeout(function() {
@@ -348,22 +348,22 @@
             // Helper: split into multiple tags, e.g. after paste
             function splitCleanup(input, text) {
                 var li = input.closest('li'),
-                    sub_tags = text ? text.replace(/ +/, ' ').split(o.dregex) : input.val().replace(/ +/, ' ').split(o.dregex),
-                    old_tag = input.data('old_tag'),
-                    old_tags = tagList.slice(0),
+                    subTags = text ? text.replace(/ +/, ' ').split(o.dregex) : input.val().replace(/ +/, ' ').split(o.dregex),
+                    oldTag = input.data('old_tag'),
+                    oldTags = tagList.slice(0),
                     exceeded = false,
-                    cb_val; // copy tagList
+                    cbVal; // copy tagList
 
-                for (var i = 0 ; i < sub_tags.length ; i++) {
-                    tag = $.trim(sub_tags[i]).slice(0, o.maxLength);
+                for (var i = 0 ; i < subTags.length ; i++) {
+                    tag = $.trim(subTags[i]).slice(0, o.maxLength);
                     if (o.forceLowercase) {
                         tag = tag.toLowerCase();
                     }
 
-                    cb_val = o.beforeTagSave(el, ed, old_tags, old_tag, tag);
-                    tag = cb_val || tag;
+                    cbVal = o.beforeTagSave(el, ed, oldTags, oldTag, tag);
+                    tag = cbVal || tag;
 
-                    if (cb_val === false || !tag) {
+                    if (cbVal === false || !tag) {
                         continue;
                     }
 
@@ -372,15 +372,15 @@
                     if (tagObject) {
                         var $tagEditorTag =
                             $('<div class="json-tag-editor-tag"' +
-                                (tag.length > o.maxTagLength ? ' title="' + escape(tagObject.tagValue) + '"' : '') + '>' + escape(ellipsify(tagObject.tagValue, o.maxTagLength)) +
-                                '</div>');
+                                  (tag.length > o.maxTagLength ? ' title="' + escape(tagObject.tagValue) + '"' : '') + '>' + escape(ellipsify(tagObject.tagValue, o.maxTagLength)) +
+                              '</div>');
 
                         var tagProperties = Object.keys(tagObject);
                         for (var j = 0 ; j < tagProperties.length ; j++) {
                             $tagEditorTag.get(0).dataset[tagProperties[j]] = tagObject[tagProperties[j]];
                         }
 
-                        old_tags.push(tagObject);
+                        oldTags.push(tagObject);
                         li.before(
                             $('<li></li>')
                                 .append('<div class="json-tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>')
@@ -388,7 +388,7 @@
                                 .append('<div class="json-tag-editor-delete"><i></i></div>')
                         );
 
-                        if (o.maxTags && old_tags.length >= o.maxTags) {
+                        if (o.maxTags && oldTags.length >= o.maxTags) {
                             exceeded = true;
                             break;
                         }
@@ -403,40 +403,42 @@
                 e.stopPropagation();
 
                 var input = $(this),
-                    old_tag = input.data('old_tag'),
+                    oldTag = input.data('old_tag'),
                     tag = $.trim(input.val().replace(/ +/, ' ').replace(o.dregex, o.delimiter[0]));
 
                 if (!tag) {
-                    if (old_tag && o.beforeTagDelete(el, ed, tagList, old_tag) === false) {
-                        input.val(old_tag).focus();
+                    if (oldTag && o.beforeTagDelete(el, ed, tagList, oldTag) === false) {
+                        input.val(oldTag).focus();
                         blurResult = false;
                         updateGlobals();
                         return;
                     }
                     try { input.closest('li').remove(); } catch(e){}
-                    if (old_tag) updateGlobals();
+                    if (oldTag) {
+                        updateGlobals();
+                    }
                 }
                 else if (tag.indexOf(o.delimiter[0]) >= 0) {
                     splitCleanup(input);
                     return;
                 }
-                else if (tag != old_tag) {
+                else if (tag != oldTag) {
                     if (o.forceLowercase) {
                         tag = tag.toLowerCase();
                     }
 
-                    var cb_val = o.beforeTagSave(el, ed, tagList, old_tag, tag);
-                    tag = cb_val || tag;
-                    if (cb_val === false) {
-                        if (old_tag) {
-                            input.val(old_tag).focus();
+                    var cbVal = o.beforeTagSave(el, ed, tagList, oldTag, tag);
+                    tag = cbVal || tag;
+                    if (cbVal === false) {
+                        if (oldTag) {
+                            input.val(oldTag).focus();
                             blurResult = false;
                             updateGlobals();
                             return;
                         }
                         try { input.closest('li').remove(); } catch(e){}
 
-                        if (old_tag) {
+                        if (oldTag) {
                             updateGlobals();
                         }
                     }
@@ -461,7 +463,7 @@
                     $tagEditorTag.html(escape(ellipsify(tagObject.tagValue, o.maxTagLength))).removeClass('active');
                 }
 
-                if (tag != old_tag) {
+                if (tag != oldTag) {
                     updateGlobals();
                 }
 
@@ -493,23 +495,23 @@
 
                 // left/up key + backspace key on empty field
                 if ((e.which === 37 || !o.autocomplete && e.which === 38) && !$t.caret() || e.which === 8 && !$t.val()) {
-                    var prev_tag = $t.closest('li').prev('li').find('.json-tag-editor-tag');
+                    var previousTag = $t.closest('li').prev('li').find('.json-tag-editor-tag');
 
-                    if (prev_tag.length) {
-                        prev_tag.click().find('input').caret(-1);
+                    if (previousTag.length) {
+                        previousTag.click().find('input').caret(-1);
                     }
                     else if ($t.val() && !(o.maxTags && ed.data('tags').length >= o.maxTags)) {
-                        $(new_tag).insertBefore($t.closest('li')).find('.json-tag-editor-tag').click();
+                        $(newTag).insertBefore($t.closest('li')).find('.json-tag-editor-tag').click();
                     }
 
                     return false;
                 }
                 // right/down key
                 else if ((e.which === 39 || !o.autocomplete && e.which === 40) && ($t.caret() === $t.val().length)) {
-                    var next_tag = $t.closest('li').next('li').find('.json-tag-editor-tag');
+                    var nextTag = $t.closest('li').next('li').find('.json-tag-editor-tag');
 
-                    if (next_tag.length) {
-                        next_tag.click().find('input').caret(0);
+                    if (nextTag.length) {
+                        nextTag.click().find('input').caret(0);
                     }
                     else if ($t.val()) {
                         ed.click();
@@ -521,13 +523,13 @@
                 else if (e.which === 9) {
                     // shift+tab
                     if (e.shiftKey) {
-                        var prev_tag = $t.closest('li').prev('li').find('.json-tag-editor-tag');
+                        var previousTag = $t.closest('li').prev('li').find('.json-tag-editor-tag');
 
-                        if (prev_tag.length) {
-                            prev_tag.click().find('input').caret(0);
+                        if (previousTag.length) {
+                            previousTag.click().find('input').caret(0);
                         }
                         else if ($t.val() && !(o.maxTags && ed.data('tags').length >= o.maxTags)) {
-                            $(new_tag).insertBefore($t.closest('li')).find('.json-tag-editor-tag').click();
+                            $(newTag).insertBefore($t.closest('li')).find('.json-tag-editor-tag').click();
                         }
                         else {  // Allow tabbing to previous element
                             el.attr('disabled', 'disabled');
@@ -540,10 +542,10 @@
                         return false;
                     // tab
                     } else {
-                        var next_tag = $t.closest('li').next('li').find('.json-tag-editor-tag');
+                        var nextTag = $t.closest('li').next('li').find('.json-tag-editor-tag');
 
-                        if (next_tag.length) {
-                            next_tag.click().find('input').caret(0);
+                        if (nextTag.length) {
+                            nextTag.click().find('input').caret(0);
                         }
                         else if ($t.val()) {
                             ed.click();
@@ -556,10 +558,10 @@
                 }
                 // del key
                 else if (e.which === 46 && (!$.trim($t.val()) || ($t.caret() === $t.val().length))) {
-                    var next_tag = $t.closest('li').next('li').find('.json-tag-editor-tag');
+                    var nextTag = $t.closest('li').next('li').find('.json-tag-editor-tag');
 
-                    if (next_tag.length) {
-                        next_tag.click().find('input').caret(0);
+                    if (nextTag.length) {
+                        nextTag.click().find('input').caret(0);
                     }
                     else if ($t.val()) {
                         ed.click();
@@ -628,7 +630,9 @@
                     update: function(){ updateGlobals(); }
                 });
             }
+            
         });
+
     };
 
     $.fn.jsonTagEditor.defaults = {
@@ -648,4 +652,5 @@
         beforeTagSave: function(){},
         beforeTagDelete: function(){}
     };
+
 }(jQuery));
