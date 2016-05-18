@@ -23,14 +23,15 @@ If a string is provided as an argument then an object with only the `tagValue` p
 Features added:
 ---------------
 * Tags are complex objects: what you see in the editor is the property `tagValue`, but you can add arbitrary data to your tags
-* Tag object properties are stored as data attributes of their corresponding `<div>` element
+* Tag object properties are stored as data attributes in their corresponding `<div>` element
 * A new option `maxTagLength` can trim and ellipsify tags while keeping the original value in `data-tag-value`
+* Multiple tags when pasting a multi-line text snippet, one per line 
 
 Features removed:
 -----------------
 * Auto-grow width of `<input>` editors
 * Support for cut: the original feature was Window-specific but buggy as tags weren’t put in the clipboard 
-* `removeDuplicates`: as tags aren’t strings it was the simplest way to deal with this issue
+* `removeDuplicates`: because tags aren’t strings it was the simplest way to deal with this issue
 * The `delimiter` is hard-coded to `\t` and `\n` 
 
 ---
