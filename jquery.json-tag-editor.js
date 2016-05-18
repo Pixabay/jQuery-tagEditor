@@ -70,14 +70,15 @@
                             .append('<div class="json-tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>')
                             .append('<div class="json-tag-editor-tag"></div>')
                             .append('<div class="json-tag-editor-delete"><i></i></div>')
-                            .appendTo(ed).find('.json-tag-editor-tag')
+                        .appendTo(ed).find('.json-tag-editor-tag')
                             .append('<input type="text" maxlength="' + o.maxLength + '">')
                             .addClass('active').find('input').val(val).blur();
 
                         if (!blur) {
                             ed.click();
-                        } else {
-                            // setPlaceHolder() isn’t declared in this context, so .placeholder is removed explicitly
+                        }
+                        else {
+                            // setPlaceHolder() isn’t declared in this context and .placeholder is removed explicitly
                             $('.placeholder', ed).remove();
                         }
                         break;
@@ -120,23 +121,14 @@
                     }
 
                     if (sel.rangeCount > 0 && el && el.length) {
-                        var tags = [],
-                            splits = sel.toString().split(el.prev().data('options').dregex);
-
-                        for (var i = 0 ; i < splits.length ; i++) {
-                            var tag = $.trim(splits[i]);
-                            if (tag) {
-                                tags.push(tag);
-                            }
-                        }
                         $('.json-tag-editor-tag', el).each(function() {
-                            if ($.inArray($(this).text(), tags) >= 0) {
+                            if (sel.containsNode($(this).get(0))) {
                                 $(this).closest('li').find('.json-tag-editor-delete').click();
                             }
                         });
-
                         return false;
                     }
+                    
                 }
             });
         }
@@ -180,7 +172,8 @@
                     if ($(this).hasClass('active')) {
                         Object.assign(tag, $(this).find('input').get(0).dataset);
                         tag.tagValue = $(this).find('input').val();
-                    } else {
+                    }
+                    else {
                         Object.assign(tag, $(e).get(0).dataset)
                     }
 
@@ -457,7 +450,8 @@
 
                     if (tagObject.tagValue.length > o.maxTagLength) {
                         $tagEditorTag.attr('title', escape(tagObject.tagValue));
-                    } else {
+                    }
+                    else {
                         $tagEditorTag.removeAttr('title');
                     }
                     $tagEditorTag.html(escape(ellipsify(tagObject.tagValue, o.maxTagLength))).removeClass('active');
@@ -480,7 +474,7 @@
                 }, 30);
             });
 
-            // keypress delimiter
+            // Keypress delimiter
             ed.on('keypress', 'input', function(e) {
                 if (o.delimiter.indexOf(String.fromCharCode(e.which)) >= 0) {
                     var inp = $(this);
@@ -491,29 +485,29 @@
             });
 
             ed.on('keydown', 'input', function(e) {
-                var $t = $(this);
+                var $this = $(this);
 
                 // left/up key + backspace key on empty field
-                if ((e.which === 37 || !o.autocomplete && e.which === 38) && !$t.caret() || e.which === 8 && !$t.val()) {
-                    var previousTag = $t.closest('li').prev('li').find('.json-tag-editor-tag');
+                if ((e.which === 37 || !o.autocomplete && e.which === 38) && !$this.caret() || e.which === 8 && !$this.val()) {
+                    var previousTag = $this.closest('li').prev('li').find('.json-tag-editor-tag');
 
                     if (previousTag.length) {
                         previousTag.click().find('input').caret(-1);
                     }
-                    else if ($t.val() && !(o.maxTags && ed.data('tags').length >= o.maxTags)) {
-                        $(newTag).insertBefore($t.closest('li')).find('.json-tag-editor-tag').click();
+                    else if ($this.val() && !(o.maxTags && ed.data('tags').length >= o.maxTags)) {
+                        $(newTag).insertBefore($this.closest('li')).find('.json-tag-editor-tag').click();
                     }
 
                     return false;
                 }
                 // right/down key
-                else if ((e.which === 39 || !o.autocomplete && e.which === 40) && ($t.caret() === $t.val().length)) {
-                    var nextTag = $t.closest('li').next('li').find('.json-tag-editor-tag');
+                else if ((e.which === 39 || !o.autocomplete && e.which === 40) && ($this.caret() === $this.val().length)) {
+                    var nextTag = $this.closest('li').next('li').find('.json-tag-editor-tag');
 
                     if (nextTag.length) {
                         nextTag.click().find('input').caret(0);
                     }
-                    else if ($t.val()) {
+                    else if ($this.val()) {
                         ed.click();
                     }
 
@@ -523,13 +517,13 @@
                 else if (e.which === 9) {
                     // shift+tab
                     if (e.shiftKey) {
-                        var previousTag = $t.closest('li').prev('li').find('.json-tag-editor-tag');
+                        var previousTag = $this.closest('li').prev('li').find('.json-tag-editor-tag');
 
                         if (previousTag.length) {
                             previousTag.click().find('input').caret(0);
                         }
-                        else if ($t.val() && !(o.maxTags && ed.data('tags').length >= o.maxTags)) {
-                            $(newTag).insertBefore($t.closest('li')).find('.json-tag-editor-tag').click();
+                        else if ($this.val() && !(o.maxTags && ed.data('tags').length >= o.maxTags)) {
+                            $(newTag).insertBefore($this.closest('li')).find('.json-tag-editor-tag').click();
                         }
                         else {  // Allow tabbing to previous element
                             el.attr('disabled', 'disabled');
@@ -541,13 +535,14 @@
 
                         return false;
                     // tab
-                    } else {
-                        var nextTag = $t.closest('li').next('li').find('.json-tag-editor-tag');
+                    }
+                    else {
+                        var nextTag = $this.closest('li').next('li').find('.json-tag-editor-tag');
 
                         if (nextTag.length) {
                             nextTag.click().find('input').caret(0);
                         }
-                        else if ($t.val()) {
+                        else if ($this.val()) {
                             ed.click();
                         }
                         else {  // Allow tabbing to next element
@@ -557,13 +552,13 @@
                     }
                 }
                 // del key
-                else if (e.which === 46 && (!$.trim($t.val()) || ($t.caret() === $t.val().length))) {
-                    var nextTag = $t.closest('li').next('li').find('.json-tag-editor-tag');
+                else if (e.which === 46 && (!$.trim($this.val()) || ($this.caret() === $this.val().length))) {
+                    var nextTag = $this.closest('li').next('li').find('.json-tag-editor-tag');
 
                     if (nextTag.length) {
                         nextTag.click().find('input').caret(0);
                     }
-                    else if ($t.val()) {
+                    else if ($this.val()) {
                         ed.click();
                     }
 
@@ -571,7 +566,7 @@
                 }
                 // enter key
                 else if (e.which === 13) {
-                    ed.trigger('click', [$t.closest('li').next('li').find('.json-tag-editor-tag')]);
+                    ed.trigger('click', [$this.closest('li').next('li').find('.json-tag-editor-tag')]);
 
                     // trigger blur if maxTags limit is reached
                     if (o.maxTags && ed.data('tags').length >= o.maxTags) {
@@ -581,16 +576,16 @@
                     return false;
                 }
                 // pos1
-                else if (e.which === 36 && !$t.caret()) {
+                else if (e.which === 36 && !$this.caret()) {
                     ed.find('.json-tag-editor-tag').first().click();
                 }
                 // end
-                else if (e.which === 35 && $t.caret() === $t.val().length) {
+                else if (e.which === 35 && $this.caret() === $this.val().length) {
                     ed.find('.json-tag-editor-tag').last().click();
                 }
                 // esc
                 else if (e.which === 27) {
-                    $t.val($t.data('old_tag') ? $t.data('old_tag') : '').blur();
+                    $this.val($this.data('old_tag') ? $this.data('old_tag') : '').blur();
                     return false;
                 }
             });
@@ -630,7 +625,7 @@
                     update: function(){ updateGlobals(); }
                 });
             }
-            
+
         });
 
     };
