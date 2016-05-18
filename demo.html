@@ -83,7 +83,7 @@
     <div style="border-top: 1px solid #eee;border-bottom:1px solid #eee;background:#fafafa;margin:30px 0;padding:20px 5px">
         <div style="padding :0 7px 0 5px;max-width:900px;margin:auto">
             <textarea id="hero-demo">
-                example tags&#09;sortable&#09;autocomplete&#09;edit in place&#09;tab/cursor navigation&#09;duplicate check&#09;callbacks&#09;copy-paste&#09;placeholder&#09;public methods&#09;custom delimiter&#09;graceful degradation</textarea>
+                example tags&#09;sortable&#09;autocomplete&#09;edit in place&#09;tab/cursor navigation&#09;duplicate check&#09;callbacks&#09;copy-paste&#09;placeholder&#09;public methods&#09;graceful degradation</textarea>
         </div>
     </div>
     <div style="max-width:900px;margin:auto;padding:0 10px 50px">
@@ -102,7 +102,6 @@
             <li>Optional jQuery UI autocomplete</li>
             <li>Copy-paste or delete multiple selected tags</li>
             <li>Duplicate tags check</li>
-            <li>Custom delimiter/s</li>
             <li>Placeholder</li>
             <li>Custom style for faulty tags</li>
             <li>Public methods for reading, adding and removing tags + destroy function</li>
@@ -141,15 +140,6 @@ $(<b>'#my_textarea'</b>).jsonTagEditor({ autocomplete: { <b>'source'</b>: <b>'/u
             <tr><td>initialTags</td><td>[]</td><td>Initial tags as an array of strings.</td></tr>
             <tr><td>maxTags</td><td><i>null</i></td><td>Maximum number of allowed tags.</td></tr>
             <tr><td>maxLength</td><td>50</td><td><span class="inline-code">maxlength</span> attribute of the tag input field.</td></tr>
-            <tr>
-                <td>delimiter</td><td style="white-space:nowrap">',;'</td>
-                <td>
-                    <p>
-                        Required string of delimiters - characters for separating tags.
-                        The first character is used as default delimiter in the (hidden) original field.
-                    </p>
-                </td>
-            </tr>
             <tr><td>placeholder</td><td>''</td><td>Placeholder text for empty tag editor.</td></tr>
             <tr><td>forceLowercase</td><td><i>true</i></td><td>Lowercase all tags.</td></tr>
             <tr><td>removeDuplicates</td><td><i>true</i></td><td>Automatically remove duplicate tags.</td></tr>
@@ -181,7 +171,6 @@ $(<b>'#my_textarea'</b>).jsonTagEditor({ autocomplete: { <b>'source'</b>: <b>'/u
         <pre>
 $(<b>'#demo1'</b>).jsonTagEditor({
     initialTags: [<b>'Hello'</b>, <b>'World'</b>, <b>'Example'</b>, <b>'Tags'</b>],
-    delimiter: <b>', '</b>, <i>/* space and comma */</i>
     placeholder: <b>'Enter tags ...'</b>
 });</pre>
         <div style="margin:0 0 1.2em">
@@ -410,7 +399,7 @@ tag_classes(null, $('#demo6').jsonTagEditor('getTags')[0].editor);</pre>
                 autocomplete: { source: googleSuggest, minLength: 3, delay: 250, html: true, position: { collision: 'flip' } }
             });
 
-            $('#demo1').jsonTagEditor({ initialTags: ['Hello', 'World', 'Example', 'Tags'], delimiter: ', ', placeholder: 'Enter tags ...' }).css('display', 'block').attr('readonly', true);
+            $('#demo1').jsonTagEditor({ initialTags: ['Hello', 'World', 'Example', 'Tags'], placeholder: 'Enter tags ...' }).css('display', 'block').attr('readonly', true);
 
             $('#demo2').jsonTagEditor({
                 autocomplete: { delay: 0, position: { collision: 'flip' }, source: ['ActionScript', 'AppleScript', 'Asp', 'BASIC', 'C', 'C++', 'CSS', 'Clojure', 'COBOL', 'ColdFusion', 'Erlang', 'Fortran', 'Groovy', 'Haskell', 'HTML', 'Java', 'JavaScript', 'Lisp', 'Perl', 'PHP', 'Python', 'Ruby', 'Scala', 'Scheme'] },
