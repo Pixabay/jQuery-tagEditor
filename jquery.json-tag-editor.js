@@ -128,7 +128,7 @@
                         });
                         return false;
                     }
-                    
+
                 }
             });
         }
@@ -196,7 +196,7 @@
             }
 
             // ed -> $<ul>
-            // closest_tag is only used when autocomplete is wired to the tag editor, L325: ed.trigger('click', ...
+            // closestTag is only used when autocomplete is wired to the tag editor, below, at ed.trigger('click', ...
             ed.click(function(e, closestTag) {
                 var d,
                     dist = 99999,
@@ -307,10 +307,12 @@
                 }
 
                 if (!$(this).hasClass('active')) {
-                    var tagValue = $(this).text();
+                    // If this is an existing tag get the data- attribute (e.g. expand an ellipsified tag value), otherwise get the text (e.g. it’s being edited)
+                    var tagValue = $(this).get(0).dataset.tagValue ? $(this).get(0).dataset.tagValue : $(this).text(),
+                        tagDisplay = $(this).text();
                     // Guess cursor position in text input
                     var leftPercent = Math.abs(($(this).offset().left - e.pageX) / $(this).width()),
-                        caretPos = parseInt(tagValue.length * leftPercent),
+                        caretPos = parseInt(tagDisplay.length * leftPercent),
                         input = $(this).html('<input type="text" maxlength="' + o.maxLength + '" value="' + escape(tagValue) + '">').addClass('active').find('input');
 
                         input.data('old_tag', tagValue).focus().caret(caretPos);
@@ -485,11 +487,13 @@
             });
 
             ed.on('keydown', 'input', function(e) {
-                var $this = $(this);
+                var $this = $(this),
+                    previousTag,
+                    nextTag;
 
                 // left/up key + backspace key on empty field
                 if ((e.which === 37 || !o.autocomplete && e.which === 38) && !$this.caret() || e.which === 8 && !$this.val()) {
-                    var previousTag = $this.closest('li').prev('li').find('.json-tag-editor-tag');
+                    previousTag = $this.closest('li').prev('li').find('.json-tag-editor-tag');
 
                     if (previousTag.length) {
                         previousTag.click().find('input').caret(-1);
@@ -502,7 +506,7 @@
                 }
                 // right/down key
                 else if ((e.which === 39 || !o.autocomplete && e.which === 40) && ($this.caret() === $this.val().length)) {
-                    var nextTag = $this.closest('li').next('li').find('.json-tag-editor-tag');
+                    nextTag = $this.closest('li').next('li').find('.json-tag-editor-tag');
 
                     if (nextTag.length) {
                         nextTag.click().find('input').caret(0);
@@ -517,7 +521,7 @@
                 else if (e.which === 9) {
                     // shift+tab
                     if (e.shiftKey) {
-                        var previousTag = $this.closest('li').prev('li').find('.json-tag-editor-tag');
+                        previousTag = $this.closest('li').prev('li').find('.json-tag-editor-tag');
 
                         if (previousTag.length) {
                             previousTag.click().find('input').caret(0);
@@ -537,7 +541,7 @@
                     // tab
                     }
                     else {
-                        var nextTag = $this.closest('li').next('li').find('.json-tag-editor-tag');
+                        nextTag = $this.closest('li').next('li').find('.json-tag-editor-tag');
 
                         if (nextTag.length) {
                             nextTag.click().find('input').caret(0);
@@ -553,7 +557,7 @@
                 }
                 // del key
                 else if (e.which === 46 && (!$.trim($this.val()) || ($this.caret() === $this.val().length))) {
-                    var nextTag = $this.closest('li').next('li').find('.json-tag-editor-tag');
+                    nextTag = $this.closest('li').next('li').find('.json-tag-editor-tag');
 
                     if (nextTag.length) {
                         nextTag.click().find('input').caret(0);
