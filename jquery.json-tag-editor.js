@@ -16,12 +16,12 @@
             try {
                 var parsedTag = JSON.parse(tag);
 
-                if (parsedTag.hasOwnProperty('tagValue') && typeof parsedTag.tagValue === 'string' && parsedTag.tagValue.trim().length > 0) {
+                if (parsedTag.hasOwnProperty('value') && typeof parsedTag.value === 'string' && parsedTag.value.trim().length > 0) {
                     return parsedTag;
                 }
             } catch (e) {}
 
-            return String(tag).trim().length > 0 ? {tagValue: String(tag).trim()} : false;
+            return String(tag).trim().length > 0 ? {value: String(tag).trim()} : false;
         }
 
         function ellipsify(str, maxLength) {
@@ -86,7 +86,7 @@
                     case 'removeTag':
                         // Trigger delete on matching tag, then click editor to create a new tag
                         $('.json-tag-editor-tag', ed).filter(function() {
-                            return $(this).get(0).dataset.tagValue === val;
+                            return $(this).get(0).dataset.value === val;
                         }).closest('li').find('.json-tag-editor-delete').click();
 
                         if (!blur){
@@ -171,19 +171,19 @@
                     var tag = {};
                     if ($(this).hasClass('active')) {
                         Object.assign(tag, $(this).find('input').get(0).dataset);
-                        tag.tagValue = $(this).find('input').val();
+                        tag.value = $(this).find('input').val();
                     }
                     else {
                         Object.assign(tag, $(e).get(0).dataset)
                     }
 
-                    if (tag.tagValue) {
+                    if (tag.value) {
                         return tag;
                     }
                 }).get();
 
                 ed.data('tags', tagList);
-                el.val(tagList.reduce(function(previous, current) {return previous + o.delimiter[0] + current.tagValue}, ''));
+                el.val(tagList.reduce(function(previous, current) {return previous + o.delimiter[0] + current.value}, ''));
 
                 // Change callback except for plugin init
                 if (!init) {
@@ -308,14 +308,14 @@
 
                 if (!$(this).hasClass('active')) {
                     // If this is an existing tag get the data- attribute (e.g. expand an ellipsified tag value), otherwise get the text (e.g. it’s being edited)
-                    var tagValue = $(this).get(0).dataset.tagValue ? $(this).get(0).dataset.tagValue : $(this).text(),
+                    var value = $(this).get(0).dataset.value ? $(this).get(0).dataset.value : $(this).text(),
                         tagDisplay = $(this).text();
                     // Guess cursor position in text input
                     var leftPercent = Math.abs(($(this).offset().left - e.pageX) / $(this).width()),
                         caretPos = parseInt(tagDisplay.length * leftPercent),
-                        input = $(this).html('<input type="text" maxlength="' + o.maxLength + '" value="' + escape(tagValue) + '">').addClass('active').find('input');
+                        input = $(this).html('<input type="text" maxlength="' + o.maxLength + '" value="' + escape(value) + '">').addClass('active').find('input');
 
-                        input.data('old_tag', tagValue).focus().caret(caretPos);
+                        input.data('old_tag', value).focus().caret(caretPos);
 
                     if (o.autocomplete) {
                         var aco = $.extend({}, o.autocomplete);
@@ -367,7 +367,7 @@
                     if (tagObject) {
                         var $tagEditorTag =
                             $('<div class="json-tag-editor-tag"' +
-                                  (tag.length > o.maxTagLength ? ' title="' + escape(tagObject.tagValue) + '"' : '') + '>' + escape(ellipsify(tagObject.tagValue, o.maxTagLength)) +
+                                  (tag.length > o.maxTagLength ? ' title="' + escape(tagObject.value) + '"' : '') + '>' + escape(ellipsify(tagObject.value, o.maxTagLength)) +
                               '</div>');
 
                         var tagProperties = Object.keys(tagObject);
@@ -450,13 +450,13 @@
                         $tagEditorTag.get(0).dataset[tagProperties[i]] = tagObject[tagProperties[i]];
                     }
 
-                    if (tagObject.tagValue.length > o.maxTagLength) {
-                        $tagEditorTag.attr('title', escape(tagObject.tagValue));
+                    if (tagObject.value.length > o.maxTagLength) {
+                        $tagEditorTag.attr('title', escape(tagObject.value));
                     }
                     else {
                         $tagEditorTag.removeAttr('title');
                     }
-                    $tagEditorTag.html(escape(ellipsify(tagObject.tagValue, o.maxTagLength))).removeClass('active');
+                    $tagEditorTag.html(escape(ellipsify(tagObject.value, o.maxTagLength))).removeClass('active');
                 }
 
                 if (tag != oldTag) {
@@ -613,7 +613,7 @@
                     ed.append(
                         '<li>' +
                             '<div class="json-tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>' +
-                            '<div class="json-tag-editor-tag" data-tag-value="' + escape(tag) + '"' +
+                            '<div class="json-tag-editor-tag" data-value="' + escape(tag) + '"' +
                                   (tag.length > o.maxTagLength ? ' title="' + escape(tag) + '"' : '') + '>' + escape(ellipsify(tag, o.maxTagLength)) + '</div>' +
                             '<div class="json-tag-editor-delete"><i></i></div>' +
                         '</li>');
