@@ -12,11 +12,30 @@
                       .replace(/'/g, '&#39;');
         }
 
+        function validateTagArray(json) {
+            try {
+                return JSON.parse(json).map(function(tagArrayElement) {
+                    return validate(JSON.stringify(tagArrayElement));
+                }).filter(function(element) {
+                    return element;
+                });
+            } catch (e) {
+                return json.split(o.dregex).map(function(tagArrayElement) {
+                    return tagArrayElement.trim().length > 0 ? {value: tagArrayElement.trim()} : false;
+                }).filter(function(element) {
+                    return element;
+                });
+            }
+        }
+
+        function validateParsedTag(tagObject) {
+            return (tagObject.hasOwnProperty('value') && typeof tagObject.value === 'string' && tagObject.value.trim().length > 0);
+        }
+
         function validate(tag) {
             try {
                 var parsedTag = JSON.parse(tag);
-
-                if (parsedTag.hasOwnProperty('value') && typeof parsedTag.value === 'string' && parsedTag.value.trim().length > 0) {
+                if (validateParsedTag(parsedTag)) {
                     return parsedTag;
                 }
             } catch (e) {}
@@ -350,7 +369,7 @@
                     cbVal; // copy tagList
 
                 for (var i = 0 ; i < subTags.length ; i++) {
-                    tag = $.trim(subTags[i]).slice(0, o.maxLength);
+                    var tag = $.trim(subTags[i]).slice(0, o.maxLength);
                     if (o.forceLowercase) {
                         tag = tag.toLowerCase();
                     }
@@ -595,28 +614,39 @@
             });
 
             // Create initial tags
-            var tags = o.initialTags.length ? o.initialTags : el.val().split(o.dregex);
+            var tags = o.initialTags.length ?
+                    o.initialTags.map(function(element) {
+                        return validateParsedTag(element) ? element : validate(element);
+                    }) :
+                    validateTagArray(el.val());
 
             for (var i = 0 ; i < tags.length ; i++) {
                 if (o.maxTags && i >= o.maxTags) {
                     break;
                 }
 
-                var tag = $.trim(tags[i].replace(/ +/, ' '));
-
-                if (tag) {
+                var tagObject = tags[i];
+                if (tagObject) {
                     if (o.forceLowercase) {
-                        tag = tag.toLowerCase();
+                        tagObject.value = tagObject.value.toLowerCase();
                     }
 
-                    tagList.push(tag);
+                    tagList.push(tagObject);
+                    var $tagEditorTag =
+                        $('<div class="json-tag-editor-tag"' +
+                            (tagObject.length > o.maxTagLength ? ' title="' + escape(tagObject.value) + '"' : '') + '>' + escape(ellipsify(tagObject.value, o.maxTagLength)) +
+                            '</div>');
+
+                    var tagProperties = Object.keys(tagObject);
+                    for (var j = 0 ; j < tagProperties.length ; j++) {
+                        $tagEditorTag.get(0).dataset[tagProperties[j]] = tagObject[tagProperties[j]];
+                    }
                     ed.append(
-                        '<li>' +
-                            '<div class="json-tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>' +
-                            '<div class="json-tag-editor-tag" data-value="' + escape(tag) + '"' +
-                                  (tag.length > o.maxTagLength ? ' title="' + escape(tag) + '"' : '') + '>' + escape(ellipsify(tag, o.maxTagLength)) + '</div>' +
-                            '<div class="json-tag-editor-delete"><i></i></div>' +
-                        '</li>');
+                        $('<li></li>')
+                            .append('<div class="json-tag-editor-spacer">&nbsp;' + o.delimiter[0] + '</div>')
+                            .append($tagEditorTag)
+                            .append('<div class="json-tag-editor-delete"><i></i></div>')
+                    );
                 }
             }
 
