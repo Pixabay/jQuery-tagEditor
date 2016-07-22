@@ -86,6 +86,14 @@
                 example tags&#09;sortable&#09;autocomplete&#09;edit in place&#09;tab/cursor navigation&#09;duplicate check&#09;callbacks&#09;copy-paste&#09;placeholder&#09;public methods&#09;graceful degradation</textarea>
         </div>
     </div>
+
+    <div style="border-top: 1px solid #eee;border-bottom:1px solid #eee;background:#fafafa;margin:30px 0;padding:20px 5px">
+        <div style="padding :0 7px 0 5px;max-width:900px;margin:auto">
+            <textarea id="json-hero-demo">
+                [{"value":"example tags", "category":"feature"}, {"value":"sortable", "category":"feature"}, {"value":"autocomplete", "category":"feature"}, {"value":"edit in place", "category":"feature"}, {"value":"tab/cursor navigation", "category":"feature"}, {"value":"duplicate check", "category":"feature"}, {"value":"callbacks", "category":"feature"}, {"value":"copy-paste", "category":"feature"}, {"value":"placeholder", "category":"feature"}, {"value":"public methods", "category":"feature"}, {"value":"graceful degradation", "category":"deprecated-feature"}]</textarea>
+        </div>
+    </div>
+
     <div style="max-width:900px;margin:auto;padding:0 10px 50px">
         <h3>Overview and Features</h3>
         <p>
@@ -170,7 +178,7 @@ $(<b>'#my_textarea'</b>).jsonTagEditor({ autocomplete: { <b>'source'</b>: <b>'/u
         <h4 style="margin-top:.5em">Basic settings</h4>
         <pre>
 $(<b>'#demo1'</b>).jsonTagEditor({
-    initialTags: [<b>'Hello'</b>, <b>'World'</b>, <b>'Example'</b>, <b>'Tags'</b>],
+    initialTags: [{"value: "Hello"}, {"value": "World"}, {"value": "Example"}, {"value": "Tags"}],
     placeholder: <b>'Enter tags ...'</b>
 });</pre>
         <div style="margin:0 0 1.2em">
@@ -202,7 +210,7 @@ $(<b>'#demo2'</b>).jsonTagEditor({
         <h4>Public methods</h4>
         <pre>
 $(<b>'#demo3'</b>).jsonTagEditor({
-    initialTags: [<b>'Hello'</b>, <b>'World'</b>],
+    initialTags: [{"value":"Hello", {"value":"World"}],
     placeholder: <b>'Enter tags ...'</b>
 });</pre>
         <div style="margin:0 0 1.2em"><textarea id="demo3"></textarea></div>
@@ -271,7 +279,7 @@ $(<b>'#demo4'</b>).jsonTagEditor({
         <pre>
 $(<b>'#demo5'</b>).jsonTagEditor({
     clickDelete: true,
-    initialTags: [ ... ],
+    initialTags: [ ],
     placeholder: <b>'Enter tags ...'</b>
 });</pre>
         <div style="margin:0 0 1.2em"><textarea id="demo5"></textarea></div>
@@ -364,7 +372,7 @@ tag_classes(null, $('#demo6').jsonTagEditor('getTags')[0].editor);</pre>
             integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="
             crossorigin="anonymous"></script>
     <script src="jquery.caret.min.js"></script>
-    <script src="jquery.json-tag-editor.js"></script>
+    <script src="jquery.json-tag-editor.min.js"></script>
     <script>
         // jQuery UI autocomplete extension - suggest labels may contain HTML tags
         // github.com/scottgonzalez/jquery-ui-extensions/blob/master/src/autocomplete/jquery.ui.autocomplete.html.js
@@ -399,7 +407,12 @@ tag_classes(null, $('#demo6').jsonTagEditor('getTags')[0].editor);</pre>
                 autocomplete: { source: googleSuggest, minLength: 3, delay: 250, html: true, position: { collision: 'flip' } }
             });
 
-            $('#demo1').jsonTagEditor({ initialTags: ['Hello', 'World', 'Example', 'Tags'], placeholder: 'Enter tags ...' }).css('display', 'block').attr('readonly', true);
+            $('#json-hero-demo').jsonTagEditor({
+                placeholder: 'Enter tags ...',
+                autocomplete: { source: googleSuggest, minLength: 3, delay: 250, html: true, position: { collision: 'flip' } }
+            });
+
+            $('#demo1').jsonTagEditor({ initialTags: [{"value":"Hello"}, {"value":"World"}, {"value":"Example"}, {"value":"Tags"}], placeholder: 'Enter tags ...' }).css('display', 'block').attr('readonly', true);
 
             $('#demo2').jsonTagEditor({
                 autocomplete: { delay: 0, position: { collision: 'flip' }, source: ['ActionScript', 'AppleScript', 'Asp', 'BASIC', 'C', 'C++', 'CSS', 'Clojure', 'COBOL', 'ColdFusion', 'Erlang', 'Fortran', 'Groovy', 'Haskell', 'HTML', 'Java', 'JavaScript', 'Lisp', 'Perl', 'PHP', 'Python', 'Ruby', 'Scala', 'Scheme'] },
@@ -407,14 +420,14 @@ tag_classes(null, $('#demo6').jsonTagEditor('getTags')[0].editor);</pre>
                 placeholder: 'Programming languages ...'
             });
 
-            $('#demo3').jsonTagEditor({ initialTags: ['Hello', 'World'], placeholder: 'Enter tags ...' });
+            $('#demo3').jsonTagEditor({ initialTags: [{"value":"Hello"}, {"value":"World"}], placeholder: 'Enter tags ...' });
             $('#remove_all_tags').click(function() {
                 var tags = $('#demo3').jsonTagEditor('getTags')[0].tags;
                 for (var i = 0 ; i < tags.length ; i++) { $('#demo3').jsonTagEditor('removeTag', tags[i].tagValue); }
             });
 
             $('#demo4').jsonTagEditor({
-                initialTags: ['Hello', 'World'],
+                initialTags: [{"value":"Hello"}, {"value":"World"}],
                 placeholder: 'Enter tags ...',
                 onChange: function(field, editor, tags) { $('#response').prepend('Tags changed to: <i>'+(tags.length ? tags.join(', ') : '----')+'</i><hr>'); },
                 beforeTagSave: function(field, editor, tags, tag, val) { $('#response').prepend('Tag <i>'+val+'</i> saved'+(tag ? ' over <i>'+tag+'</i>' : '')+'.<hr>'); },
