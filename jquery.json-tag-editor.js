@@ -158,7 +158,8 @@
                 tagList = []; // Cache current tags
 
             // Create editor (ed) instance: el -> $<textarea>, ed -> $<ul>
-            var ed = $('<ul ' + (o.clickDelete ? 'oncontextmenu="return false;" ' : '') + 'class="json-tag-editor"></ul>').insertAfter(el);
+            var ed = $('<ul ' + (o.clickDelete ? 'oncontextmenu="return false;" ' : '') + 'class="json-tag-editor' +
+                (options.noselect ? ' noselect"' : '"') + '></ul>').insertAfter(el);
 
             el.addClass('json-tag-editor-hidden-src') // Hide original field
                 .data('options', o) // Set data on hidden field
@@ -673,6 +674,7 @@
         forceLowercase: false,
         clickDelete: false,
         animateDelete: 175,
+        noselect: false,
         sortable: true, // jQuery UI sortable
         autocomplete: null, // options dict for jQuery UI autocomplete
 
