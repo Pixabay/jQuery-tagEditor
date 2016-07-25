@@ -44,7 +44,7 @@
         }
 
         function ellipsify(str, maxLength) {
-            return str.length > maxLength ? str.substring(0, maxLength - 1) + "…" : str;
+            return maxLength > -1 && str.length > maxLength ? str.substring(0, maxLength - 1) + "…" : str;
         }
 
         function deepEquals(arr1, arr2) {
@@ -159,7 +159,7 @@
 
             // Create editor (ed) instance: el -> $<textarea>, ed -> $<ul>
             var ed = $('<ul ' + (o.clickDelete ? 'oncontextmenu="return false;" ' : '') + 'class="json-tag-editor' +
-                (options.noselect ? ' noselect"' : '"') + '></ul>').insertAfter(el);
+                (options.noSelect ? ' noselect"' : '"') + '></ul>').insertAfter(el);
 
             el.addClass('json-tag-editor-hidden-src') // Hide original field
                 .data('options', o) // Set data on hidden field
@@ -669,12 +669,12 @@
         initialTags: [],
         maxTags: 0,
         maxLength: 50,
-        maxTagLength: 20,
+        maxTagLength: -1,
         placeholder: '',
         forceLowercase: false,
         clickDelete: false,
         animateDelete: 175,
-        noselect: false,
+        noSelect: false,
         sortable: true, // jQuery UI sortable
         autocomplete: null, // options dict for jQuery UI autocomplete
 
