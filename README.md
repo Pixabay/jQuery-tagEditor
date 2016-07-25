@@ -35,7 +35,7 @@ Features removed:
 * `removeDuplicates`: because tags aren’t strings it was the simplest way to deal with this issue
 * The `delimiter` is hard-coded to `\t` and `\n`
 
-__[Visit the demo page for the full documentation](https://github.io/alfonsomunozpomer/jsontageditor/demo.html).__
+__[Visit the demo page for the full documentation](https://alfonsomunozpomer.github.io/jsontageditor/demo.html).__
 
 ---
 
