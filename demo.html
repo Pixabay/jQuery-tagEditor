@@ -81,16 +81,18 @@
         <a href="https://github.com/alfonsomunozpomer/jQuery-JSON-TagEditor" class="pure-button button-lg">View on GitHub</a>
     </div>
     <div style="border-top: 1px solid #eee;border-bottom:1px solid #eee;background:#fafafa;margin:30px 0;padding:20px 5px">
+        <h3 style="max-width:900px;margin:auto;padding:0 10px 10px">All the goodness from jQuery tagEditor:</h3>
         <div style="padding :0 7px 0 5px;max-width:900px;margin:auto">
             <textarea id="hero-demo">
-                example tags&#09;sortable&#09;autocomplete&#09;edit in place&#09;tab/cursor navigation&#09;duplicate check&#09;callbacks&#09;copy-paste&#09;placeholder&#09;public methods&#09;graceful degradation</textarea>
+                example tags&#09;sortable&#09;autocomplete&#09;edit in place&#09;tab/cursor navigation&#09;callbacks&#09;copy-paste&#09;placeholder&#09;public methods</textarea>
         </div>
     </div>
 
     <div style="border-top: 1px solid #eee;border-bottom:1px solid #eee;background:#fafafa;margin:30px 0;padding:20px 5px">
+        <h3 style="max-width:900px;margin:auto;padding:0 10px 10px">Plus some more:</h3>
         <div style="padding :0 7px 0 5px;max-width:900px;margin:auto">
             <textarea id="json-hero-demo">
-                [{"value":"example tags", "category":"feature"}, {"value":"sortable", "category":"feature"}, {"value":"autocomplete", "category":"feature"}, {"value":"edit in place", "category":"feature"}, {"value":"tab/cursor navigation", "category":"feature"}, {"value":"duplicate check", "category":"feature"}, {"value":"callbacks", "category":"feature"}, {"value":"copy-paste", "category":"feature"}, {"value":"placeholder", "category":"feature"}, {"value":"public methods", "category":"feature"}, {"value":"graceful degradation", "category":"deprecated-feature"}]</textarea>
+                [{"value":"example tags", "category":"feature"}, {"value":"rich tags with metadata", "category":"new-feature"}, {"value":"ellipsified very very very very long tags", "category":"new-feature"}, {"value":"sortable", "category":"feature"}, {"value":"autocomplete", "category":"feature"}, {"value":"edit in place", "category":"feature"}, {"value":"tab/cursor navigation", "category":"feature"}, {"value":"duplicate check", "category":"feature"}, {"value":"callbacks", "category":"feature"}, {"value":"copy-paste", "category":"feature"}, {"value":"placeholder", "category":"feature"}, {"value":"public methods", "category":"feature"}, {"value":"disable selection", "category":"new-feature"}]</textarea>
         </div>
     </div>
 
@@ -98,35 +100,49 @@
         <h3>Overview and Features</h3>
         <p>
             Released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a>.
-            Source on <a href="https://github.com/alfonsomunozpomer/jQuery-JSON-TagEditor">Github</a> (<a href="https://github.com/alfonsomunozpomer/jQuery-JSON-TagEditor#changelog">changelog</a>).
-            Compatible with jQuery 1.7.0+ in Firefox, Safari, Chrome, Opera, Internet Explorer 8+. IE7 technically works, but no care has gone into CSS/layout bugs.
-            tagEditor depends on accursoft's <a href="https://github.com/accursoft/caret">caret plugin</a> (1.1 kB minified).
+            Relicensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, 2.0</a>.
+            Source on <a href="https://github.com/alfonsomunozpomer/jQuery-JSON-TagEditor">Github</a>.
+            Compatible with jQuery 1.7.0+ in Firefox, Safari, Chrome, Edge, and Internet Explorer 11+. Other or earlier versions of these browsers might work but it hasn’t been tested at all. Use at your own risk!
+            JSON Tag Editor, as its predecessor, depends on accursoft's <a href="https://github.com/accursoft/caret">caret plugin</a> (1.1 kB minified).
         </p>
+        <strong>New features:</strong>
         <ul>
-            <li>Lightweight: 8.5 kB of JavaScript - less than 3.2 kB gzipped</li>
+            <li>Ellipsify lengthy tags</li>
+            <li>Add metadata or arbitrary attributes to tags</li>
+            <li>The text displayed by the tag can have no relation with the tag’s internal value</li>
+            <li>Option to disable selection</li>
+        </ul>
+        <strong>Common features from jQuery tagEditor:</strong>
+        <ul>
+            <li>Lightweight: 13 kB of JavaScript - 3.5 kB gzipped</li>
             <li>Edit in place tags</li>
-            <li>Intuitive navigation between tags with cursor keys, Tab, Shift+Tab, Enter, Pos1, End, Backspace, Del, and ESC</li>
+            <li>Intuitive navigation between tags with cursor keys, Tab, Shift+Tab, Enter, End, Backspace, Del, and Esc</li>
             <li>Optional jQuery UI sortable</li>
             <li>Optional jQuery UI autocomplete</li>
-            <li>Copy-paste or delete multiple selected tags</li>
-            <li>Duplicate tags check</li>
+            <li>Copy-paste or multiple tags</li>
             <li>Placeholder</li>
             <li>Custom style for faulty tags</li>
             <li>Public methods for reading, adding and removing tags + destroy function</li>
             <li>Callbacks</li>
             <li>Allows tabindex for form navigation</li>
-            <li>Graceful degradation if JavaScript is disabled</li>
+        </ul>
+        <strong>Removed features from jQuery tagEditor:</strong>
+        <ul>
+            <li>Use the </li>
+            <li>Delete multiple selected tags</li>
+            <li>Duplicate tags check</li>
         </ul>
         <p>
-            This plugin was developed by and for <a href="https://pixabay.com/">Pixabay.com</a> - an international repository for free Public Domain images.
-            We have implemented this piece of software in production and we share it - in the spirit of Pixabay - freely with others.
+            This plugin was forked by Alfonso Muñoz-Pomer Fuentes (<a href="https://github.com/alfonsomunozpomer">GitHub repository</a>, <a href="blog.nestedco.de">blog</a>)
+            as part of <a href="http://www.ebi.ac.uk/gxa">Expression Atlas</a> (<a href="https://github.com/gxa/atlas">GitHub repository</a>).
+            The original plugin was developed by <a href="https://pixabay.com/">Pixabay.com</a> - an international repository for free Public Domain images.
         </p>
 
         <h3>Usage</h3>
         <p>
             Include the stylesheet <span class="inline-code">jquery.json-tag-editor.css</span> in the <span class="inline-code">&lt;head&gt;</span> section of your HTML document - and the JavaScript file <span class="inline-code">jquery.json-tag-editor.min.js</span> after loading jQuery and optional jQuery UI sortable/autocomplete.
             Make sure to also load accursoft's <a href="http://code.accursoft.com/caret">caret plugin</a> (1.1 kB minified).
-            tagEditor accepts settings from an object of key/value pairs, and can be assigned to any text input field or textarea.
+            JSON Tag Editor accepts settings from an object of key/value pairs, and can be assigned to any text input field or textarea.
         </p>
         <pre>
 $(selector).jsonTagEditor({key1: value1, key2: value2});
@@ -148,9 +164,10 @@ $(<b>'#my_textarea'</b>).jsonTagEditor({ autocomplete: { <b>'source'</b>: <b>'/u
             <tr><td>initialTags</td><td>[]</td><td>Initial tags as an array of strings.</td></tr>
             <tr><td>maxTags</td><td><i>null</i></td><td>Maximum number of allowed tags.</td></tr>
             <tr><td>maxLength</td><td>50</td><td><span class="inline-code">maxlength</span> attribute of the tag input field.</td></tr>
+            <tr><td>maxTagLength</td><td>-1</td><td>Maximum length of the displayed tag text. Longer tags are ellipsified. Any negative will have the whole tag value displayed.</td></tr>
+            <tr><td>noSelect</td><td><i>false</i></td><td>Disable selection on the tag editor.</td></tr>
             <tr><td>placeholder</td><td>''</td><td>Placeholder text for empty tag editor.</td></tr>
             <tr><td>forceLowercase</td><td><i>true</i></td><td>Lowercase all tags.</td></tr>
-            <tr><td>removeDuplicates</td><td><i>true</i></td><td>Automatically remove duplicate tags.</td></tr>
             <tr><td>clickDelete</td><td><i>false</i></td><td>Delete tags on right click and on Ctrl+click.</td></tr>
             <tr><td>animateDelete</td><td><i>175</i></td><td>Animate duration for deletion of tags in milliseconds. Set to 0 for non-animated removal.</td></tr>
             <tr><td>sortable</td><td><i>true</i></td><td>If <a href="https://jqueryui.com/sortable/">jQuery UI sortable</a> is available and this option is set to <span class="inline-code">true</span>, tags are sortable by drag and drop.</td></tr>
@@ -217,6 +234,7 @@ $(<b>'#demo3'</b>).jsonTagEditor({
         <p>
             <span onclick="alert($('#demo3').jsonTagEditor('getTags')[0].tags.map(function(e) {return JSON.stringify(e)}));" class="ed_on pure-button button-sm">getTags</span>
             <span onclick="$('#demo3').jsonTagEditor('addTag', 'example');" class="ed_on pure-button button-sm">addTag 'example'</span>
+            <span onclick="$('#demo3').jsonTagEditor('addTag', '{&quot;value&quot;:&quot;JSON example&quot;}');" class="ed_on pure-button button-sm">addTag {"value":"JSON example"}</span>
             <span onclick="$('#demo3').jsonTagEditor('removeTag', 'example', true);" class="ed_on pure-button button-sm">removeTag 'example'</span>
             <span id="remove_all_tags" class="ed_on pure-button button-sm">Remove all tags</span>
             <span onclick="$('#demo3').jsonTagEditor('destroy');$('.ed_on').hide();$('.ed_off').show();" class="ed_on pure-button button-sm">destroy</span>
@@ -229,6 +247,7 @@ $(<b>'#demo3'</b>).jsonTagEditor({
 alert( $(<b>'#demo3'</b>).jsonTagEditor(<b>'getTags'</b>)[0].tags );
 
 <i>// addTag</i>
+$(<b>'#demo3'</b>).jsonTagEditor(<b>'addTag'</b>, <b>'example'</b>);
 $(<b>'#demo3'</b>).jsonTagEditor(<b>'addTag'</b>, <b>'example'</b>);
 
 <i>// removeTag</i>
@@ -372,7 +391,7 @@ tag_classes(null, $('#demo6').jsonTagEditor('getTags')[0].editor);</pre>
             integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="
             crossorigin="anonymous"></script>
     <script src="jquery.caret.min.js"></script>
-    <script src="jquery.json-tag-editor.min.js"></script>
+    <script src="jquery.json-tag-editor.js"></script>
     <script>
         // jQuery UI autocomplete extension - suggest labels may contain HTML tags
         // github.com/scottgonzalez/jquery-ui-extensions/blob/master/src/autocomplete/jquery.ui.autocomplete.html.js
@@ -409,6 +428,8 @@ tag_classes(null, $('#demo6').jsonTagEditor('getTags')[0].editor);</pre>
 
             $('#json-hero-demo').jsonTagEditor({
                 placeholder: 'Enter tags ...',
+                noSelect: true,
+                maxTagLength: 20,
                 autocomplete: { source: googleSuggest, minLength: 3, delay: 250, html: true, position: { collision: 'flip' } }
             });
 
@@ -423,7 +444,7 @@ tag_classes(null, $('#demo6').jsonTagEditor('getTags')[0].editor);</pre>
             $('#demo3').jsonTagEditor({ initialTags: [{"value":"Hello"}, {"value":"World"}], placeholder: 'Enter tags ...' });
             $('#remove_all_tags').click(function() {
                 var tags = $('#demo3').jsonTagEditor('getTags')[0].tags;
-                for (var i = 0 ; i < tags.length ; i++) { $('#demo3').jsonTagEditor('removeTag', tags[i].tagValue); }
+                for (var i = 0 ; i < tags.length ; i++) { $('#demo3').jsonTagEditor('removeTag', tags[i].value); }
             });
 
             $('#demo4').jsonTagEditor({
@@ -458,8 +479,8 @@ tag_classes(null, $('#demo6').jsonTagEditor('getTags')[0].editor);</pre>
             (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=114593902037957";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
             !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
             $('#github_social').html('\
-                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=jQuery-tagEditor&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
-                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=jQuery-tagEditor&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=alfonsomunozpomer&repo=jQuery-JSON-TagEditor&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=alfonsomunozpomer&repo=jQuery-JSON-TagEditor&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
             ');
         }
     </script>
