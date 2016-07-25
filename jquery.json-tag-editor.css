@@ -8,6 +8,13 @@
                                   not supported by any browser */
 }
 
+.json-tag-editor-spacer::selection {
+    background: transparent; /* WebKit/Blink Browsers */
+}
+.json-tag-editor-spacer::-moz-selection {
+    background: transparent; /* Gecko Browsers */
+}
+
 /* surrounding tag container */
 .json-tag-editor {
     list-style-type: none; padding: 0 5px 0 0; margin: 0; overflow: hidden; border: 1px solid #eee; cursor: text;
