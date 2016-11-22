@@ -194,7 +194,7 @@
                         tag.value = $(this).find('input').val();
                     }
                     else {
-                        Object.assign(tag, $(e).get(0).dataset)
+                        Object.assign(tag, $(e).get(0).dataset, {value: $(e).get(0).dataset.value})
                     }
 
                     if (tag.value) {
