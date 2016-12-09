@@ -137,7 +137,7 @@
                     $(new_tag).insertAfter(closest_tag.closest('li')).find('.tag-editor-tag').click();
                 else // empty editor
                     $(new_tag).appendTo(ed).find('.tag-editor-tag').click();
-                return false;
+                return true;
             });
 
             ed.on('click', '.tag-editor-delete', function(e){
