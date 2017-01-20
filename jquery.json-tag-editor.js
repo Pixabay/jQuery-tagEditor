@@ -351,7 +351,13 @@
                                 ed.trigger('click', [$('.active', ed).find('input').closest('li').next('li').find('.json-tag-editor-tag')]);
                             }, 20);
                         };
-                        input.autocomplete(aco);
+
+                        if (aco.plugin) {
+                            input[aco.plugin](aco);
+                        } else {
+                            input.autocomplete(aco);
+                        }
+
                         if (aco._renderItem) {
                             input.autocomplete('instance')._renderItem = aco._renderItem;
                         }
