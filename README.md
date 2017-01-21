@@ -1,7 +1,50 @@
+jQuery JSON Tag Editor
+======================
+
+*jQuery JSON Tag Editor* is a fork of [jQuery-tagEditor](https://goodies.pixabay.com/jquery/tag-editor/demo.html), originally developed by Simon Steinberger for
+[Pixabay.com](https://pixabay.com) and licensed under the [MIT license](https://opensource.org/licenses/MIT). This fork maintains the same license and adds the 
+[Apache License, 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+*jQuery JSON Tag Editor* adds a separation between the visual representation of a tag and the tag itself. Tags are plain JavaScript objects with a `value` attribute 
+that is its visual representation in the tag editor. `value` plus any other properties that the tag object may have are all stored as 
+[data attributes](https://developer.mozilla.org/en/docs/Web/Guide/HTML/Using_data_attributes) in each `<div class="tag-editor-tag">` element.
+
+So, using the `addTag` public method, this:
+```
+$('#id').jsonTagEditor('addTag', '{"value": "Car", "tagType": "string", "category": "vehicle"}')
+```
+
+Produces the markup below:
+```
+<div class="tag-editor-tag" data-value="Car" data-tag-type="string" data-category="vehicle">Car</div>
+```
+
+If a string is provided as an argument then an object with only the `value` property is created. This is the case when tags are manually typed into the editor. 
+
+Features added:
+---------------
+* Tags are complex objects: what you see in the editor is the property `value`, but you can add arbitrary data to your tags
+* Tag object properties are stored as data attributes in their corresponding `<div>` element
+* A new option `maxTagLength` can ellipsify tags while keeping the original value in `data-value`
+* Multiple tags when pasting a multi-line text snippet, one per line, or split by tabs
+
+Features removed:
+-----------------
+* Auto-grow width of `<input>` editors
+* Support for cut: the original feature was Window-specific but buggy as tags weren’t put in the clipboard 
+* `removeDuplicates`: because tags aren’t strings it was the simplest way to deal with this issue
+* The `delimiter` is hard-coded to `\t` and `\n`
+
+__[Visit the demo page for the full documentation](https://alfonsomunozpomer.github.io/jsontageditor/demo.html).__
+
+---
+
+What follows are the original contents of jQuery-tagEditor’s README.md file:
+
 jQuery-tagEditor
 ================
 
-A powerful and lightweight tag editor plugin for jQuery.
+A powerful and lightweight tag editor plugin for jQuery based on jQuery-tagEditor by Pixabay
 
 Compatible with jQuery 1.7.0+ in Firefox, Safari, Chrome, Opera, Internet Explorer 8+. IE7 technically works, but no care has gone into CSS/layout bugs.
 Released under the MIT License: http://www.opensource.org/licenses/mit-license.php
