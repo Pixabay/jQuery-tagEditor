@@ -224,7 +224,7 @@
                 else if (tag.indexOf(o.delimiter[0])>=0) { split_cleanup(input); return; }
                 else if (tag != old_tag) {
                     if (o.forceLowercase) tag = tag.toLowerCase();
-                    cb_val = o.beforeTagSave(el, ed, tag_list, old_tag, tag);
+                    var cb_val = o.beforeTagSave(el, ed, tag_list, old_tag, tag);
                     tag = cb_val || tag;
                     if (cb_val === false) {
                         if (old_tag) {
