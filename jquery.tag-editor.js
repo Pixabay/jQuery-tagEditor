@@ -315,6 +315,15 @@
                     // trigger blur if maxTags limit is reached
                     if (o.maxTags && ed.data('tags').length >= o.maxTags) ed.find('input').blur();
 
+                    if(o.enterToSubmit){
+
+                        if($(this).value == null && ed.children().length > 2){
+                            var response = [];
+                            response.push({field: el[0], editor: ed, tags: ed.data('tags')});
+                            o.onSubmit(response);
+                        }
+                    }
+
                     return false;
                 }
                 // pos1
@@ -361,10 +370,12 @@
         animateDelete: 175,
         sortable: true, // jQuery UI sortable
         autocomplete: null, // options dict for jQuery UI autocomplete
+        enterToSubmit:false,
 
         // callbacks
         onChange: function(){},
         beforeTagSave: function(){},
-        beforeTagDelete: function(){}
+        beforeTagDelete: function(){},
+        onSubmit: function(){}
     };
 }(jQuery));
