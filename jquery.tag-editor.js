@@ -199,8 +199,9 @@
                     // remove duplicates
                     if (o.removeDuplicates && ~$.inArray(tag, old_tags))
                         $('.tag-editor-tag', ed).each(function(){ if ($(this).text() == tag) $(this).closest('li').remove(); });
-                    old_tags.push(tag);
                     li.before('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+escape(tag)+'</div><div class="tag-editor-delete"><i></i></div></li>');
+                    o.afterTagSave(el, ed, old_tags, old_tag, tag, li.prev());
+                    old_tags.push(tag);
                     if (o.maxTags && old_tags.length >= o.maxTags) { exceeded = true; break; }
                 }
                 input.attr('maxlength', o.maxLength).removeData('old_tag').val('')
@@ -236,9 +237,12 @@
                         try { input.closest('li').remove(); } catch(e){}
                         if (old_tag) update_globals();
                     }
-                    // remove duplicates
-                    else if (o.removeDuplicates)
+                    else {
+                      // remove duplicates
+                      if (o.removeDuplicates)
                         $('.tag-editor-tag:not(.active)', ed).each(function(){ if ($(this).text() == tag) $(this).closest('li').remove(); });
+                      o.afterTagSave(el, ed, tag_list, old_tag, tag, input.closest('li'));
+                    }
                 }
                 input.parent().html(escape(tag)).removeClass('active');
                 if (tag != old_tag) update_globals();
@@ -337,6 +341,7 @@
                     if (o.forceLowercase) tag = tag.toLowerCase();
                     tag_list.push(tag);
                     ed.append('<li><div class="tag-editor-spacer">&nbsp;'+o.delimiter[0]+'</div><div class="tag-editor-tag">'+escape(tag)+'</div><div class="tag-editor-delete"><i></i></div></li>');
+                    o.afterTagSave(el, ed, tag_list, '', tag, ed.children().last());
                 }
             }
             update_globals(true); // true -> no onChange callback
@@ -365,6 +370,7 @@
         // callbacks
         onChange: function(){},
         beforeTagSave: function(){},
+        afterTagSave: function(){},
         beforeTagDelete: function(){}
     };
 }(jQuery));
