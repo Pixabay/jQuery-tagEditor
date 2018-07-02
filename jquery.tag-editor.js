@@ -311,6 +311,7 @@
                 // enter key
                 else if (e.which == 13) {
                     ed.trigger('click', [$t.closest('li').next('li').find('.tag-editor-tag')]);
+                    o.onSubmit(ed,tag_list);
 
                     // trigger blur if maxTags limit is reached
                     if (o.maxTags && ed.data('tags').length >= o.maxTags) ed.find('input').blur();
@@ -365,6 +366,7 @@
         // callbacks
         onChange: function(){},
         beforeTagSave: function(){},
-        beforeTagDelete: function(){}
+        beforeTagDelete: function(){},
+        onSubmit: function () {}
     };
 }(jQuery));
