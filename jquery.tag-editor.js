@@ -1,5 +1,5 @@
 /*
-	jQuery tagEditor v1.0.20
+	jQuery tagEditor v1.0.21
     Copyright (c) 2014 Simon Steinberger / Pixabay
     GitHub: https://github.com/Pixabay/jQuery-tagEditor
 	License: http://www.opensource.org/licenses/mit-license.php
@@ -54,7 +54,7 @@
         if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', function(e){
             if (e.which == 8 || e.which == 46 || e.ctrlKey && e.which == 88) {
                 try {
-                    var sel = getSelection(), el = document.activeElement.tagName == 'BODY' ? $(sel.getRangeAt(0).startContainer.parentNode).closest('.tag-editor') : 0;
+                    var sel = getSelection(), el = document.activeElement.tagName != 'INPUT' ? $(sel.getRangeAt(0).startContainer.parentNode).closest('.tag-editor') : 0;
                 } catch(e){ el = 0; }
                 if (sel.rangeCount > 0 && el && el.length) {
                     var tags = [], splits = sel.toString().split(el.prev().data('options').dregex);

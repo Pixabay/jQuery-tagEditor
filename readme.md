@@ -32,6 +32,10 @@ https://goodies.pixabay.com/jquery/tag-editor/demo.html
 
 ## Changelog
 
+### Version 1.0.21 - 2017/05/05
+
+* Fixed bug: Delete multiple tags via selection not working with certain parent cotainer structure.
+
 ### Version 1.0.20 - 2016/01/30
 
 * Fixed #62: tagEditor is blocking key events on other input and textarea elements on page.
