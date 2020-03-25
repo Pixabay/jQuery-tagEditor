@@ -298,6 +298,8 @@
                         if (next_tag.length) next_tag.click().find('input').caret(0);
                         else if ($t.val()) ed.click();
                         else return; // allow tabbing to next element
+
+                        if (o.maxTags && ed.data('tags').length >= o.maxTags) ed.find('input').blur();
                         return false;
                     }
                 }
