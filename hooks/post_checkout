@@ -9,7 +9,7 @@ if [[ SOURCE_BRANCH -eq 'master' && $(expr match "$a" '\[Release\] Version [\d.]
 	echo $version > version
 	git config user.name "DockerHub" && git config user.email "hub@docker.com"
 	git add version
-	git commit -m "[Release] New version $version"
+	git commit -m "[Release] Version $version"
 	git tag $version
     git push origin --tags master
 fi
