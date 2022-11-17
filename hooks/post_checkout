@@ -2,10 +2,7 @@
 # Docker hub does a recursive clone, then checks the branch out,
 # so when a PR adds a submodule (or updates it), it fails.
 
-# Auto version incrementing only for Master branch and exlucde commits with msg = [Release] New version $version
-echo COMMIT_MSG
-echo $COMMIT_MSG
-
+# Auto version incrementing only for Master branch and exlucde commits with msg = [Release] Version $version
 if [[ SOURCE_BRANCH -eq 'master' && $(expr match "$COMMIT_MSG" '\[Release\] Version [\d.]*') == 0 ]]; then
 	version=$(cat version | awk '{split($0,a,"."); print a[1] "." a[2] "." a[3]+1}')
 	echo Increment version to $version
