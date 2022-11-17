@@ -6,12 +6,10 @@
 echo COMMIT_MSG
 echo $COMMIT_MSG
 
+if [[ SOURCE_BRANCH -eq 'master' && $(expr match "$COMMIT_MSG" '\[Release\] Version [\d.]*') > 0 ]]; then
+    git push origin --tags master
+fi
+
 if [[ SOURCE_BRANCH -eq 'master' && $(expr match "$COMMIT_MSG" '\[Release\] Version [\d.]*') == 0 ]]; then
-	version=$(cat version | awk '{split($0,a,"."); print a[1] "." a[2] "." a[3]+1}')
-	echo Increment version to $version
-	echo $version > version
-	git config user.name "DockerHub" && git config user.email "hub@docker.com"
-	git add version
-	git commit -m "[Release] Version $version"
-	git tag $version
+    git push origin --tags master
 fi
