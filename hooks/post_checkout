@@ -3,13 +3,13 @@
 # so when a PR adds a submodule (or updates it), it fails.
 
 # Auto version incrementing only for Master branch and exlucde commits with msg = [Release] New version $version
-echo SOURCE_BRANCH
-echo GIT_SHA1
-echo SOURCE_COMMIT
-echo GIT_TAG
-echo DOCKER_TAG
-echo IMAGE_NAME
-if [[ SOURCE_BRANCH -eq 'master' && $(expr match "$a" '\[Release\] Version [\d.]*') == 0 ]]; then
+echo $SOURCE_BRANCH
+echo $GIT_SHA1
+echo $SOURCE_COMMIT
+echo $GIT_TAG
+echo $DOCKER_TAG
+echo $IMAGE_NAME
+if [[ SOURCE_BRANCH -eq 'master' && $(expr match "$COMMIT_MSG" '\[Release\] Version [\d.]*') == 0 ]]; then
 	version=$(cat version | awk '{split($0,a,"."); print a[1] "." a[2] "." a[3]+1}')
 	echo Increment version to $version
 	echo $version > version
