@@ -1,0 +1,15 @@
+#!/bin/bash
+# Docker hub does a recursive clone, then checks the branch out,
+# so when a PR adds a submodule (or updates it), it fails.
+
+# Auto version incrementing only for Master branch and exlucde commits with msg = [Release] New version $version
+if [[ SOURCE_BRANCH -eq 'master' && $(expr match "$a" '\[Release\] Version [\d.]*') == 0 ]]; then
+	version=$(cat version | awk '{split($0,a,"."); print a[1] "." a[2] "." a[3]+1}')
+	echo Increment version to $version
+	echo $version > version
+	git config user.name "DockerHub" && git config user.email "hub@docker.com"
+	git add version
+	git commit -m "[Release] New version $version"
+	git tag $version
+    git push origin --tags master
+fi
